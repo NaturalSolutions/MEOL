@@ -1,0 +1,133 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/m3sINBio/themes/inbio2/m3s.css"/>
+    <link rel="stylesheet" type="text/css" href="/m3sINBio/themes/inbio2/galleries.css"/>
+    <link rel="stylesheet" type="text/css" href="/m3sINBio/themes/common/yui/autocomplete-skin.css"/>
+    <link rel="stylesheet" type="text/css" href="/m3sINBio/themes/inbio2/tables.css"/>            
+    <title>Error Page</title>
+  </head>
+  
+  <body>
+    <div id="wrapper">
+      <div id="inner-wrap">
+        <div id="bor-der">
+          <div id="bor-izq">
+            
+            
+
+
+
+
+
+
+
+<!-- SUPERIOR BANNER -->
+<div id="banner-img">
+  <div id="banner-txt">Multimedia Information System</div>
+</div>
+            
+            
+
+
+
+
+
+
+<script src="/m3sINBio/javascript/highlight.js;jsessionid=B235504EC11ADD52E09A612E3325F404" type="text/javascript" language="javascript"></script>
+
+<div id="menu">
+  <ul>
+  
+    <li> <a href="/m3sINBio/home.html" title="Home">Home</a> </li>
+    <li> <a href="/m3sINBio/insert.html" title="Insert Multimedia">Insert Multimedia</a> </li>
+    <li> <a href="/m3sINBio/search/" title="Search">Search</a> </li>
+    <li> <a href="/m3sINBio/edit.html" title="Edit Metadata">Edit Metadata</a> </li>
+  </ul>
+</div>
+
+<script type="text/javascript">
+  setPage()
+</script>
+
+            
+            
+
+
+
+
+
+
+
+
+<div id="user-info">
+
+   
+
+ 
+    <a href="/m3sINBio/login.html" title="Login">Login
+    </a> | <a href="/m3sINBio/j_spring_security_logout;jsessionid=B235504EC11ADD52E09A612E3325F404">Logout
+    </a>
+    
+  
+</div>
+
+
+            
+            <div id="content">
+              
+
+
+
+
+
+
+
+<h2>Page Not Found [Error 404]</h2>
+<br>
+
+The requested page does not exist.
+
+            </div>
+            
+            <div id="clear">
+              <!--limpia los float en caso de ser utilizados arriba -->
+            </div>
+            
+            
+
+
+
+
+
+
+
+<div id="footer">
+  <div id="footer-out">
+    <div id="footer-in">
+      <p>
+        <a href="mailto:jgutierrez@inbio.ac.cr">Contáctenos</a>
+        <br>
+        Instituto Nacional de Biodiversidad - INBio 2009
+      </p>
+    </div>
+  </div>
+   
+</div>
+            
+          </div> <!-- bor-izq -->
+        </div> <!-- bor-der -->
+      </div> <!-- inner-wrap -->
+    </div> <!-- wrapper -->
+  </body>
+  
+</html>
