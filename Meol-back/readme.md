@@ -1,4 +1,5 @@
-=Script=
+M-eol - Data extractor
+=========
 
 Extract data for all eol selected collection.
 For each collection : 
