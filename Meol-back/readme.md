@@ -1,4 +1,4 @@
-==Script==
+=Script=
 
 Extract data for all eol selected collection.
 For each collection : 
