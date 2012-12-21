@@ -10,7 +10,14 @@ class ObjectImage extends ObjectData {
   private $_fileName; // (String)
   private $_URL; // (String(URL))
   	
-	public function __construct($objectId, $objectData, $directory, $fileBaseName='') {
+	public function __construct($objectId, $directory, $fileBaseName='') {
+    //Lancement du WS
+    $objectWS = file_get_contents('http://eol.org/api/data_objects/1.0/'.$objectId.'.json');
+    //print "\n".'http://eol.org/api/data_objects/1.0/'.$objectId.'.json'."\n";
+    //print_r( $objectWS);
+    $reponseData = json_decode($objectWS);
+    $objectData = $reponseData->dataObjects[0];
+    
     parent::setUtils(new Utils());
     parent::setObjectId($objectId);
     //Get metadata

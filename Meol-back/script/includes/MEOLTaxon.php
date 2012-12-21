@@ -19,6 +19,7 @@ class Taxon {
 	private $_preferedRef = 'Species 2000 & ITIS Catalogue of Life: May 2012';
 	
 	public function __construct($pageid, $collectionId) {
+    print "new tax\n";
     $this->_utils = new Utils();
     $this->_collectionid = $collectionId;
     $this->setPageid($pageid);
@@ -27,10 +28,11 @@ class Taxon {
 
 
   public function loadAndExtractTaxonData() {
-    $pagesWS = file_get_contents('http://eol.org/api/pages/1.0/'. $this->_pageid.'.json?common_names=all&details=0&images=1&subjects=overview&text=1&vetted=1');
-    //print "\n".'http://eol.org/api/pages/1.0/'. $this->_pageid.'.json?common_names=all&details=0&images=1&subjects=overview&text=1&vetted=1'."\n";
+    $pagesWS = file_get_contents('http://eol.org/api/pages/1.0/'. $this->_pageid.'.json?common_names=all&details=0&images=1&subjects=overview&text=1&vetted=1&iucn=true');
+    print "\n".'http://eol.org/api/pages/1.0/'. $this->_pageid.'.json?common_names=all&details=0&images=1&subjects=overview&text=1&vetted=1&iucn=true'."\n";
     $pageData = json_decode($pagesWS);
     $this->_taxonName = $pageData->scientificName;
+    print $this->_taxonName."\n";
     $this->_commonNames = $pageData->vernacularNames;
     //Récupération des noms communs
     //Récupération des données relatives au taxonConcept
@@ -38,21 +40,19 @@ class Taxon {
     
     //Récupération des données objet
     foreach ($pageData->dataObjects as $drow) {
-     // print_r($drow);
       if (($drow->dataType== 'http://purl.org/dc/dcmitype/Text') && ((isset( $drow->title) && ( $drow->title != 'IUCNConservationStatus')))){
-        $desc =  new ObjectText($drow->identifier, $drow) ;
+        $desc =  new ObjectText($drow->identifier) ;
         $this->_textDesc =$desc;
       }
       elseif ($drow->dataType== 'http://purl.org/dc/dcmitype/StillImage') {
         $dir = constant('BASEPATH').constant('DATAPATH');
-        $image =  new ObjectImage($drow->identifier, $drow, $dir.$this->_collectionid) ;
+        $image =  new ObjectImage($drow->identifier, $dir.$this->_collectionid) ;
         $this->_image =$image;
       }
       elseif (($drow->dataType== 'http://purl.org/dc/dcmitype/Text') && ((isset( $drow->title) && ($drow->title == 'IUCNConservationStatus')))){
-        $iucn =  new ObjectText($drow->identifier, $drow) ;
+        $iucn =  new ObjectText($drow->identifier) ;
         $this->_iucnStatus =$iucn;
       }
-
     }
   }
 	
@@ -62,7 +62,6 @@ class Taxon {
 				$this->_taxonConceptId =  $txConcept->identifier;
 				$pagesWS = file_get_contents('http://eol.org/api/hierarchy_entries/1.0/'. $this->_taxonConceptId.'.json');
 				$pageData = json_decode($pagesWS);
-				
 				//Récupération de la hiérarhie des taxons
 				$parentNameUsageID = $pageData->parentNameUsageID;
 				$flatree = array();

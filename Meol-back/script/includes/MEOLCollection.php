@@ -32,9 +32,11 @@ class Collection {
 
   
   private function buildCollectionItem($items) {
+    print "BUILD COLLECTION item $this->_collectionid \n";
     foreach($items as $item) {
         $collectionItem = array();
         if ($item->object_type == $this->_collectiontype) {
+            print $item->title."\n";
           if ($item->object_type == 'TaxonConcept') {
             //Récupération de l'identifiant du taxon
             $collectionItem['taxonID'] = $item->object_id;
@@ -46,11 +48,12 @@ class Collection {
             $photoID = $item->object_id;
             if ((isset($photoID)) && ($photoID > 0)) {
               $objectWS = file_get_contents('http://eol.org/api/data_objects/1.0/'.$photoID.'.json');
+              print 'http://eol.org/api/data_objects/1.0/'.$photoID.'.json'."\n";
               $objectData = json_decode($objectWS);
               //Récupération de l'image
               //print 'http://eol.org/api/data_objects/1.0/'.$photoID.'.json'."\n";
                $dir = constant('BASEPATH').constant('DATAPATH');
-              $image = new ObjectImage($photoID, $objectData->dataObjects[0],  $dir.$this->_collectionid,'') ;
+              $image = new ObjectImage($photoID, $dir.$this->_collectionid,'') ;
               $collectionItem['Image']= $image;
               //Récupération de l'identifiant du taxon
               $collectionItem['taxonID'] = $objectData->identifier;
@@ -61,13 +64,12 @@ class Collection {
             $collectionItem['taxon'] = new Taxon($collectionItem['taxonID'],$this->_collectionid);
             $this->_items[$collectionItem['taxonID']] = $collectionItem;
           }
-          //print "\n";
         }
     }
-    
   }
   
   public function formatTaxonDetailPanel() {
+    print "formatTaxonDetailPanel $this->_collectionid \n";
     $taxonDetail = array();
     //print "formatTaxonDetailPanel \n";
     foreach ($this->_items as $item) {
@@ -82,7 +84,6 @@ class Collection {
       if (isset($desc)) $description = $desc->getFormatedObject();
       if (isset($img)) $image = $img->getFormatedObject();
       if (isset($iucn)) $iucnStatus = $iucn->getFormatedObject();
-      
       $taxonDetail[$taxon->getTaxonConceptId()] = array(
         'collectionid' => $taxon->getCollectionid(),
         'pageid' => $taxon->getPageid(),
@@ -98,7 +99,27 @@ class Collection {
     }
     foreach ($this->_nonTerminalTaxa as $key => $item) {
       $taxon = $item;
-      $taxonDetail[$key] = $taxon;
+      $desc = $taxon->getTextDesc();
+      $img = $taxon->getImage();
+      $iucn = $taxon->getIucnStatus();
+      $description ='';
+      $image ='';
+      $iucnStatus = '';
+      if (isset($desc)) $description = $desc->getFormatedObject();
+      if (isset($img)) $image = $img->getFormatedObject();
+      if (isset($iucn)) $iucnStatus = $iucn->getFormatedObject();
+      $taxonDetail[$taxon->getTaxonConceptId()] = array(
+        'collectionid' => $taxon->getCollectionid(),
+        'pageid' => $taxon->getPageid(),
+        'taxonConceptId' => $taxon->getTaxonConceptId(),
+        'taxonName' => $taxon->getTaxonName(),
+        'textDesc' => $description,
+        'flathierarchy' => $taxon->getFlathierarchy(),
+        'preferredCommonNames' => $taxon->getPreferedCommonName(),
+        'commonNames' => $taxon->getCommonNames(),
+        'image' => $image,
+        'iucnStatus' => $iucnStatus,
+      );
     }
     $taxonDetailPanel= (Object) $taxonDetail;
     $taxonDetailPanelFormated = json_encode ($taxonDetailPanel, JSON_HEX_QUOT);
@@ -129,8 +150,6 @@ class Collection {
 		foreach ($this->_items as $item) {
       $taxon = $item['taxon'];
 			$taxonhierarchy = $taxon->getFlathierarchy();
-      //print '--------------------------------------'."\n";
-      //print_r($taxonhierarchy);
 			foreach($taxonhierarchy as $level => $hieritem) {
 				$tabTax[$hieritem->taxonID] = array(
 					'level' => $level,
@@ -139,16 +158,18 @@ class Collection {
 					'name' => $hieritem->scientificName,
 					'type' => $hieritem->type,
 				);	
-        //Si le taxon n'est pas terminal
-        if ($hieritem->type != 'leaf') {
-          $taxon = new Taxon($hieritem->taxonConceptID, $this->_collectionid);
-          $this->_nonTerminalTaxa[$hieritem->taxonConceptID] = $taxon;
-        }
 			}	
 		}
 		$nbroot = 0;
+      
 		$root ;
 		foreach($tabTax as $taxonConceptID =>$data) {
+      if ($data['type'] != 'leaf') {
+        //PATCH pour ne pas attendre 3 plombe l'erreur lancé par Rosa
+        if ($data['taxonConceptID'] == 29911) break;
+        $taxon = new Taxon($data['taxonConceptID'], $this->_collectionid);
+        $this->_nonTerminalTaxa[$data['taxonConceptID']] = $taxon;
+      }
 			if ($data['parentNameUsageID'] == 0) {
 				$nbroot ++;
         $data['type'] = 'root';
@@ -175,7 +196,6 @@ class Collection {
     return $jsond3jsftree;
 	}
 	
-	
 	private function _recursivUnifiedHierarchy($parentNameUsageID, &$tabTax, $level) {
 		$unifiedHier = array();
     $level++;
@@ -192,21 +212,33 @@ class Collection {
 	}
   
   private function _formatUnifiedHierarchyForD3js($unifiedHier) {
+    
     foreach ( $unifiedHier as $key => $item ) {
       $fdata = array();
       $fdata['name'] = $item['taxon']['name'];
       $fdata['depth'] = $item['depth'];
+      $taxonConceptID = $item['taxon']['taxonConceptID'];
       if($item['taxon']['type'] == 'leaf') {
         $fdata['terminal'] =true;
         //print_r($item);
         //Récupération des données du taxon => Nom vernaculaire + Text + Photos
-        $tax = $this->_taxons[$item['taxon']['taxonConceptID']];
+        $tax = $this->_items[$taxonConceptID]['taxon'];
+        if (isset($this->_items[$taxonConceptID]['Image'])) {
+          $img =$this->_items[$taxonConceptID]['Image'];
+        }
+        else $img = $tax->getImage();
+        
+        if (isset($img)) $fdata['image'] =$img->getFileName();       
+      }
+      else {
+        $tax = $this->_nonTerminalTaxa[$taxonConceptID];
+      }
+      if (isset($tax)) {
         $commonName = $tax->getPreferedCommonName();
         if ($commonName != false) {
           $fdata['name'] = $commonName->vernacularName.'<br/><i>'.$item['taxon']['name'].'</i>';
-          $fdata['image'] = $tax->get_image();
-          $fdata['description'] = $tax->get_textDesc();
         }
+        $fdata['taxonConceptID'] = $taxonConceptID;
       }
       //Sinon récupération des données suplémentaires
       if (isset($item['children'])) {

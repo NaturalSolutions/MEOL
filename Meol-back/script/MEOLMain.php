@@ -4,10 +4,10 @@
 require_once('includes/MEOLCollection.php');
 
 
-define("BASEPATH", '/home/administrateur/Documents/M-eol/Meol-back/');
+define("BASEPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-back/');
 define("DATAPATH", 'Data/');
 define("ARCHIVEPATH", 'Archives/');
-define("LOGPATH", '/home/administrateur/Documents/M-eol/Meol-back/script/');
+define("LOGPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-back/');
 
 //Fichier de log
 $flog = fopen(constant('LOGPATH').'log.txt', 'w');
@@ -26,25 +26,36 @@ $collections =array(
 //Collection non encore traitée
 //$collections =array(6550,12227,12019,21,23141,30378,12777,24556,26517,13207,26702,29787,11578,26516,26724,9312,7251,9128,10328,10352,11031,10356,7197,11115,744);
 
+$collections =array(12819);
 foreach ($collections  as $idCol) {
-  $t = "************************************************************************************\n";
+  $t = "\n************************************************************************************\n";
   $t .="COLLECTION : $idCol \n";
+  
+  print "\n************************************************************************************\n";
+  print "COLLECTION : $idCol \n";
   fwrite($flog, $t);
   
   $collec = new Collection($idCol);
+  print "END COLLECTION : $idCol \n";
   
   //Création du fichier de hiérarchie
-  /*$d3jstree = $collec->buildUnifiedHierarchy();
+  print "\n************************************************************************************\n";
+  print "buildUnifiedHierarchy: $idCol \n";
+  $d3jstree = $collec->buildUnifiedHierarchy();
   $fp = fopen(constant('BASEPATH').constant('DATAPATH').$idCol.'/hierarchy.json', 'w');
   fwrite($fp, print_r($d3jstree, true));
-  fclose($fp);*/
+  fclose($fp);
+  print "END buildUnifiedHierarchy: $idCol \n";
   
   
   //Création du fichier détail taxon
+  print "\n************************************************************************************\n";
+  print "formatTaxonDetailPanel: $idCol \n";
   $taxonDetail = $collec->formatTaxonDetailPanel();
   $fp = fopen(constant('BASEPATH').constant('DATAPATH').$idCol.'/detail_Taxon.json', 'w');
   fwrite($fp, print_r($taxonDetail, true));
   fclose($fp);
+  print "END formatTaxonDetailPanel: $idCol \n";
 
   //Traitement des images
   $err = 0;
