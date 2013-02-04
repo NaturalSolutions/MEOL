@@ -12,9 +12,12 @@ class Collection {
 	private $_nonTerminalTaxa;
 	private $_taxons;
 	private $_unifiedHierarchy;
+  private $_collectionMetadata;
 	
+	private $_utils;
   
 	public function __construct($collectionid) {
+    $this->_utils = new Utils();
 		$this->_taxons=array();
 		$this->_items=array();
 		$this->_nonTerminalTaxa=array();
@@ -23,6 +26,10 @@ class Collection {
     $collectionWS = file_get_contents('http://eol.org/api/collections/1.0/'.$collectionid.'.json');
     //print 'http://eol.org/api/collections/1.0/'.$collectionid.'.json'."\n";
     $collectionData = json_decode($collectionWS);
+    
+		$this->_collectionMetadata['name']=$collectionData->name;
+		$this->_collectionMetadata['description']=$collectionData->description;
+    $this->saveCollectionLogoFile($collectionData->logo_url);
     //Détermine si la collection est de type taxon ou photo
     $coltype = $this->determineCollectionType($collectionData->item_types);
     $this->buildCollectionItem($collectionData->collection_items);
@@ -30,13 +37,13 @@ class Collection {
    // $this->setCollectionid($collectionid);
   }
 
-  
+
   private function buildCollectionItem($items) {
     print "BUILD COLLECTION item $this->_collectionid \n";
     foreach($items as $item) {
         $collectionItem = array();
         if ($item->object_type == $this->_collectiontype) {
-            print $item->title."\n";
+          print $item->title."\n";
           if ($item->object_type == 'TaxonConcept') {
             //Récupération de l'identifiant du taxon
             $collectionItem['taxonID'] = $item->object_id;
@@ -48,12 +55,11 @@ class Collection {
             $photoID = $item->object_id;
             if ((isset($photoID)) && ($photoID > 0)) {
               $objectWS = file_get_contents('http://eol.org/api/data_objects/1.0/'.$photoID.'.json');
-              print 'http://eol.org/api/data_objects/1.0/'.$photoID.'.json'."\n";
               $objectData = json_decode($objectWS);
               //Récupération de l'image
               //print 'http://eol.org/api/data_objects/1.0/'.$photoID.'.json'."\n";
                $dir = constant('BASEPATH').constant('DATAPATH');
-              $image = new ObjectImage($photoID, $dir.$this->_collectionid,'') ;
+              $image = new ObjectImage($photoID, $dir,'') ;
               $collectionItem['Image']= $image;
               //Récupération de l'identifiant du taxon
               $collectionItem['taxonID'] = $objectData->identifier;
@@ -69,7 +75,6 @@ class Collection {
   }
   
   public function formatTaxonDetailPanel() {
-    print "formatTaxonDetailPanel $this->_collectionid \n";
     $taxonDetail = array();
     //print "formatTaxonDetailPanel \n";
     foreach ($this->_items as $item) {
@@ -78,6 +83,9 @@ class Collection {
       $desc = $taxon->getTextDesc();
       $img = $taxon->getImage();
       $iucn = $taxon->getIucnStatus();
+      $flathier = $taxon->getFlathierarchy();
+      if (isset($flathier)) $flathier = array_reverse($flathier);
+      else $flathier = array();
       $description ='';
       $image ='';
       $iucnStatus = '';
@@ -90,9 +98,9 @@ class Collection {
         'taxonConceptId' => $taxon->getTaxonConceptId(),
         'taxonName' => $taxon->getTaxonName(),
         'textDesc' => $description,
-        'flathierarchy' => $taxon->getFlathierarchy(),
+        'flathierarchy' => $flathier,
         'preferredCommonNames' => $taxon->getPreferedCommonName(),
-        'commonNames' => $taxon->getCommonNames(),
+        //'commonNames' => $taxon->getCommonNames(),
         'image' => $image,
         'iucnStatus' => $iucnStatus,
       );
@@ -116,14 +124,13 @@ class Collection {
         'textDesc' => $description,
         'flathierarchy' => $taxon->getFlathierarchy(),
         'preferredCommonNames' => $taxon->getPreferedCommonName(),
-        'commonNames' => $taxon->getCommonNames(),
+        //'commonNames' => $taxon->getCommonNames(),
         'image' => $image,
         'iucnStatus' => $iucnStatus,
       );
     }
-    $taxonDetailPanel= (Object) $taxonDetail;
-    $taxonDetailPanelFormated = json_encode ($taxonDetailPanel, JSON_HEX_QUOT);
-    return $taxonDetailPanelFormated;
+    //foreach($taxonDetail as $key => $val) print $key.'  -- '.$val['taxonName']."\n"; 
+    return $taxonDetail;
   }
   
   private function determineCollectionType($itemTypes) {
@@ -157,17 +164,28 @@ class Collection {
 					'parentNameUsageID' =>$hieritem->parentNameUsageID,
 					'name' => $hieritem->scientificName,
 					'type' => $hieritem->type,
+          'child'=> $taxon->getPageid(),
 				);	
 			}	
 		}
 		$nbroot = 0;
-      
+    
 		$root ;
 		foreach($tabTax as $taxonConceptID =>$data) {
       if ($data['type'] != 'leaf') {
-        //PATCH pour ne pas attendre 3 plombe l'erreur lancé par Rosa
-        if ($data['taxonConceptID'] == 29911) break;
-        $taxon = new Taxon($data['taxonConceptID'], $this->_collectionid);
+        $child = $this->_items[$data['child']];
+        $hier =$child['taxon']->getFlathierarchy();
+        //Traitement de la hiérarchie des taxons non terminaux
+        $hier = array_reverse($hier);
+        $taxHier = array();
+        foreach($hier as $val) {
+          if($val->taxonID == $taxonConceptID) {
+            $taxHier[] = $val;
+            break;
+          }
+          else $taxHier[] = $val;
+        }
+        $taxon = new Taxon($data['taxonConceptID'], $this->_collectionid, $taxHier);
         $this->_nonTerminalTaxa[$data['taxonConceptID']] = $taxon;
       }
 			if ($data['parentNameUsageID'] == 0) {
@@ -178,13 +196,24 @@ class Collection {
 				$root['id']  = $taxonConceptID;
 			}
 		}
-		
-		// S'il n'y a bien qu'une racine alors 
+			
 		$unifiedHier = array();
-    if ($nbroot != 1){
+    //S'il y a plus qu'une racine
+    //=> ajout de la racine cellular organism : 11660866
+    if ($nbroot > 1){
+        $taxon = new Taxon(11660866, $this->_collectionid, array());
+        $this->_nonTerminalTaxa[11660866] = $taxon;
+        $data =  array(
+          'level' => -1,
+          'taxonConceptID' => -1,
+          'parentNameUsageID' => -10,
+          'name' => 'Cellular organism',
+          'type' => 'root',
+          'child' => 0,
+        );
         $data['type'] = 'root';
 				$root['taxon']  = $data;
-				$root['depth']  = 0;
+				$root['depth']  = -1;
 				$root['id']  = 0;
     }
     $unifiedHier[$root['id']] = $root;
@@ -218,6 +247,8 @@ class Collection {
       $fdata['name'] = $item['taxon']['name'];
       $fdata['depth'] = $item['depth'];
       $taxonConceptID = $item['taxon']['taxonConceptID'];
+      print $key."-----------------".$fdata['name']."\n";
+      $taxonID = $key;
       if($item['taxon']['type'] == 'leaf') {
         $fdata['terminal'] =true;
         //print_r($item);
@@ -236,9 +267,11 @@ class Collection {
       if (isset($tax)) {
         $commonName = $tax->getPreferedCommonName();
         if ($commonName != false) {
-          $fdata['name'] = $commonName->vernacularName.'<br/><i>'.$item['taxon']['name'].'</i>';
+          $fdata['vernacularName'] = $commonName->vernacularName;
+          $fdata['name'] = $item['taxon']['name'];
         }
-        $fdata['taxonConceptID'] = $taxonConceptID;
+        $fdata['pageID'] = $taxonConceptID;
+        $fdata['taxonConceptID'] = $taxonID;
       }
       //Sinon récupération des données suplémentaires
       if (isset($item['children'])) {
@@ -249,6 +282,25 @@ class Collection {
     return $ftree;
 	}
 
+  private function saveCollectionLogoFile($logoUrl) {
+
+    $splitURL =  explode ('.',$logoUrl);
+    $splitURL = array_reverse ($splitURL);
+    $mimeType =strtolower($splitURL[0]);
   
+    $filename = $this->_collectionid.'.'.$mimeType;
+    $dir = constant('BASEPATH').constant('DATAPATH').'/collectionImages';
+    $this->_utils->curlSaveResources($logoUrl, $filename,$dir);
+		$this->_collectionMetadata['logo']=$filename;
+  }
+  
+   public function getCollectionMetadata() {
+    return $this->_collectionMetadata;
+  }
+  
+  public function getItems (){
+    return  $_items;
+    
+  }
 }
 

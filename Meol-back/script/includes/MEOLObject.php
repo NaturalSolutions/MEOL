@@ -23,8 +23,10 @@ abstract class ObjectData {
     $desc = $description;
     $desc = str_replace( "\n", '<br/>', $desc);
     $desc = str_replace( "\r", ' ', $desc);
+    $desc = str_replace( "\t", '', $desc);
     //Ajout de br tout les 91 caractères
-    $cleandesc = $this->_utils->addHtmlReturnLine($desc, 91);
+    $cleandesc = $desc;
+    //$cleandesc = $this->_utils->addHtmlReturnLine($desc, 91);
     //$jsonDesc = json_encode($cleandesc, JSON_HEX_QUOT);
     $this->_description = $cleandesc; 
   }
