@@ -1,0 +1,27 @@
+<div class="accordion-heading"  id="div_toogle_taxonPanel" >
+  <a class="accordion-toggle collapse-title" id="toogle_taxonPanel" data-toggle="collapse" data-target="#taxon-panel">
+    <span class= "ui-icon ui-icon-shadow ui-icon-arrow-d"></span>
+    <span class="panel-title"><%= name %></span>
+  </a>
+</div>
+<div id="taxon-panel" class="collapse in">
+  <div>
+    <div id="photoContent" class="clipzone">
+      <img id="taxon" src="data/images_collection/<%= logo %>" width="100" class="clipped"/>
+    </div>
+    <% if ( description ){ %>
+    <div class="accordion-heading"  id="div_toogle_taxonDetail" >
+      <a class="accordion-toggle collapse-title collapsed ui-btn-inner" id="toogle_taxonPanel" data-toggle="collapse" data-target="#collapsibleElementDetail">
+        <span class= "ui-icon ui-icon-shadow ui-icon-moins "></span>
+        <span class="panel-title">Details</span>
+      </a>
+    </div>
+    <div class="collapse" id="collapsibleElementDetail">
+      <div>
+          <p id="desc-Description"><%=description %> </p>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+

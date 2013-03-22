@@ -1,0 +1,80 @@
+  <div class="accordion-heading"  id="div_toogle_taxonPanel" >
+    <a class="accordion-toggle collapse-title" id="toogle_taxonPanel" data-toggle="collapse" data-target="#taxon-panel">
+      <span class= "ui-icon ui-icon-shadow ui-icon-arrow-d"></span>
+      <span class="panel-title"> 
+        <% if(preferredCommonNames) { %> <%=preferredCommonNames%><% } else { %><%=taxonName%><% }%>
+      </span>
+    </a>
+  </div>
+    <div id="taxon-panel" class="collapse in">
+      <div>
+        <% if ( taxonName ){ %>
+          <div id="nameContent"><h2><%= taxonName %></h2></div>
+        <% } %>
+         <% if ( iucnPicture ){ %>
+      <span id="iucnMini"><img id="taxon" src="css/images/iucn/mini/<%= iucnPicture %>"/></span>
+      <% } %>
+   
+
+      <div id="photoContent" class="clipzone">
+        <img id="taxon" src="data/images_taxon/<%= image_fileName %>"/>
+      </div>
+
+      <div id="creditsPhotoContent" ><p class="credits"><%= image_credits %></p> </div>
+        <div class="accordion" id="accordion2">
+          <div class="accordion-group">
+            <div class="accordion-heading"  id="div_toogle_taxonDetail" >
+              <a class="accordion-toggle collapse-title collapsed" id="toogle_taxonPanel" data-toggle="collapse" data-parent="#accordion2" data-target="#collapsibleElementDetail">
+                <span class= "ui-icon ui-icon-shadow ui-icon-plus"></span>
+                <span class="panel-title">Details</span>
+              </a>
+            </div>
+            <div class="collapse" id="collapsibleElementDetail">
+              <div class="ui-collapsible-content">
+                <h3><%= textDesc_title %></h3>
+                <p id="desc-Description"><%= textDesc_description %> </p>
+                <p id="desc-credits" class="credits"><%= textDesc_credits %> </p>
+              </div>
+            </div>
+           </div>
+      <div class="accordion-group">
+       <div class="accordion-heading"  id="div_toogle_taxonClassification" >
+          <a class="accordion-toggle collapse-title collapsed" id="toogle_taxonPanel" data-toggle="collapse" data-parent="#accordion2" data-target="#collapsibleElementClassification">
+            <span class= "ui-icon ui-icon-shadow ui-icon-plus"></span>
+            <span class="panel-title">Classification</span>
+          </a>
+        </div>
+        <div class="collapse" id="collapsibleElementClassification">
+          <div id="desc-Classification">
+          <ul>
+          <% var i=0; 
+            _.each(flat, function(level) { %> 
+            <li style="margin-left: <%= i %>%;"><%= level.scientificName %><% i = i+1; %></li>
+          <% }); %>
+          </ul>
+          </div>
+        </div>
+    </div>
+      <% if ( iucnStatus ){ %>
+      <div class="accordion-group">
+        <div class="accordion-heading"  id="div_toogle_taxonIUCN" >
+          <a class="accordion-toggle collapse-title collapsed" id="toogle_taxonPanel" data-toggle="collapse" data-parent="#accordion2" data-target="#collapsibleElementUICN">
+            <span class= "ui-icon ui-icon-shadow ui-icon-plus"></span> 
+            <span class="panel-title">IUCN</span>
+          </a>
+        </div>
+        <div class="collapse" id="collapsibleElementUICN">
+          <div>
+            <p id="desc-uicn"><p><%= iucnStatus %></p><img id="taxon" src="css/images/iucn/<%= iucnPicture %>"/></p>
+          </div>
+        </div>
+      </div>
+      <% } %>
+          <% if ( pageid ) {%>
+          <div>
+            <p class="credits">External link EOL : <a class='ui-link' href="http://eol.org/pages/<%= pageid %>" alt="more details on eol.org" target="_blank"><%= taxonName %></a></p>
+          </div>
+      <%}%>
+    </div>
+  </div>
+</div>

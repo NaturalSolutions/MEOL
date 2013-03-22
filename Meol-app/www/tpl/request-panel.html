@@ -1,0 +1,20 @@
+<% var i=0; 
+  _.each(obj, function(item) { %> 
+    <div class="playableTaxon span3 clearfix gradientGrey" id="item-<%= item.Titem_PK_Id %>">
+      <img src="data/images_taxon/<%= item.filename %>" id="clickImg<%= item.Titem_PK_Id %>" class="img-rounded"/>
+      <% if ( item.preferredCommonNames ){ %>
+            <h3><%= item.preferredCommonNames %></h3>
+      <% } %>
+      
+      <div class="playableTaxonHidden">
+        <% if ( item.taxonName ){ %>
+            <h4><em><%= item.taxonName %></em></h4>
+        <% } %>
+        
+        <% if ( item.taxonConceptId >0 ){ %>
+          <button id="detailTaxon-<%= i %>" class="playableTaxonDetail btn">Detail</button>
+        <% } %>
+        <button href="#myModal" id="validate-<%= i %>" role="button" class="btn-primary playableTaxonValidate" data-toggle="modal">I am here!</button>
+      </div>
+    </div>
+<% i = i+1; }); %>
