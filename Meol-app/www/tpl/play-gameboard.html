@@ -12,7 +12,7 @@
 </div>
 
 <div id="gamePanel">
-  <div class="collectionName"><h1><%= name %></h1></div>
+  <div class="collectionName"><h1><%= gallery.name %></h1></div>
 
 
 <div class="modal hide" id="myModal" data-backdrop="false">
@@ -32,12 +32,12 @@
 
 <div id="map" class=""></div>
 <div id="scorePanel">
-  <div id="iconUser"></div>
+  <a id="iconUser" href="#profil/<%= profil.Tprofil_PK_Id %>"></a>
   <input id="scoreValue" type="hidden" value = "0"/>
   <span id ="scoreText">0</span>
 </div>
 <div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div>
-<div><button id="selectRandomTaxon" class="pull-right hidden playRandom" data-dismiss="modal"></button></div>
+<div><button id="selectRandomTaxon" class="pull-right hidden playRandom" ></button></div>
 <div class="">
   <div class="">
     <div id="requestPanel" class="hidden gradientDarkBlue">
@@ -51,8 +51,8 @@
 </div>
 
 <div id="gameDetailPanel" class="hidden">
+  <button id="returnToGame" style="margin-left: 250px;" class="btn-primary">Back to game</button>
   <div id="graph-panel"></div>
-  <button id="returnToGame" class="btn-primary">Back to game</button>
 </div>
 <script>
   

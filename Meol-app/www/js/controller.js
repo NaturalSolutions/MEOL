@@ -14,6 +14,7 @@ directory.Router = Backbone.Router.extend({
       //"play" : "playPageDisplay",
       "play" : "playListGallery",
       "play/:galleryId" : "playGameboardDisplay",
+      "profil/:profilId" : "profilDisplay",
       //"taxon/:taxonConceptId": "taxonDetails",
   },
 
@@ -64,20 +65,23 @@ directory.Router = Backbone.Router.extend({
 
   home: function(){
     if (typeof (this.homePage) === 'undefined') this.homePage = new directory.views.HomeView();
-    this.homePage.render();
-    this.displayView(this.homePage);
+    this.displayView(homePage);
   },
 
   searchtaxon: function() {
       var self = this;
       this.searchResults = new directory.models.TaxonCollection();
-      this.currentView = new directory.views.SearchPage({model: this.searchResults});
-      this.currentView.render();
-      this.displayView(this.currentView);
+      var currentView = new directory.views.SearchPage({model: this.searchResults});
+      this.displayView(currentView);
   },
   
   displayView : function (view) {
-    //if (this.currentView) this.currentView.close();
+    if (this.currentView) {
+      var r = this.currentView.close();
+       if (r == false) return false;
+    }
+    view.render();
+    this.currentView = view;
     this.pageHistory = [window.location.hash];
     $('#content').empty();
     $('#content').append(view.el);
@@ -86,17 +90,15 @@ directory.Router = Backbone.Router.extend({
                                        
   galleryDisplay: function() {
       var galleryListResults = new directory.models.GalleriesCollection();
-      this.currentView = new directory.views.GalleryListView({model: galleryListResults});
-      this.currentView.render();
-      this.displayView(this.currentView);
+      var currentView = new directory.views.GalleryListView({model: galleryListResults});
+      this.displayView(currentView);
   },
   
   //TODO voir si models peut etre celui de GalleriesCollection
   playListGallery: function() {
       var playListGalleryResults = new directory.models.GalleriesCollection();
-      this.currentView = new directory.views.playListGalleryView({model: playListGalleryResults});
-      this.currentView.render();
-      this.displayView(this.currentView);
+      var currentView = new directory.views.playListGalleryView({collection: playListGalleryResults});
+      this.displayView(currentView);
   },
 
   playGameboardDisplay : function(id) {
@@ -108,10 +110,9 @@ directory.Router = Backbone.Router.extend({
     //if (typeof(this.gameView) !== 'undefined') this.gameView.destroy_view();
     gallery.fetch({
       success: function(data) {
-            self.currentView = new directory.views.playGameboardView({model: data});
-            self.currentView.currentProfil= self.currentProfil;
-            self.currentView.render();
-            self.displayView(self.currentView);
+            var currentView = new directory.views.playGameboardView({model: data, currentProfil : self.currentProfil});
+            //self.currentView.currentProfil= ;
+            self.displayView(currentView);
             //$(self.gameView.el).attr('id', 'play-gameboard');
             //self.slidePage(self.gameView);
       }
@@ -123,14 +124,23 @@ directory.Router = Backbone.Router.extend({
       var gallery = new directory.models.Gallery({id:id, collectionid: id});
       gallery.fetch({
           success: function(data) {
-            self.currentView = new directory.views.GalleryDetailView({model: data});
+            var currentView = new directory.views.GalleryDetailView({model: data});
             //this.galleryListView = new directory.views.GalleryListView();
-            self.currentView.render();
-            self.displayView(self.currentView);
+            self.displayView(currentView);
             
           }
       });
   },
 
+  profilDisplay: function(id) {
+      var self = this;
+      var profil = new directory.models.Profil({Tprofil_PK_Id:id});
+      profil.fetch({
+          success: function(data) {
+            var currentView = new directory.views.ProfilDetailView({model: data});
+            self.displayView(currentView);
+          }
+      });
+  },
 
 });

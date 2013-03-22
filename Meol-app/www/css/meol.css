@@ -776,10 +776,11 @@ div.gameTrueSelectedItem{
 }
 
 /***------------------------------Score----------------------------***/
-div#iconUser{
+a#iconUser{
   background-image: url(images/play/MEOL_icon-user.png);
   width: 100px;
   height: 100px;
+  display:block;
 }
 #scoreText{
   color: #B9DE00;

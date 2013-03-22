@@ -13,7 +13,6 @@
 Backbone.sync = function(method, model, options) {
   var dao = new model.dao(directory.db);
 
-
   if (method === "read") {
       if (model.attributes) {
         if ( (model.attributes.taxonConceptId)) {
@@ -73,8 +72,8 @@ directory.dao.TaxonDAO = function(db) {
     this.db = db;
 };
 
-directory.dao.GalleryDAO = function() {
-    this.db = directory.db;
+directory.dao.GalleryDAO = function(db) {
+    this.db = db;
 };
 
 directory.dao.ItemDAO = function(db) {
@@ -415,7 +414,6 @@ directory.dao.ScoreDAO.prototype, {
             function(tx) {
                 var sql = 'INSERT INTO  Tscore (fk_profil , gameDate , nbQuestionTotal) ' +
                           ' VALUES (?, ?, ?) ';
-
                 tx.executeSql(sql, [model.get('fk_profil'), model.get('gameDate'), model.get('nbQuestionTotal')]);
             },
             function(tx, error) {
@@ -425,6 +423,28 @@ directory.dao.ScoreDAO.prototype, {
         );
     },
 
+    findAllScoreByProfilId: function(key, callback) {
+        this.db.transaction(
+            function(tx) {
+                var sql = 'SELECT * FROM  Tscore ' +
+                          ' WHERE fk_profil = ?';
+                tx.executeSql(sql, [key], function(tx, results) {
+                    var len = results.rows.length,
+                        score = [],
+                        i = 0;
+                    for (; i < len; i = i + 1) {
+                        score[i] = results.rows.item(i);
+                    }
+                    callback(score);
+                });
+            },
+            function(tx, error) {
+                console.log(tx);
+                alert("Transaction Error: " + error);
+            }
+        );
+    },
+    
     
     // Populate Taxon table with sample data
     populate: function(callback) {

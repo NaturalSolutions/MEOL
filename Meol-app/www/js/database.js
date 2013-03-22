@@ -55,7 +55,7 @@ console.log('loadTaxaFile');
   return dfd.promise();
 }
  
- //************************************** Collections
+ //************************************** Gallery
 function loadGalleryFile(db){	
 console.log('loadGalleryFile');			
  var dfd = $.Deferred();
@@ -120,66 +120,4 @@ function failureWrapper(d) {
         d.reject(error)
     })
 };
-    /*
 
-function runQueryWithoutParameters(query){
-  //console.log(query);
-	return $.Deferred(function(dfd) {
-    directory.db.transaction (function (trxn) {
-      trxn.executeSql(
-        query, //requete à executer
-        []  // parametres de la requete
-      )},
-      function (transaction, error){  //error callback
-        dfd.reject(arguments);
-      },
-      function (transaction, resultSet){  //success callback
-        //console.log('query resolved!');
-        dfd.resolve(arguments);
-      }
-    );
-  }).done(function(transaction, resultSet) {
-    console.log('success');
-  }).reject(function(transaction, error) {
-    console.log('error');
-    console.log(error);
-  }).promise();
-}
-
-
-function getItems(db, query, queryCallback){
-	db.transaction(function(tx){
-				tx.executeSql(query,[], queryCallback);
-	});
-}
-
-function runQueryWithParameters(query, parametres){
-  console.log('hgjhgvkjhgjh');
-  var dfd = $.Deferred(function(dfd) {
-    directory.db.transaction (function (trxn) {
-      trxn.executeSql(
-        query, //requete à executer
-        parametres, // parametres de la requete
-        function (transaction, resultSet){  //success callback
-          console.log('query with params resolved!');
-          dfd.resolve(arguments);
-        },
-        function (transaction, error){  //error callback
-          dfd.reject(arguments);
-        }
-      )}
-    );
-  });
-  dfd.resolve(function() {
-    //console.log('dfd resolve ');
-  });
-  dfd.done(function() {
-    //console.log('dfd done ');
-  });
-  dfd.reject(function() {
-    //console.log('dfd reject ');
-    console.log(error);
-  });
-  return dfd.promise();
-}
-*/

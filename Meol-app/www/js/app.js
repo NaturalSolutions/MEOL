@@ -25,8 +25,9 @@ function init(){
   
   $("body").addClass("ui-disabled");
   $("body").append("<img id='dataloader-img' src='css/images/ajax-loader.gif'/>");
+  
   initDB();
-  directory.utils.templateLoader.load(['d3-graph-panel', 'request-panel','gallery-taxon-list', 'gallery-panel', 'home-page', 'search-page', 'taxon-panel', 'taxon-list-item', 'gallery-detail','gallery-page', 'gallery-list-item','play-list-gallery','play-gallery', 'play-gameboard']);
+  directory.utils.templateLoader.load(['profil-page','d3-graph-panel', 'request-panel','gallery-taxon-list', 'gallery-panel', 'home-page', 'search-page', 'taxon-panel', 'taxon-list-item', 'gallery-detail','gallery-page', 'gallery-list-item','play-list-gallery','play-gallery', 'play-gameboard']);
 
   $.when.apply(null, deferreds).done(function() {
     console.log ('all deferreds finished');
@@ -68,22 +69,4 @@ function initDB(){
       console.log('Error  test if data are loaded');
       return dfd.resolve();
   });
-
-
-  
- // chargerListeTaxon(directory.db);
- 
-
-  // Initialisation de l'application
- /* var taxonDAO = new directory.dao.TaxonDAO(directory.db);
-  taxonDAO.populate();
-  
-  var galleryDAO = new directory.dao.GalleryDAO(directory.db);
-  galleryDAO.populate();
-  
-  var itemDAO = new directory.dao.ItemDAO(directory.db);
-  itemDAO.populate();
-  
-  var profilDAO = new directory.dao.ProfilDAO(directory.db);
-  profilDAO.populate();*/
 }

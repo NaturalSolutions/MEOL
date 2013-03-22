@@ -68,14 +68,14 @@ directory.models.TaxonCollection = Backbone.Collection.extend({
 
   findByName: function(key) {
      self = this;
-     this.dao.findByName(key, function(data) {
+     new this.dao(directory.db).findByName(key, function(data) {
           self.reset(data);
       });
   },
 
   findAllByCollectionid: function(key) {
      self = this;
-     this.dao.findAllByCollectionid(key, function(data) {
+     new this.dao(directory.db).findAllByCollectionid(key, function(data) {
           self.reset(data);
       });
   }
@@ -194,12 +194,6 @@ directory.models.Profil = Backbone.Model.extend({
   initialize: function() {
   },
   
-  findById: function(key) {
-     self = this;
-     new this.dao(directory.db).findById(key, function(data) {
-          self.reset(data);
-      });
-  },
 });
 
 
@@ -235,9 +229,9 @@ directory.models.Score = Backbone.Model.extend({
   defaults: {
     "fk_profil":null,
     "gameDate" :new Date(),
-    "nbQuestionTotal":null,
-    "nbAnswerGood":null,
-    "nbAnswerGoodSequence":null,
+    "nbQuestionTotal":0,
+    "nbAnswerGood":0,
+    "nbAnswerGoodSequence":0,
     "nbQuestionTotalAfrica":null, 
     "nbQuestionTotalAsia":null, 
     "nbQuestionTotalAntartica":null, 
@@ -267,5 +261,12 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
   dao: directory.dao.ScoreDAO,
   
   initialize: function() {
+  },
+  
+  findAllScoreByProfilId : function (id) {
+     self = this;
+     new this.dao(directory.db).findAllScoreByProfilId(id, function(data) {
+          self.reset(data);
+      });
   },
 });

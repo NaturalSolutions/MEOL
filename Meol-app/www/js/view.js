@@ -2,12 +2,16 @@
 
 
 Backbone.View.prototype.close = function () {
-    if (this.beforeClose) {
-        this.beforeClose();
+  if (this.beforeClose) {
+    var r = this.beforeClose();
+    if (r == false ){
+      return false;
     }
-    //this.undelegateEvents();
-    this.remove();
-    this.unbind();
+  }
+  
+  this.undelegateEvents();
+  this.remove();
+  this.unbind();
 };
 
 // -------------------------------------------------- The Views ---------------------------------------------------- //
@@ -34,7 +38,7 @@ directory.views.SearchPage = Backbone.View.extend({
     tagName:'div',
     id : 'searchPage',
     templateLoader: directory.utils.templateLoader,
-    TaxonsListView: directory.views.TaxonsListView,
+    taxonsListView: directory.views.TaxonsListView,
 
     initialize: function() {
         this.model.findByName('Animalia');
@@ -43,7 +47,7 @@ directory.views.SearchPage = Backbone.View.extend({
 
     render: function(eventName) {
         $(this.el).html(this.template(this.model.toJSON()));
-        this.listView = new directory.views.TaxonsListView({el: $('ul', this.el), model: this.model});
+        this.listView = new directory.views.taxonsListView({el: $('ul', this.el), model: this.model});
         this.listView.render();
         return this;
     },
@@ -160,14 +164,14 @@ directory.views.playListGalleryView = Backbone.View.extend({
   templateLoader: directory.utils.templateLoader,
   
   initialize: function() {
-        this.model.findAll();
-        this.model.bind("reset", this.render, this);
-        this.template = _.template(this.templateLoader.get('play-gallery'));
-    },
+    this.collection.findAll();
+    this.collection.bind("reset", this.render, this);
+    this.template = _.template(this.templateLoader.get('play-gallery'));
+  },
 
   render: function(eventName) {
     $(this.el).html(this.template());
-    _.each(this.model.models, function(gallery) {
+    _.each(this.collection.models, function(gallery) {
       console.log(gallery.get('level'));
       $("#play-list-gallery", this.el).append(new directory.views.playListGalleryItemView({model: gallery}).render().el);
     }, this);
@@ -314,7 +318,6 @@ directory.views.RequestPanel = Backbone.View.extend({
    
 });
 
-
 directory.views.GalleryTaxonList = Backbone.View.extend({
     el:'div',
     
@@ -337,6 +340,7 @@ directory.views.GalleryTaxonList = Backbone.View.extend({
 directory.views.playGameboardView = Backbone.View.extend({
   templateLoader: directory.utils.templateLoader,
   itemsCollection : directory.models.ItemsCollection,
+  currentScoreGame : directory.models.Score,
   tagName : 'div',
   id: 'play-gameboard',
                                           
@@ -344,11 +348,14 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.itemsCollection = new directory.models.ItemsCollection();
     var collectionId = this.model.id;
     this.itemsCollection.findAllByCollectionid(collectionId);
+    this.currentProfil = this.options.currentProfil;
+    this.currentScoreGame = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id')});
     this.template = _.template(this.templateLoader.get('play-gameboard'));
+    this.model.bind("change", this.saveScore, this);
   },
   
   render : function() {
-    this.$el.html(this.template(this.model.toJSON()));
+    this.$el.html(this.template( {"gallery": this.model.toJSON(), "profil":this.currentProfil.toJSON()}));
     $('#map', this.$el).load('css/map/map_EOL.svg');
     return this;
   },
@@ -358,7 +365,13 @@ directory.views.playGameboardView = Backbone.View.extend({
     'click #selectRandomTaxon' : 'loadTaxonPlay',
     'change #scoreValue' : 'updateScore',    
     'click #returnToGame' : 'returnToGame',
-
+  },
+  
+  beforeClose : function() {
+   this.saveScore(); 
+   
+    //ajouter Modal avec return false true
+    return true;
   },
   
   returnToGame : function(event){
@@ -393,15 +406,21 @@ directory.views.playGameboardView = Backbone.View.extend({
     $("#myModal").modal('hide');
   },
   
+  saveScore: function () {
+    this.currentScoreGame.save();
+  },
+  
   updateScore: function(event){
     $("#scoreText").html($("#scoreValue").val());
     //Mise à jour de la table des scores
-    var sc = parseInt($("#scoreValue").val());
-    var newScore = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id'),"nbQuestionTotal":sc});
-    newScore.save();
+    var currentsc = this.currentScoreGame.get('nbAnswerGood');
+    this.currentScoreGame.set('nbAnswerGood', currentsc+1);
   },
   
   loadTaxonPlay: function(event){
+    var currentsc = this.currentScoreGame.get('nbQuestionTotal');
+    this.currentScoreGame.set('nbQuestionTotal', currentsc+1);
+    
     //Selection des 3 taxons de façon aléatoire
     var selectedItemsCollection = new directory.models.ItemsCollection();
     var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
@@ -580,7 +599,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
     /*$(".playableTaxonHidden").hide("slow");
     $(".playableTaxon").removeAttr('style');
     $(".playableTaxon").animate({width:"20%",height:"30%" },500);*/
-   
+    $("#myModal").modal('show');
     $(".playableTaxon").not(".gameTrueSelectedItem").children(".playableTaxonHidden").hide(5);
     $(".playableTaxon").not(".gameTrueSelectedItem").removeAttr('style');
     //$(".playableTaxon").not(".gameTrueSelectedItem").animate({width:"20%",height:"30%" },500);
@@ -591,3 +610,23 @@ directory.views.RandomItemListView = Backbone.View.extend({
    //$("#item-"+currentObjectId).removeClass("gameCurrentSelectedItem");
   },
 });
+
+directory.views.ProfilDetailView = Backbone.View.extend({
+  tagName: "div",
+  
+  initialize: function() {
+    this.collection = new directory.models.ScoresCollection();
+    this.template = _.template(directory.utils.templateLoader.get('profil-page'));
+    this.collection.findAllScoreByProfilId(this.model.get('Tprofil_PK_Id'));
+    this.model.bind("reset", this.render, this);
+    this.collection.bind("reset", this.render, this);
+    this.collection.bind("change", this.render, this);
+  },
+
+  render: function(eventName) {
+    //backbone.js View template {collection: this.collection, model:this.model}
+    this.$el.html(this.template({"collection":this.collection.toJSON(), "model":this.model.toJSON()}));
+    return this;
+  },
+});
+
