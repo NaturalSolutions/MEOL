@@ -1,0 +1,25 @@
+<div id='menu-lateral'>
+  <ul>
+  <a href=''><img src='css/images/menu/logo_M-EOL-menu.png'/></a>
+  <li id='lien-discover'><a href='#gallery'></a></li>
+  <li id='lien-play'><a href='#play' class='ui-btn-active ui-state-persist'></a></li>
+  <li id='lien-contribute'><a href='#' class='ui-disabled'></a></li>
+  </ul>
+</div>
+
+<div style="width:250px; margin:auto;">
+  <h1>PROFIL</h1>
+   
+    <h1><%=model.pseudo %></h1>
+    
+    <table>
+<% var i=0; 
+  _.each(collection, function(score) { %> 
+    <tr id="score-<%= score.Tscore_PK_Id %>">
+      <td><%= i %></td>
+      <td><%= score.gameDate %></td>
+      <td><%= score.nbQuestionTotal %></td>
+    </tr>
+<% i = i+1; }); %>
+</table>
+</div>
