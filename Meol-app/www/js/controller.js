@@ -64,8 +64,9 @@ directory.Router = Backbone.Router.extend({
   },
 
   home: function(){
+    
     if (typeof (this.homePage) === 'undefined') this.homePage = new directory.views.HomeView();
-    this.displayView(homePage);
+    this.displayView(this.homePage);
   },
 
   searchtaxon: function() {
@@ -76,6 +77,7 @@ directory.Router = Backbone.Router.extend({
   },
   
   displayView : function (view) {
+    
     if (this.currentView) {
       var r = this.currentView.close();
        if (r == false) return false;
