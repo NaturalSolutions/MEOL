@@ -1,17 +1,30 @@
 "use strict";
 
-
 Backbone.View.prototype.close = function () {
-  if (this.beforeClose) {
-    var r = this.beforeClose();
-    if (r == false ){
-      return false;
-    }
-  }
+  var dfd = $.Deferred();
+  var self = this;
   
-  this.undelegateEvents();
-  this.remove();
-  this.unbind();
+  var dfda = Array();
+  if (this.beforeClose) {
+	dfda.push(this.beforeClose());
+  }
+  else {
+	var dfdl = $.Deferred();
+    dfda.push(dfdl);
+    dfdl.resolve(true);
+  }
+  $.when.apply(null, dfda)
+  .done(function() {
+	self.undelegateEvents();
+	self.remove();
+	self.unbind();
+	dfd.resolve();
+  })
+  .fail(function() {
+	dfd.reject();
+  });
+  return dfd.promise();
+  
 };
 
 // -------------------------------------------------- The Views ---------------------------------------------------- //
@@ -47,7 +60,7 @@ directory.views.SearchPage = Backbone.View.extend({
 
     render: function(eventName) {
         $(this.el).html(this.template(this.model.toJSON()));
-        this.listView = new directory.views.taxonsListView({el: $('ul', this.el), model: this.model});
+        this.listView = new directory.views.TaxonsListView({el: $('ul', this.el), model: this.model});
         this.listView.render();
         return this;
     },
@@ -171,8 +184,9 @@ directory.views.playListGalleryView = Backbone.View.extend({
 
   render: function(eventName) {
     $(this.el).html(this.template());
+	//test filter()
+	//var activeGall = this.collection.models.filter(function(gall) {return gall.get("level") === 1});
     _.each(this.collection.models, function(gallery) {
-      console.log(gallery.get('level'));
       $("#play-list-gallery", this.el).append(new directory.views.playListGalleryItemView({model: gallery}).render().el);
     }, this);
     return this;
@@ -181,6 +195,7 @@ directory.views.playListGalleryView = Backbone.View.extend({
 
 directory.views.playListGalleryItemView = Backbone.View.extend({
   tagName: "li",
+  //className: "ui-disabled" ,
   
   initialize: function() {
     this.template = _.template(directory.utils.templateLoader.get('play-list-gallery'));
@@ -363,16 +378,33 @@ directory.views.playGameboardView = Backbone.View.extend({
   events:{
     'click #selectRandomContinent': 'selectRandomContinent',
     'click #selectRandomTaxon' : 'loadTaxonPlay',
-    'change #scoreValue' : 'updateScore',    
+    'change #meterScore' : 'updateScore',
+	'change #nbAnwserGoodValue' : 'updateNbAnwserGood',
+	'change #nbAnwserGoodSequenceValue' : 'updateNbAnwserGoodSequenceValue',
     'click #returnToGame' : 'returnToGame',
   },
   
-  beforeClose : function() {
-   this.saveScore(); 
-   
-    //ajouter Modal avec return false true
-    return true;
-  },
+  
+ 
+  beforeClose : function getConfirm(){
+	var dfd = $.Deferred();
+	var self = this;
+    $('#confirmbox').modal({show:true,
+                            backdrop:false,
+                            keyboard: false,
+    });
+    $('#confirmMessage').html("yes yes yes");
+    $('#confirmTrue').click(function(){
+		self.saveScore();
+        dfd.resolve(true);
+		$('#confirmbox').modal('hide');
+    });
+    $('#confirmFalse').click(function(){
+        dfd.reject(false);
+		$('#confirmbox').modal('hide');
+    });
+	return dfd.promise();
+  }	,
   
   returnToGame : function(event){
     d3.select("#gameDetailPanel").classed("hidden",true);
@@ -411,16 +443,56 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   updateScore: function(event){
-    $("#scoreText").html($("#scoreValue").val());
-    //Mise à jour de la table des scores
-    var currentsc = this.currentScoreGame.get('nbAnswerGood');
-    this.currentScoreGame.set('nbAnswerGood', currentsc+1);
+	var currentsc = parseInt($("#meterScore").val());
+	
+	//Mise à jour de la table des scores
+    this.currentScoreGame.set('score', currentsc);
   },
   
+  updateNbAnwserGood: function(event){
+	$("#nbAnwserGoodText").html($("#nbAnwserGoodValue").val());
+	 //Mise à jour de la table des scores
+	var currentsc = parseInt($("#nbAnwserGoodValue").val());
+    this.currentScoreGame.set('nbAnswerGood', currentsc);
+  },
+  
+  updateNbAnwserGoodSequenceValue: function(event){
+	$("#nbAnwserGoodSequenceText").html($("#nbAnwserGoodSequenceValue").val());
+	var currentnbAnswerGoodSequence = $("#nbAnwserGoodSequenceValue").val();
+	var currentnbAnswerGoodRecordSequence = $("#nbAnwserGoodSequenceRecordText").text();
+	var bonusFibo = fiboSuite() ;
+	
+	if(currentnbAnswerGoodSequence > currentnbAnswerGoodRecordSequence){
+	  $("#nbAnwserGoodSequenceRecordText").html($("#nbAnwserGoodSequenceValue").val());
+	  var currentNbAnwserGoodSequenceValue = parseInt($("#nbAnwserGoodSequenceValue").val());
+	  var currentFibo = bonusFibo(currentNbAnwserGoodSequenceValue);
+	  if (currentFibo < 2) {
+		currentFibo = 0;
+	  }else{
+		currentFibo *=100;
+	  }
+	  $("#bonusValue").val(currentFibo).trigger('change');
+	  $("#bonus").html($("#bonusValue").val());
+	  //Mise à jour de la table des scores
+	  var currentsc = this.currentScoreGame.get('nbAnswerGoodSequence');
+	  this.currentScoreGame.set('nbAnswerGoodSequence', currentsc+1);
+	}
+	var scoreTaxon = parseInt($("#scoreValue").val());
+	var scoreBonus = parseInt($("#bonusValue").val());
+    $("#scoreText").html(scoreTaxon);
+	var score = scoreTaxon + scoreBonus; 
+	$("#meterScore").val(score).trigger('change');
+	//Modal Bonus
+	if(scoreBonus > 0){
+	$("#bonusMessageModal").html("+"+scoreBonus+" BONUS  points");
+	}
+  },
+  
+  
   loadTaxonPlay: function(event){
-    var currentsc = this.currentScoreGame.get('nbQuestionTotal');
-    this.currentScoreGame.set('nbQuestionTotal', currentsc+1);
-    
+    var currentscnbQuestionTotal = this.currentScoreGame.get('nbQuestionTotal');
+    this.currentScoreGame.set('nbQuestionTotal', currentscnbQuestionTotal+1);
+	
     //Selection des 3 taxons de façon aléatoire
     var selectedItemsCollection = new directory.models.ItemsCollection();
     var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
@@ -525,6 +597,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
   
   validateItem: function(event){
     $("#scoreMessageModal").empty();
+	$("#bonusMessageModal").empty();
     $("#reponseMessageModal").empty();
     $("#myModal h5").remove();
     var target = event.currentTarget.id;
@@ -551,16 +624,24 @@ directory.views.RandomItemListView = Backbone.View.extend({
           //Affiche la ou les bonnes réponses
           $("#item-"+this.model.models[id].attributes.Titem_PK_Id).removeClass("gradientGrey");
           $("#item-"+this.model.models[id].attributes.Titem_PK_Id).addClass("gameTrueSelectedItem");
-          /*$("#item-"+this.model.models[id].attributes.Titem_PK_Id).animate({width:"30%",height:"45%"},500);
-          var cssObj={ 'z-index': '5','position': 'relative','margin': '-20% -10% 20px'}
-          $("#item-"+this.model.models[id].attributes.Titem_PK_Id).css(cssObj);
-          $("#item-"+this.model.models[id].attributes.Titem_PK_Id).children(".playableTaxonHidden").show(5);*/
-
           $("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
         }
       }
     }
-    
+	//Nb total de bonnes réponses possibles à la question
+	var newArray = [];
+	for (var i=0;i<correctItems.length;i++){
+	  if(correctItems[i] == true){
+	  newArray.push(i);	  
+	  }
+	}
+	if(typeof(newArray) !== 'undefined'){
+	  var arrayLength = newArray.length;
+	  //pondération Nb total de bonnes réponses possibles à la question
+	  var weightNbPossibilyties = arrayLength*10;
+	};
+	
+	
     var found = false;
     if ((correctItems[arrayId] == true )  || ((currentObjectId == -1 ) && (existTrueResponse == false))  )  {
       $("#item-"+currentObjectId).removeClass("gradientGrey");
@@ -569,45 +650,46 @@ directory.views.RandomItemListView = Backbone.View.extend({
     }
     
     if (found == false) {
-      /*$("#item-"+currentObjectId).removeClass("gradientGrey");
-      $("#item-"+currentObjectId).addClass("gameFalseSelectedItem");*/
       if (! existTrueResponse) {
         $("#item--1").removeClass("gradientGrey");
         $("#item--1").addClass("gameTrueSelectedItem");
-        /*$("#item--1").animate({width:"30%",height:"45%"},500);
-        var cssObj={ 'z-index': '5','position': 'relative','margin': '-20% -10% 20px'}
-        $("#item--1").css(cssObj);
-        $("#item--1").children(".playableTaxonHidden").show(5);*/
         $("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
       }
       var currentScore = parseInt($("#scoreValue").val());
-      $("#scoreValue").val(currentScore-+0).trigger('change');
-      //Message succes Modal
+      $("#scoreValue").val(currentScore+0).trigger('change');
+	  //nb NbAnwserGood
+	  var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
+      $("#nbAnwserGoodValue").val(currentNbAnwserGood+0).trigger('change');
+	  //nb nbAnwserGoodSequence
+      $("#nbAnwserGoodSequenceValue").val(0).trigger('change');
+      //Message Modal
       $("#txtMessageModal").html("Too bad!");
       
     }
     else {
+		var weightTaxon = this.model.models[id].attributes.weightIucn+this.model.models[id].attributes.weightContinent;
         var currentScore = parseInt($("#scoreValue").val());
-        $("#scoreValue").val(currentScore+100).trigger('change');
+		var currentPonderation = weightTaxon + weightNbPossibilyties;
+        $("#scoreValue").val(currentScore+100-currentPonderation).trigger('change');
+		//nb nbAnwserGood
+		var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
+        $("#nbAnwserGoodValue").val(currentNbAnwserGood+1).trigger('change');
+		//nb nbAnwserGoodSequence
+		var currentNbAnwserGood = parseInt($("#nbAnwserGoodSequenceValue").val());
+        $("#nbAnwserGoodSequenceValue").val(currentNbAnwserGood+1).trigger('change');
+		
 	//Message succes Modal
 	$("#txtMessageModal").html("Well Done!");
-	$("#scoreMessageModal").html("+100 points");
+	$("#scoreMessageModal").html(100-currentPonderation+" points");
     }
     
     d3.select("#selectRandomContinent").classed("hidden",false);
-    //réduction des autres éléments
-    /*$(".playableTaxonHidden").hide("slow");
-    $(".playableTaxon").removeAttr('style');
-    $(".playableTaxon").animate({width:"20%",height:"30%" },500);*/
     $("#myModal").modal('show');
     $(".playableTaxon").not(".gameTrueSelectedItem").children(".playableTaxonHidden").hide(5);
     $(".playableTaxon").not(".gameTrueSelectedItem").removeAttr('style');
-    //$(".playableTaxon").not(".gameTrueSelectedItem").animate({width:"20%",height:"30%" },500);
-    //$(".gameCurrentSelectedItem").children(".playableTaxonHidden").hide(5);
     
     //désactive les événements pour que le joueur ne puisse pas rejouer
     $(".playableTaxonValidate").remove();
-   //$("#item-"+currentObjectId).removeClass("gameCurrentSelectedItem");
   },
 });
 
@@ -629,4 +711,3 @@ directory.views.ProfilDetailView = Backbone.View.extend({
     return this;
   },
 });
-

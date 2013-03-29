@@ -11,7 +11,6 @@ directory.Router = Backbone.Router.extend({
       "searchtaxon": "searchtaxon",
       "gallery": "galleryDisplay",
       "gallery/:galleryId": "galleryDetailDisplay",
-      //"play" : "playPageDisplay",
       "play" : "playListGallery",
       "play/:galleryId" : "playGameboardDisplay",
       "profil/:profilId" : "profilDisplay",
@@ -53,6 +52,14 @@ directory.Router = Backbone.Router.extend({
       
      this.currentProfil = new directory.models.Profil({Tprofil_PK_Id:1});
      this.currentProfil.fetch();
+     /* TODO catch before roote change event
+       
+     this.bind("route",function(route, router) {
+        console.log("Different Page: " + route);
+        if (self.pageHistory !== 'undefined') {
+          self.navigate(self.pageHistory[0]);
+        }
+    });*/
   },
 
   selectItem: function(event) {
@@ -77,18 +84,29 @@ directory.Router = Backbone.Router.extend({
   },
   
   displayView : function (view) {
-    
+    var self = this;
+    var dfda = Array();
     if (this.currentView) {
-      var r = this.currentView.close();
-       if (r == false) return false;
+      dfda.push(this.currentView.close());
     }
-    view.render();
-    this.currentView = view;
-    this.pageHistory = [window.location.hash];
-    $('#content').empty();
-    $('#content').append(view.el);
-    if(view.onAddToDom) view.onAddToDom();
-  },
+    else {
+      var dfdl = $.Deferred();
+      dfda.push(dfdl);
+      dfdl.resolve(true);
+    }
+    $.when.apply(null, dfda)
+      .done(function() {
+        view.render();
+        self.currentView = view;
+        self.pageHistory = [window.location.hash];
+        $('#content').empty();
+        $('#content').append(view.el);
+        if(view.onAddToDom) view.onAddToDom();
+      })
+      .fail(function() {
+        self.navigate(self.pageHistory[0]);  
+      });
+    },
                                        
   galleryDisplay: function() {
       var galleryListResults = new directory.models.GalleriesCollection();
@@ -96,7 +114,6 @@ directory.Router = Backbone.Router.extend({
       this.displayView(currentView);
   },
   
-  //TODO voir si models peut etre celui de GalleriesCollection
   playListGallery: function() {
       var playListGalleryResults = new directory.models.GalleriesCollection();
       var currentView = new directory.views.playListGalleryView({collection: playListGalleryResults});
@@ -136,6 +153,7 @@ directory.Router = Backbone.Router.extend({
 
   profilDisplay: function(id) {
       var self = this;
+     
       var profil = new directory.models.Profil({Tprofil_PK_Id:id});
       profil.fetch({
           success: function(data) {

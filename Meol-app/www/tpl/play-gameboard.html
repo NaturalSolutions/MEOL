@@ -8,6 +8,7 @@
   <li id='lien-discover'><a href='#gallery'></a></li>
   <li id='lien-play'><a href='#play' class='ui-btn-active ui-state-persist'></a></li>
   <li id='lien-contribute'><a href='#' class='ui-disabled'></a></li>
+  <li id='lien-profil'><a href="#profil/<%= profil.Tprofil_PK_Id %>"></a></li>
   </ul>
 </div>
 
@@ -20,7 +21,8 @@
     <h3><em id="txtMessageModal"></em></h3>
   </div>
   <div class="modal-body">
-    <h4 id="scoreMessageModal"></h4> 
+    <h4 id="scoreMessageModal"></h4>
+    <h4 id='bonusMessageModal'></h4>
     <ul id="reponseMessageModal"></ul>
   </div>
   <div class="modal-footer gradientDarkBlue">
@@ -28,13 +30,39 @@
   </div>
 </div>
 
+<div class="modal hide" id="confirmbox" data-backdrop="false">
+  <div class="modal-header gradientDarkBlue">
+  </div>
+  <div class="modal-body">
+    <p id="confirmMessage">Any confirmation message?</p>
+  </div>
+  <div class="modal-footer gradientDarkBlue">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="btn" id="confirmTrue">Validate</button>
+    <button type="button" data-dismiss="modal" aria-hidden="false" class="btn" id="confirmFalse">Cancel</button>
+  </div>
+</div>
+
 
 
 <div id="map" class=""></div>
 <div id="scorePanel">
-  <a id="iconUser" href="#profil/<%= profil.Tprofil_PK_Id %>"></a>
+  <div id="iconUser" ></div>
+  <h2>Player 1</h2>
+  <meter id="meterScore" min="0" max="500" value="0"></meter>
   <input id="scoreValue" type="hidden" value = "0"/>
-  <span id ="scoreText">0</span>
+  <label>Score</label>
+  <span id ="scoreText" class="scoreSpan">0</span>
+  <label>BONUS</label>
+  <input id="bonusValue" type="hidden" value = "0"/>
+  <span id ="bonus" class="scoreSpan">0</span>
+  <input id="nbAnwserGoodValue" type="hidden" value = "0"/>
+  <!--<span id ="nbAnwserGoodText" class="scoreSpan">0</span>-->
+  <label>Sequence</label>
+  <input id="nbAnwserGoodSequenceRecordValue" type="hidden" value = "0"/>
+  <input id="nbAnwserGoodSequenceValue" type="hidden" value = "0"/>
+  <span class="scoreSpan">
+    <span id ="nbAnwserGoodSequenceText">0</span><span> / </span><span id ="nbAnwserGoodSequenceRecordText">0</span>
+  </span>
 </div>
 <div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div>
 <div><button id="selectRandomTaxon" class="pull-right hidden playRandom" ></button></div>
@@ -51,7 +79,7 @@
 </div>
 
 <div id="gameDetailPanel" class="hidden">
-  <button id="returnToGame" style="margin-left: 250px;" class="btn-primary">Back to game</button>
+  <button id="returnToGame" class="btn-primary">Back to game</button>
   <div id="graph-panel"></div>
 </div>
 <script>

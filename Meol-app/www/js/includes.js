@@ -11,7 +11,8 @@ head.js(
 "libs/d3.js",
 "libs/d3.geom.js",
 "libs/d3.layout.js",
-"libs/bootstrap.min.js"
+"libs/bootstrap.min.js",
+"libs/bootbox.js"
 );
 
 // integration du code de l'appli

@@ -51,6 +51,9 @@ body {
   background: #0A0F13;
   font-family:helvetica;
 }
+label{
+  color:#B9DE00;
+}
 
 circle.expand-icon-circle {
   fill:#344551;
@@ -346,7 +349,7 @@ input[type="radio"]{
   padding-left: 10px;
 }
 /* Lien menu lateral */
-#lien-discover a,#lien-play a,#lien-contribute a{
+#lien-discover a,#lien-play a,#lien-contribute a, #lien-profil a{
   background-position:center center;
   background-repeat:no-repeat;
   float: left;
@@ -367,6 +370,9 @@ input[type="radio"]{
 #lien-contribute a{
   background-image:url(images/menu/icon-menu-contribute.png);
 }
+#lien-profil a{
+  background-image:url(images/menu/icon-menu-profil.png);
+}
 #lien-discover a.ui-btn-active {
   border: none;
   background:transparent;
@@ -376,6 +382,11 @@ input[type="radio"]{
   border: none;
   background:transparent;
   background-image:url(images/menu/icon-menu-play-hover.png);
+}
+#lien-profil a.ui-btn-active {
+  border: none;
+  background:transparent;
+  background-image:url(images/menu/icon-menu-profil-hover.png);
 }
 
 .container{
@@ -776,13 +787,16 @@ div.gameTrueSelectedItem{
 }
 
 /***------------------------------Score----------------------------***/
-a#iconUser{
+div#iconUser{
   background-image: url(images/play/MEOL_icon-user.png);
   width: 100px;
   height: 100px;
-  display:block;
 }
-#scoreText{
+
+#scorePanel label{
+  margin-bottom:0px;
+}
+.scoreSpan{
   color: #B9DE00;
   font-size:1.2em;
   height: 20px;
@@ -793,7 +807,6 @@ a#iconUser{
   vertical-align: middle;
   text-align: right;
   padding: 5px;
-  margin-top: 10px;
 }
 #scorePanel{
   position:fixed;
@@ -801,6 +814,19 @@ a#iconUser{
   right:0;
   margin-right:10px;
 }
+#meterScore{
+  width:100px;
+}
+
+/***************/
+/* Profil page*/ 
+/*************/
+#profilPage{
+  width:250px;
+  margin:auto;
+}
+
+
 /***----------------Surcharge des accordeons de bootrap twitter-----------------------*/
 
 .accordion-heading a {

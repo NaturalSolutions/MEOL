@@ -14,7 +14,7 @@ function initializeDB(db){
       deferreds.push(runQuery(query , []));
        // creer la table items
       query = 'CREATE TABLE IF NOT EXISTS Titems (Titem_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-        + 'fk_collectionid INTEGER, object_id INTEGER, pageid INTEGER, type  NVARCHAR(20), taxonConceptId INTEGER, taxonName  NVARCHAR(200),  preferredCommonNames  NVARCHAR(200), iNat  NVARCHAR(200), title  NVARCHAR(200), filename  NVARCHAR(200))';
+        + 'fk_collectionid INTEGER, object_id INTEGER, pageid INTEGER, weightIucn INTEGER, weightContinent INTEGER, type  NVARCHAR(20), taxonConceptId INTEGER, taxonName  NVARCHAR(200),  preferredCommonNames  NVARCHAR(200), iNat  NVARCHAR(200), title  NVARCHAR(200), filename  NVARCHAR(200))';
       deferreds.push(runQuery(query , []));
        // creer la table profil et score
       query = 'CREATE TABLE IF NOT EXISTS Tprofil (Tprofil_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
@@ -22,7 +22,7 @@ function initializeDB(db){
       deferreds.push(runQuery(query , []));
 
       query = 'CREATE TABLE IF NOT EXISTS Tscore (Tscore_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-        + 'fk_profil INTEGER, gameDate DATETIME, nbQuestionTotal INTEGER, nbAnswerGood INTEGER, nbAnswerGoodSequence INTEGER, '
+        + 'fk_profil INTEGER, gameDate DATETIME, nbQuestionTotal INTEGER, nbAnswerGood INTEGER, nbAnswerGoodSequence INTEGER, score INTEGER'
         + 'nbQuestionTotalAfrica INTEGER ,nbQuestionTotalAsia INTEGER ,nbQuestionTotalAntartica INTEGER ,nbQuestionTotalEurope INTEGER ,nbQuestionTotalOceania INTEGER ,nbQuestionTotalAmericaNorth INTEGER ,nbQuestionTotalAmericaSouth INTEGER,'
         + 'nbAnswerGoodAfrica INTEGER ,nbAnswerGoodAsia INTEGER ,nbAnswerGoodAntartica INTEGER ,nbAnswerGoodEurope INTEGER ,nbAnswerGoodOceania INTEGER ,nbAnswerGoodAmericaNorth INTEGER ,nbAnswerGoodAmericaSouth INTEGER )';
       deferreds.push(runQuery(query , []));
@@ -62,7 +62,7 @@ console.log('loadGalleryFile');
   var arr = [];
   $.getJSON('data/collection_metadata.json', function(json) {
       $.each(json, function(galleryid, gal) {
-        var query = "Insert into  Tgallery (collectionid, name,  description, logo, level) values(?,?,?,?, ?)";
+        var query = "Insert into  Tgallery (collectionid, name,  description, logo, level) values(?,?,?,?,?)";
         var param = [galleryid , gal.name , gal.description, gal.logo, gal.level];
         arr.push(runQuery(query , param) ); 
       });
@@ -82,8 +82,8 @@ console.log('loadItemsFile');
   var arr = [];
   $.getJSON('data/items.json', function(json) {
       $.each(json, function(itemid, it) {
-        var query = "Insert into  Titems (fk_collectionid, object_id, pageid, type, taxonConceptId, taxonName, preferredCommonNames, iNat, title, filename) values(?,?,?,?,?,?,?,?,?,?)";
-        var param = [it.fk_collection , it.pageid , it.pageid, it.type, it.taxonConceptId, it.taxonName, it.common_name , it.iNat , it.title, it.filename];
+        var query = "Insert into  Titems (fk_collectionid, object_id, pageid, weightIucn, weightContinent,type, taxonConceptId, taxonName, preferredCommonNames, iNat, title, filename) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+        var param = [it.fk_collection , it.pageid , it.pageid, it.weightIucn, it.weightContinent, it.type, it.taxonConceptId, it.taxonName, it.common_name , it.iNat , it.title, it.filename];
         arr.push(runQuery(query , param) ); 
       });
       $.when.apply(this, arr).then(function () {

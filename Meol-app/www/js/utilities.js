@@ -25,3 +25,16 @@ directory.utils.templateLoader = {
     }
 
 };
+
+// Le but: f(0) = 0 , f(1)= 1  et f(n)= f(n-1)+f(n-2) ;
+
+var fiboSuite = function(){
+   var memo =[0,1] ; // variable cloturée = inaccessible hors de la fonction.
+   var fibo = function(n){
+                      if(n<2) return n ;
+                      if(memo[n]) return memo[n];
+                      memo[n]= fibo(n-1) + fibo(n-2) ;
+                      return memo[n] ;
+   }
+   return fibo ;
+}

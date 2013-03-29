@@ -245,7 +245,7 @@ directory.dao.GalleryDAO.prototype, {
     findAll: function(callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT collectionid , name, description, logo " +
+                var sql = "SELECT collectionid , name, description, logo,level " +
                     "FROM Tgallery ";
              
                 tx.executeSql(sql,[], function(tx, results) {
@@ -412,9 +412,9 @@ directory.dao.ScoreDAO.prototype, {
     create: function(model, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = 'INSERT INTO  Tscore (fk_profil , gameDate , nbQuestionTotal) ' +
-                          ' VALUES (?, ?, ?) ';
-                tx.executeSql(sql, [model.get('fk_profil'), model.get('gameDate'), model.get('nbQuestionTotal')]);
+                var sql = 'INSERT INTO  Tscore (fk_profil , gameDate , nbQuestionTotal, nbAnswerGood, nbAnswerGoodSequence, score) ' +
+                          ' VALUES (?, ?, ?, ?, ?, ?) ';
+                tx.executeSql(sql, [model.get('fk_profil'), model.get('gameDate'), model.get('nbQuestionTotal'), model.get('nbAnswerGood'),model.get('nbAnswerGoodSequence'),model.get('score')]);
             },
             function(tx, error) {
                 console.log(tx);
