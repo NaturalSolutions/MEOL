@@ -5,8 +5,14 @@ Extract data for all eol selected collection.
 For each collection : 
  - Extract taxon detail
  - Build the unified hierarchy
- - Create an archive with all data : 
-   - CollectionID/
-        - Images/
+ - Extract Inaturalist Data
+ - Create a directory with all data : 
+   - Data/
+        - images/
+        - images_formated/
+        - collectionImages/
+        - hierarchies/
+         - 1 file per collection 
         - detail_Taxon.json
-        - hierarchy.json
+        - collection_metadata.json
+        - items.json
