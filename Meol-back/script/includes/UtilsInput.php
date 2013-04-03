@@ -11,6 +11,7 @@ class Utils {
 	 *******************************************
 	 *******************************************/
 	public function curlSaveResources($url, $fileName, $folder='images', $overide=false) {
+    print $folder.'----'.$url."\n";
     $foldUnit = explode('/',$folder);
     $fold='/';
     foreach ($foldUnit as $unit) {
@@ -31,6 +32,23 @@ class Utils {
 		fclose($fp);
     return 1;
 	}
+
+ 
+	/******************************************
+	 ******************************************
+	 * Fonction qui permet d'enregistrer un fichier
+	 *******************************************
+	 *******************************************/
+	public function sendQuery($sql) {
+    // on se connecte à MySQL
+    $db  = mysql_connect('localhost', 'root', '!sql2010');
+    // on sélectionne la base
+    mysql_select_db('Meol-Data',$db);
+     // on envoie la requête
+    $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
+    mysql_close();
+	}
+
 
 
 	/******************************************

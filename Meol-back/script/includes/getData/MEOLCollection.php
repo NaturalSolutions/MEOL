@@ -12,16 +12,20 @@ class Collection {
 	private $_nonTerminalTaxa;
 	private $_taxons;
 	private $_unifiedHierarchy;
+	private $_d3jsHierarchy;
   private $_collectionMetadata;
-	
+  private $_level;
+  	
 	private $_utils;
-  
+
+
 	public function __construct($collectionid) {
     $this->_utils = new Utils();
 		$this->_taxons=array();
 		$this->_items=array();
 		$this->_nonTerminalTaxa=array();
 		$this->_collectionid=$collectionid;
+    
     //Récupération des données de la collection
     $collectionWS = file_get_contents('http://eol.org/api/collections/1.0/'.$collectionid.'.json');
     //print 'http://eol.org/api/collections/1.0/'.$collectionid.'.json'."\n";
@@ -33,11 +37,30 @@ class Collection {
     //Détermine si la collection est de type taxon ou photo
     $coltype = $this->determineCollectionType($collectionData->item_types);
     $this->buildCollectionItem($collectionData->collection_items);
+    $hier = $this->buildUnifiedHierarchy();
 
-   // $this->setCollectionid($collectionid);
+    $this->save2BD($coltype);
+
   }
-
-
+  
+  private function save2BD($coltype){ 
+    //Insertion en base de la collection
+    $db  = mysql_connect('localhost', 'root', '!sql2010');
+    // on sélectionne la base
+    mysql_select_db('Meol-Data',$db);
+    $sql = 'INSERT INTO `Meol-Data`.`Collection` (`id` ,`nom` ,`description` ,`logo` ,`type`, full_hierarchy) VALUES (';
+    $sql .= $this->_collectionid .' , ';
+    $sql .= "'". $this->_collectionMetadata['name'] ."','";
+    $sql .= $this->_collectionMetadata['description']."','";
+    $sql .=$this->_collectionMetadata['logo']."','" .$coltype."' , ";
+    $sql .= "'".mysql_real_escape_string($this->_d3jsHierarchy, $db )."');";
+    
+    $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
+    
+    mysql_close();
+  }
+  
+  
   private function buildCollectionItem($items) {
     print "BUILD COLLECTION item $this->_collectionid \n";
     foreach($items as $item) {
@@ -58,8 +81,8 @@ class Collection {
               $objectData = json_decode($objectWS);
               //Récupération de l'image
               //print 'http://eol.org/api/data_objects/1.0/'.$photoID.'.json'."\n";
-               $dir = constant('BASEPATH').constant('DATAPATH');
-              $image = new ObjectImage($photoID, $dir,'') ;
+              $dir = constant('BASEPATH').constant('DATAPATH');
+              $image = new ObjectImage($this->_collectionid, $photoID, $dir,'', $photoID, 'item') ;
               $collectionItem['Image']= $image;
               //Récupération de l'identifiant du taxon
               $collectionItem['taxonID'] = $objectData->identifier;
@@ -69,6 +92,12 @@ class Collection {
           if ((isset($collectionItem['taxonID'])) && ($collectionItem['taxonID']>0)) {
             $collectionItem['taxon'] = new Taxon($collectionItem['taxonID'],$this->_collectionid);
             $this->_items[$collectionItem['taxonID']] = $collectionItem;
+            
+            //Insertion en base de la collection
+            $sql = 'INSERT INTO `Meol-Data`.`Collection_Items` (`fk_collection`, `fk_taxon`, `object_id`, `fk_image`) VALUES (';
+            $sql .= $this->_collectionid .' , '.$collectionItem['taxonID'].',';
+            $sql .= $item->object_id.','. $item->object_id.')';
+            $this->_utils->sendQuery($sql);
           }
         }
     }
@@ -185,7 +214,8 @@ class Collection {
           }
           else $taxHier[] = $val;
         }
-        $taxon = new Taxon($data['taxonConceptID'], $this->_collectionid, $taxHier);
+        $taxHier = array_reverse($taxHier);
+        $taxon = new Taxon($data['taxonConceptID'], $this->_collectionid, $taxHier, constant('DEFAULT_REFERENTIAL'), 0);
         $this->_nonTerminalTaxa[$data['taxonConceptID']] = $taxon;
       }
 			if ($data['parentNameUsageID'] == 0) {
@@ -201,11 +231,11 @@ class Collection {
     //S'il y a plus qu'une racine
     //=> ajout de la racine cellular organism : 11660866
     if ($nbroot > 1){
-        $taxon = new Taxon(11660866, $this->_collectionid, array());
+        $taxon = new Taxon(11660866, $this->_collectionid, array(), 'NCBI Taxonomy', 0);
         $this->_nonTerminalTaxa[11660866] = $taxon;
         $data =  array(
           'level' => -1,
-          'taxonConceptID' => -1,
+          'taxonConceptID' => 11660866,
           'parentNameUsageID' => -10,
           'name' => 'Cellular organism',
           'type' => 'root',
@@ -218,11 +248,13 @@ class Collection {
     }
     $unifiedHier[$root['id']] = $root;
 		$unifiedHier[$root['id']]['children'] = $this->_recursivUnifiedHierarchy($root['id'], $tabTax, 0);
+
 		$d3jstree = $this->_formatUnifiedHierarchyForD3js($unifiedHier);
     $d3jstree =$d3jstree[0];
+
     $fulltree= (Object) $d3jstree;
-    $jsond3jsftree = json_encode ($fulltree, JSON_HEX_QUOT);
-    return $jsond3jsftree;
+    $this->_d3jsHierarchy = json_encode ($fulltree, JSON_HEX_QUOT);
+    return $this->_d3jsHierarchy;
 	}
 	
 	private function _recursivUnifiedHierarchy($parentNameUsageID, &$tabTax, $level) {
@@ -249,6 +281,8 @@ class Collection {
       $taxonConceptID = $item['taxon']['taxonConceptID'];
       print $key."-----------------".$fdata['name']."\n";
       $taxonID = $key;
+      //Si c'est la racine artificielle
+      if ($taxonID == 0 && $item['depth'] == -1 ) $taxonID = $this->_nonTerminalTaxa[11660866]->getTaxonConceptId();
       if($item['taxon']['type'] == 'leaf') {
         $fdata['terminal'] =true;
         //print_r($item);
@@ -289,13 +323,17 @@ class Collection {
     $mimeType =strtolower($splitURL[0]);
   
     $filename = $this->_collectionid.'.'.$mimeType;
-    $dir = constant('BASEPATH').constant('DATAPATH').'/collectionImages';
+    $dir = constant('BASEPATH').constant('DATAPATH').'/images_collection';
     $this->_utils->curlSaveResources($logoUrl, $filename,$dir);
 		$this->_collectionMetadata['logo']=$filename;
   }
   
-   public function getCollectionMetadata() {
+  public function getCollectionMetadata() {
     return $this->_collectionMetadata;
+  }
+  
+  public function getD3jsHierarchy() {
+    return $this->_d3jsHierarchy;
   }
   
   public function getItems (){

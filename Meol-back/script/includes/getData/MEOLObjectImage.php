@@ -1,6 +1,5 @@
 <?php
 
-require_once('UtilsInput.php');
 require_once('MEOLObject.php');
 
 
@@ -10,7 +9,7 @@ class ObjectImage extends ObjectData {
   private $_fileName; // (String)
   private $_URL; // (String(URL))
   	
-	public function __construct($objectId, $directory, $fileBaseName='') {
+	public function __construct($collectionId, $objectId, $directory, $fileBaseName='', $taxonID, $type='taxon') {
     //Lancement du WS
     $objectWS = file_get_contents('http://eol.org/api/data_objects/1.0/'.$objectId.'.json');
     //print "\n".'http://eol.org/api/data_objects/1.0/'.$objectId.'.json'."\n";
@@ -20,6 +19,7 @@ class ObjectImage extends ObjectData {
     
     parent::setUtils(new Utils());
     parent::setObjectId($objectId);
+    parent::setCollectionId($collectionId);
     //Get metadata
     parent::extractObjectMetadata($objectData);
     //Get Picture
@@ -27,6 +27,7 @@ class ObjectImage extends ObjectData {
     $this->extractObjectPicture($directory.'/images',$fileBaseName, $objectData);
     //Get credit + licence
     parent::extractObjectPrivilege($objectData);
+    $this->save2BD($taxonID, $type);
   }
   
   public function extractObjectPicture($directory,$fileBaseName, $objectData) {
@@ -40,7 +41,7 @@ class ObjectImage extends ObjectData {
       $splitURL = array_reverse ($splitURL);
       $this->_mimeType =strtolower($splitURL[0]);
     }
-    $filename = str_replace(' ', '_',$fileBaseName).'.'.$this->_mimeType;
+    $filename = str_replace(' ', '_',$fileBaseName).'.jpg';
     $util->curlSaveResources($this->_URL, $filename,$directory);
     $this->_fileName =$filename;
   }
@@ -53,6 +54,26 @@ class ObjectImage extends ObjectData {
     $object['URL'] = $this->_URL;
     return $object;
   }
+  
+   public function save2BD($taxonID, $type){
+     
+    $db  = mysql_connect('localhost', 'root', '!sql2010');
+    // on sélectionne la base
+    mysql_select_db('Meol-Data',$db);
+     // on envoie la requête
+    //Insertion en base de la collection
+    $sql = 'INSERT INTO `Object_image` (`objectid`, `identifier`, `title`, `licence`, `rights`, `credit`, `description`, `mimeType`, `filename`, `URL`, `taxonId`, `type`, fk_collection) VALUES (';
+    $sql .= "'".parent::getObjectId()."',"."'".parent::getIdentifier()."',"."'".mysql_real_escape_string(parent::getTitle(), $db )."',";
+    $sql .= "'".mysql_real_escape_string(parent::getLicence(), $db )."',"."'".mysql_real_escape_string(parent::getRights(), $db )."',";
+    $sql .= "'".mysql_real_escape_string(parent::getCredits(), $db )."',"."'".mysql_real_escape_string(parent::getDescription(), $db )."',";
+    $sql .= "'".mysql_real_escape_string($this->_mimeType, $db )."',"."'".mysql_real_escape_string($this->_fileName, $db )."',";
+    $sql .= "'".mysql_real_escape_string($this->_URL, $db )."',";
+    $sql .= "".$taxonID.","."'".$type."', ".parent::getCollectionId().")";
+    //$this->_utils->sendQuery($sql);
+    $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
+    mysql_close();
+  }
+  
   
   /******************************************************
    ******************************************************

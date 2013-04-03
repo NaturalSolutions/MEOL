@@ -1,6 +1,5 @@
 <?php
 
-require_once('UtilsInput.php');
 require_once('MEOLObjectImage.php');
 require_once('MEOLObjectText.php');
 
@@ -16,13 +15,43 @@ class Taxon {
 	private $_iucnStatus;//ObjectText
 	
 	private $_utils;
-	private $_preferedRef = 'Species 2000 & ITIS Catalogue of Life: May 2012';
+	private $_preferedRef;
 	
-	public function __construct($pageid, $collectionId, $flathierachy=0) {
+	public function __construct($pageid, $collectionId, $flathierachy=0, $preferedRef = 'Species 2000 & ITIS Catalogue of Life: April 2013', $terminal=1) {
     $this->_utils = new Utils();
     $this->_collectionid = $collectionId;
+    $this->_preferedRef = $preferedRef;
     $this->setPageid($pageid);
     $this->loadAndExtractTaxonData($flathierachy);
+    $this->save2BD($terminal);
+  }
+  
+  public function save2BD($terminal){
+    // on se connecte à MySQL
+    $db  = mysql_connect('localhost', 'root', '!sql2010');
+    // on sélectionne la base
+    mysql_select_db('Meol-Data',$db);
+    
+    $iucn= '';
+    $textDesc= '';
+    $image= '';
+    if (isset($this->_iucnStatus)) $iucn = $this->_iucnStatus->getObjectId();
+    if (isset($this->_textDesc)) $textDesc = $this->_textDesc->getObjectId();
+    if (isset($this->_image)) $image = $this->_image->getObjectId();
+    
+     // on envoie la requête
+    //Insertion en base de la collection
+    $sql = 'INSERT INTO `Taxon` (`pageid`, `taxonConceptId`, `taxonName` , common_name_prefered, `flathierarchy`, `terminal`, 
+      fk_collection, fk_text, fk_image, fk_iucn) VALUES (';
+    $sql .= $this->_pageid .' , '.$this->_taxonConceptId.','."'".mysql_real_escape_string($this->_taxonName, $db )."',";
+    $sql .= "'".mysql_real_escape_string(json_encode ($this->getPreferedCommonName(), JSON_HEX_QUOT), $db )."',";
+    $sql .= "'".mysql_real_escape_string(json_encode ($this->_flathierarchy, JSON_HEX_QUOT), $db )."',". $terminal.', '.$this->_collectionid;
+    $sql .= ", '".$textDesc."', ";
+    $sql .= "'".$image."', ";
+    $sql .= "'".$iucn."')";
+
+    $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
+    mysql_close();
   }
 
   public function loadAndExtractTaxonData($flatHierarchy) {
@@ -50,19 +79,22 @@ class Taxon {
       $this->_flathierarchy = $flatHierarchy;
     }
     
-    //Récupération des données objet
+    if (! isset($this->_taxonConceptId)){
+      $this->_taxonConceptId= 0;
+    }
+   //Récupération des données objet
     foreach ($pageData->dataObjects as $drow) {
       if (($drow->dataType== 'http://purl.org/dc/dcmitype/Text') && ((isset( $drow->subject) && ( $drow->subject != 'http://rs.tdwg.org/ontology/voc/SPMInfoItems#ConservationStatus')))){
-        $desc =  new ObjectText($drow->identifier) ;
+        $desc =  new ObjectText($this->_collectionid, $drow->identifier, $this->_pageid) ;
         $this->_textDesc =$desc;
       }
       elseif ($drow->dataType== 'http://purl.org/dc/dcmitype/StillImage') {
         $dir = constant('BASEPATH').constant('DATAPATH');
-        $image =  new ObjectImage($drow->identifier, $dir) ;
+        $image =  new ObjectImage($this->_collectionid, $drow->identifier, $dir, '', $this->_pageid) ;
         $this->_image =$image;
       }
       elseif (($drow->dataType== 'http://purl.org/dc/dcmitype/Text') && ((isset( $drow->subject) && ( $drow->subject == 'http://rs.tdwg.org/ontology/voc/SPMInfoItems#ConservationStatus')))){
-        $iucn =  new ObjectText($drow->identifier) ;
+        $iucn =  new ObjectText($this->_collectionid, $drow->identifier, $this->_pageid) ;
         $this->_iucnStatus =$iucn;
       }
     }

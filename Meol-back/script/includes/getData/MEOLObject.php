@@ -1,9 +1,7 @@
 <?php
 
-require_once('UtilsInput.php');
-
-
 abstract class ObjectData {
+  private $_collectionId; //(integer)
   private $_objectId; //(integer)
   private $_identifier; //(String)
   private $_title; //(String)
@@ -98,6 +96,9 @@ abstract class ObjectData {
   public function getUtils() {
 	 return $this->_utils;
   }
+  public function getCollectionId() {
+	 return $this->_collectionId;
+  }
   
   public function setObjectId ($val){
     $this->_objectId = $val;
@@ -123,4 +124,8 @@ abstract class ObjectData {
   public function setUtils(Utils $val) {
 	 $this->_utils = $val;
   }
+  public function setCollectionId($val) {
+	 $this->_collectionId=$val;
+  }
+  
 }
