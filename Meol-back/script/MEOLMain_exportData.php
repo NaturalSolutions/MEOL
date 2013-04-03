@@ -221,12 +221,7 @@ print "END formatTaxonDetailPanel: $idCol \n";
 
 //Traitement des images
 $err = 0;
-/*mogrify -path ./alter/ -format png init/*
-mogrify -resize 400x300 -background transparent -gravity Center -extent 400x300 ./alter/*.png*/
-//print 'mogrify -path '.constant('BASEPATH').constant('DATAPATH').'images_formated/ -format png '.constant('BASEPATH').constant('DATAPATH').'images/*';
-//$run = exec('mogrify -path '.constant('BASEPATH').constant('DATAPATH').'images_formated/ -format png '.constant('BASEPATH').constant('DATAPATH').'images/*',$out,$err);
-
-$cmd =  'mogrify -path '.constant('BASEPATH').constant('DATAPATH').'images_formated/ -resize 400x300 -background transparent -gravity Center -extent 400x300 '.constant('BASEPATH').constant('DATAPATH').'images/*';
+$cmd =  'mogrify -path '.constant('BASEPATH').constant('DATAPATH').'images_taxon/ -resize 400x300 -background transparent -gravity Center -extent 400x300 '.constant('BASEPATH').constant('DATAPATH').'images/*';
 print $cmd; 
 $run = exec($cmd,$out,$err);
 fwrite($ferr, print_r($err."\n", true));

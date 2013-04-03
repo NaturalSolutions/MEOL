@@ -323,7 +323,7 @@ class Collection {
     $mimeType =strtolower($splitURL[0]);
   
     $filename = $this->_collectionid.'.'.$mimeType;
-    $dir = constant('BASEPATH').constant('DATAPATH').'/collectionImages';
+    $dir = constant('BASEPATH').constant('DATAPATH').'/images_collection';
     $this->_utils->curlSaveResources($logoUrl, $filename,$dir);
 		$this->_collectionMetadata['logo']=$filename;
   }
