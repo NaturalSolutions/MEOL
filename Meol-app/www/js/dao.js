@@ -246,7 +246,7 @@ directory.dao.GalleryDAO.prototype, {
         this.db.transaction(
             function(tx) {
                 var sql = "SELECT collectionid , name, description, logo,level " +
-                    "FROM Tgallery ";
+                    "FROM Tgallery ORDER BY level";
              
                 tx.executeSql(sql,[], function(tx, results) {
                     var len = results.rows.length,
@@ -375,7 +375,7 @@ directory.dao.ProfilDAO.prototype, {
     findAll: function(callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT * FROM Tprofil LIMIT 10" +
+                var sql = "SELECT * FROM Tprofil LIMIT 10" ;
              
                 tx.executeSql(sql,[], function(tx, results) {
                     var len = results.rows.length, profils = [], i = 0;
@@ -444,7 +444,47 @@ directory.dao.ScoreDAO.prototype, {
             }
         );
     },
+   
+    findScoreMaxByProfilId: function(id, callback) {
+        this.db.transaction(
+            function(tx) {
+                var sql = "SELECT MAX(score) FROM Tscore WHERE fk_profil = ?";
+                tx.executeSql(sql,[id], function(tx, results) {
+                    var len = results.rows.length,
+                        items = [],
+                        i = 0;
+                    for (; i < len; i = i + 1) {
+                        items[i] = results.rows.item(i);
+                    }
+                    callback(items);
+                });
+            },
+            function(tx, error) {
+                console.log(tx);
+                alert("Transaction Error: " + error);
+            }
+        );
+    },
     
+     findAll: function(callback) {
+        this.db.transaction(
+            function(tx) {
+                var sql = "SELECT * FROM Tscore LIMIT 3" ;
+             
+                tx.executeSql(sql,[], function(tx, results) {
+                    var len = results.rows.length, profils = [], i = 0;
+                    for (; i < len; i = i + 1) {
+                        profils[i] = results.rows.item(i);
+                    }
+                    callback(profils);
+                });
+            },
+            function(tx, error) {
+                console.log(tx);
+                alert("Transaction Error: " + error);
+            }
+        );
+    },
     
     // Populate Taxon table with sample data
     populate: function(callback) {
