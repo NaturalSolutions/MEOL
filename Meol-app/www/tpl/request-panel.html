@@ -12,10 +12,10 @@
         <% } %>
         
         <% if ( item.taxonConceptId >0 ){ %>
-          <button id="detailTaxon-<%= i %>" class="playableTaxonDetail btn">Detail</button>
+          <button id="detailTaxon-<%= i %>" class="playableTaxonDetail btn">Show Details</button>
         <% } %>
         <!--<button href="#myModal" id="validate-<%= i %>" role="button" class="btn-primary playableTaxonValidate" data-toggle="modal">I am here!</button>-->
-        <button  id="validate-<%= i %>" role="button" class="btn-primary playableTaxonValidate">I am here!</button>
+        <button  id="validate-<%= i %>" role="button" class="btn-primary playableTaxonValidate">I live in <em><span class = "txtCurrentContinent"></span>.</em></button>
       </div>
     </div>
 <% i = i+1; }); %>
