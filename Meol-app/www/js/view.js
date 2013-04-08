@@ -176,9 +176,11 @@ directory.views.playListGalleryView = Backbone.View.extend({
   id:'play-list-gallery-page',
   templateLoader: directory.utils.templateLoader,
   
+  
   initialize: function() {
     this.collection.findAll();
     this.collection.bind("reset", this.render, this);
+	this.currentProfil = this.options.currentProfil;
     this.template = _.template(this.templateLoader.get('play-gallery'));
   },
 
@@ -187,7 +189,7 @@ directory.views.playListGalleryView = Backbone.View.extend({
 	//test filter()
 	//var activeGall = this.collection.models.filter(function(gall) {return gall.get("level") === 1});
     _.each(this.collection.models, function(gallery) {
-      $("#play-list-gallery", this.el).append(new directory.views.playListGalleryItemView({model: gallery}).render().el);
+	 $("#play-list-gallery", this.el).append(new directory.views.playListGalleryItemView({model: gallery,currentProfil : this.currentProfil}).render().el);
     }, this);
     return this;
   },
@@ -195,14 +197,19 @@ directory.views.playListGalleryView = Backbone.View.extend({
 
 directory.views.playListGalleryItemView = Backbone.View.extend({
   tagName: "li",
-  //className: "ui-disabled" ,
   
   initialize: function() {
+	//EN COURS remonter le currentScoreGame ....à mettre dans la view PlayListGallery
+	this.galleryActive = 1;
     this.template = _.template(directory.utils.templateLoader.get('play-list-gallery'));
   },
 
   render: function(eventName) {
-    $(this.el).html(this.template(this.model.toJSON()));
+	if(this.galleryActive < this.model.get("level")){
+	  $(this.el).addClass("ui-disabled").html(this.template(this.model.toJSON()));
+	}else{
+	  $(this.el).html(this.template(this.model.toJSON()));
+	}
     return this;
   },
 });
@@ -432,7 +439,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     if (currentContinentStr === 'america-south') currentContinentStr = 'South America';
     if (currentContinentStr === 'america-north') currentContinentStr = 'North America';
 	
-    $("#txtCurrentContinent").html(currentContinentStr);
+    $(".txtCurrentContinent").html(currentContinentStr);
     $("#currentContinent").val(currentContinentStr);
     
     $("#myModal").modal('hide');
@@ -514,13 +521,14 @@ directory.views.playGameboardView = Backbone.View.extend({
     var falseItem = new directory.models.Item();
     falseItem.set('filename',  "unknown_taxon.jpg");
     falseItem.set('Titem_PK_Id',  "-1");
-    falseItem.set('preferredCommonNames',  "None of them");
+    falseItem.set('preferredCommonNames',  "None of These Live Here.");
     selectedItemsCollection.models[3] = falseItem;
     
     //Création de la vue des éléments du jeux
     if (typeof(this.listView) !== 'undefined') {
       this.listView.remove();
     }
+	var currentContinentStr = $("#currentContinent").val();
     this.listView = new directory.views.RandomItemListView({ model: selectedItemsCollection});
     this.listView.gallery = this.model;
     this.listView.render();
@@ -529,6 +537,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     d3.select("#requestPanel").classed("hidden",false);
     d3.select("#selectRandomTaxon").classed("hidden",true);
     $(".playableTaxonHidden").hide();
+	$(".txtCurrentContinent").html(currentContinentStr);
     return this;
   },
 });
@@ -613,7 +622,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
     //Selection des items corrects pour ce continent
     var correctItems = new Array();
     var existTrueResponse = false;
-    $("#reponseMessageModal").before('<h5>Right answer</h5>');
+    $("#reponseMessageModal").before('<h5>The correct answer was...</h5>');
     for (var id in this.model.models) {
       correctItems[id] = false;
       var presence = this.model.models[id].attributes.iNat.split(",");
@@ -648,13 +657,16 @@ directory.views.RandomItemListView = Backbone.View.extend({
       $("#item-"+currentObjectId).addClass("gameTrueSelectedItem");
       found = true;
     }
-    
+    if((currentObjectId == -1 ) && (existTrueResponse == false)){
+	  $("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
+	}
     if (found == false) {
       if (! existTrueResponse) {
         $("#item--1").removeClass("gradientGrey");
         $("#item--1").addClass("gameTrueSelectedItem");
-        $("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
+		$("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
       }
+	 
       var currentScore = parseInt($("#scoreValue").val());
       $("#scoreValue").val(currentScore+0).trigger('change');
 	  //nb NbAnwserGood
@@ -663,7 +675,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
 	  //nb nbAnwserGoodSequence
       $("#nbAnwserGoodSequenceValue").val(0).trigger('change');
       //Message Modal
-      $("#txtMessageModal").html("Too bad!");
+      $("#txtMessageModal").html("Sorry!");
       
     }
     else {
@@ -678,9 +690,9 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodSequenceValue").val());
         $("#nbAnwserGoodSequenceValue").val(currentNbAnwserGood+1).trigger('change');
 		
-	//Message succes Modal
-	$("#txtMessageModal").html("Well Done!");
-	$("#scoreMessageModal").html(100-currentPonderation+" points");
+		//Message succes Modal
+		$("#txtMessageModal").html("Well Done!");
+		$("#scoreMessageModal").html(100-currentPonderation+" points");
     }
     
     d3.select("#selectRandomContinent").classed("hidden",false);

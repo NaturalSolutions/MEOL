@@ -272,4 +272,12 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
           self.reset(data);
       });
   },
+  findScoreMaxByProfilId : function (id) {
+     self = this;
+     id = parseInt(id);
+     new this.dao(directory.db).findScoreMaxByProfilId(id, function(data) {
+          self.reset(data);
+      });
+  },
+  
 });

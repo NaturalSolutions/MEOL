@@ -116,7 +116,7 @@ directory.Router = Backbone.Router.extend({
   
   playListGallery: function() {
       var playListGalleryResults = new directory.models.GalleriesCollection();
-      var currentView = new directory.views.playListGalleryView({collection: playListGalleryResults});
+      var currentView = new directory.views.playListGalleryView({collection: playListGalleryResults, currentProfil : this.currentProfil});
       this.displayView(currentView);
   },
 
