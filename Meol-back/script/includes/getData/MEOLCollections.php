@@ -2,13 +2,14 @@
 
 
 class Collections {
+	private $_collectionid;
 	private $_collectionsList;
 	private $_utils;
 
 	public function __construct($collectionid) {
     $this->_utils = new Utils();
 		$this->_collectionsList=array();
-    
+    $this->_collectionid = $collectionid;
     //Récupération des données de la collection
     $collectionsWS = file_get_contents('http://eol.org/api/collections/1.0/'.$collectionid.'.json');
     //print 'http://eol.org/api/collections/1.0/'.$collectionid.'.json'."\n";

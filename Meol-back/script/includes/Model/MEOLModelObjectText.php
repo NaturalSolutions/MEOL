@@ -19,10 +19,9 @@ class ModelObjectText  extends ModelObjectData {
 
   }
   
-  public function save2BD($taxonID, $type){
-    $db  = mysql_connect('localhost', 'root', '!sql2010');
-    // on sélectionne la base
-    mysql_select_db('Meol-Data',$db);
+  public function save2BD($taxonID, $type){    
+    $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
+    mysql_select_db( constant('DB_NAME'),$db);
      // on envoie la requête
     //Insertion en base de la collection
     $sql = 'INSERT INTO `Object_text` (`objectid`, `identifier`, `title`, `licence`, `rights`, `credit`, `description`, taxonid, type) VALUES (';

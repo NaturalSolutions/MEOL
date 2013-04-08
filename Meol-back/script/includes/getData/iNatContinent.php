@@ -6,8 +6,9 @@ class iNatContinent {
   
   
   public function updateBD(){ 
-    $db  = mysql_connect('localhost', 'root', '!sql2010');
-    mysql_select_db('Meol-Data',$db);
+    $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
+    mysql_select_db( constant('DB_NAME'),$db);
+
     $sql = "SELECT DISTINCT pageid, taxonConceptId, substring_index(taxonName, ' ', 2) AS spName,  taxonName FROM Taxon WHERE terminal=1 AND iNat =''";
     // on envoie la requête
     $result = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());

@@ -33,6 +33,11 @@ define("LOGPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-ba
 
 //define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: May 2012');
 define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: April 2013');
+//Constantes BD
+define("DB_SERVER", 'localhost');
+define("DB_NAME", 'Meol-Data');
+define("DB_USER", 'meol');
+define("DB_PSW", '123456');
 
 //Fichier de log
 $flog = fopen(constant('LOGPATH').'log.txt', 'w');
@@ -62,8 +67,9 @@ $tcolId='';
 foreach ($collections  as $idCol) {
   
   //Test si la collection n'existe pas déjà en base
-  $db  = mysql_connect('localhost', 'root', '!sql2010');
-  mysql_select_db('Meol-Data',$db);
+
+  $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
+  mysql_select_db( constant('DB_NAME'),$db);
   $sql = "SELECT count(*) AS count FROM Collection WHERE id = ". $idCol;
   // on envoie la requête
   $result = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
@@ -97,8 +103,9 @@ $iNatAPI->updateBD();
 //Mise à jour des données
 //************************************************************************************
 //Mise à jour du niveau des collections
-$db  = mysql_connect('localhost', 'root', '!sql2010');
-mysql_select_db('Meol-Data',$db);
+
+$db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
+mysql_select_db( constant('DB_NAME'),$db);
 $sql = 'UPDATE  `Collection` ';
 $sql .='INNER JOIN ( ';
 $sql .='SELECT COUNT(*) as count , fk_collection , ';

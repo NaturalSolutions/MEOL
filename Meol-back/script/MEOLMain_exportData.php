@@ -27,6 +27,15 @@ define("LOGPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-ba
 //define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: May 2012');
 define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: April 2013');
 
+
+
+//Constantes BD
+define("DB_SERVER", 'localhost');
+define("DB_NAME", 'Meol-Data');
+define("DB_USER", 'meol');
+define("DB_PSW", '123456');
+
+
 //Fichier de log
 $flog = fopen(constant('LOGPATH').'log.txt', 'w');
 $ferr = fopen(constant('LOGPATH').'error.txt', 'w');
@@ -56,8 +65,8 @@ foreach ($collections  as $idCol) {
   
   //Récupération des données de la collection
   //Test si la collection n'existe pas déjà en base
-  $db  = mysql_connect('localhost', 'root', '!sql2010');
-  mysql_select_db('Meol-Data',$db);
+  $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
+  mysql_select_db( constant('DB_NAME'),$db);
   $sql = 'SELECT  id, `nom` , `description` , `logo` , `type` , `full_hierarchy` , level FROM `Collection` WHERE  id = '. $idCol;
   $result = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
 
@@ -82,8 +91,9 @@ foreach ($collections  as $idCol) {
   //Récupération des items taxons
     //Récupération des données de la collection
   //Test si la collection n'existe pas déjà en base
-  $db  = mysql_connect('localhost', 'root', '!sql2010');
-  mysql_select_db('Meol-Data',$db);
+
+  $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
+  mysql_select_db( constant('DB_NAME'),$db);
   $sql = "SELECT * 
           FROM (
             SELECT `Collection_Items`.fk_collection, `Collection_Items`.object_id, `Taxon`.pageid, 'taxon' AS type, `Taxon`.taxonConceptId,  `Taxon`.taxonName, common_name, iNat, title, filename, weightIUCN,weightContinent
@@ -152,8 +162,9 @@ WHERE fk_collection IN ($tcolId );*/
 $taxonDetail = array();
 
 //Récupération des données d'intérets
-$db  = mysql_connect('localhost', 'root', '!sql2010');
-mysql_select_db('Meol-Data',$db);
+
+$db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
+mysql_select_db( constant('DB_NAME'),$db);
 $sqlTaxon = 'SELECT `Taxon`.pageid, `Taxon`.taxonConceptId, `Taxon`.taxonName,`Taxon`.flathierarchy,`Taxon`.terminal,`Taxon`.common_name_prefered,
   `Taxon`.common_name,`Taxon`.fk_text,`Taxon`.fk_image,`Taxon`.fk_iucn, GROUP_CONCAT(`Taxon`.fk_collection) AS fk_collection
   FROM `Taxon`

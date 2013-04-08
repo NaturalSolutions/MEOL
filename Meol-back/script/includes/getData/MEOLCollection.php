@@ -45,9 +45,9 @@ class Collection {
   
   private function save2BD($coltype){ 
     //Insertion en base de la collection
-    $db  = mysql_connect('localhost', 'root', '!sql2010');
-    // on sélectionne la base
-    mysql_select_db('Meol-Data',$db);
+    $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
+    mysql_select_db( constant('DB_NAME'),$db);
+
     $sql = 'INSERT INTO `Meol-Data`.`Collection` (`id` ,`nom` ,`description` ,`logo` ,`type`, full_hierarchy) VALUES (';
     $sql .= $this->_collectionid .' , ';
     $sql .= "'". $this->_collectionMetadata['name'] ."','";
