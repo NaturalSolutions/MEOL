@@ -27,7 +27,6 @@ directory.utils.templateLoader = {
 };
 
 // Le but: f(0) = 0 , f(1)= 1  et f(n)= f(n-1)+f(n-2) ;
-
 var fiboSuite = function(){
    var memo =[0,1] ; // variable cloturée = inaccessible hors de la fonction.
    var fibo = function(n){
@@ -38,3 +37,21 @@ var fiboSuite = function(){
    }
    return fibo ;
 }
+
+//Shuffle
+function shuffle(a){
+   var j = 0;
+   var valI = '';
+   var valJ = valI;
+   var l = a.length - 1;
+   while(l > -1)
+   {
+		j = Math.floor(Math.random() * l);
+		valI = a[l];
+		valJ = a[j];
+		a[l] = valJ;
+		a[j] = valI;
+		l = l - 1;
+	}
+	return a;
+  }

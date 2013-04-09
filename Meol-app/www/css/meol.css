@@ -37,9 +37,9 @@
 .ui-page-pre-in {
 	opacity: 1;
 }
-/**************************/
+/**************************
   general
-/**************************/
+*************************/
 h1, h2 {
   color:#B9DE00;
 }
@@ -236,12 +236,16 @@ width:35px;
 *****************************/
 
 /* listeVignetteCollection */
-#listeVignetteCollection,#listeVignetteCollectionPlay{
+#listeVignetteCollection,#listeVignetteCollectionPlay,#profilPage{
 width:80%;
 margin:5% auto;
 }
+#profilPage{
+width:60%;
+margin:5% auto;
+}
 
-#listeVignetteCollection h1,#listeVignetteCollectionPlay h1{
+#listeVignetteCollection h1,#listeVignetteCollectionPlay h1,#profilPage h1{
 color: #B9DE00;
 /*border: 1px dashed #4C6377;
 text-transform: uppercase;*/
@@ -250,7 +254,21 @@ font-size: 2.5em;
 padding: 20px 0;
 text-align:center;
 margin:0 auto;
+}
 
+#profilPage table{
+  color:#E2E9EF;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 40px;
+}
+#profilPage td{
+  padding:10px;
+  border: 1px solid #4C6377;
+  text-align: center;
+}
+#profilPage h2{
+ text-align:center;  
 }
 
 #listeVignetteCollection h1{
@@ -268,6 +286,28 @@ margin:3%;
  background-image:url(./images/pictos-eol/collection.png);
  background-position:left center;
  background-repeat:no-repeat;
+}
+/*-----Playable collection-----*/
+#play-list-gallery-content{
+  width:88%;
+}
+
+.head{
+  clear:left;
+  margin-left:0px;
+}
+.head h2{
+  padding-left:10px;
+}
+#play-list-gallery .list-icon{
+  max-width:80%;
+}
+#play-list-gallery a p{
+  line-height:1.3em;
+}
+fieldset#radioCollection {
+overflow-y: scroll;
+max-height: 500px;
 }
 /*-----------------BOUTON RADIO-----------------------*/
 
@@ -580,7 +620,7 @@ div.taxon-list-item {
  visibility:hidden;
 }
 button#selectRandomContinent{
-  background-image: url(images/gif/MEOL-btn-backpacker_bg.gif);
+  background-image: url(images/gif/MEOL-dice.gif);
 }
 
 button.playRandom{
@@ -605,8 +645,8 @@ button.playRandom{
   background-repeat:no-repeat;
   background-size:100% auto;
 }
-button#selectRandomTaxon{
- background-image: url(images/gif/MEOL-dice.gif);
+.progress-striped .bar{
+  background-color:#B9DE00;
 }
 
 .txtCurrentContinent{
@@ -822,15 +862,6 @@ div#iconUser{
   width:100px;
 }
 
-/***************/
-/* Profil page*/ 
-/*************/
-#profilPage{
-  width:250px;
-  margin:auto;
-}
-
-
 /***----------------Surcharge des accordeons de bootrap twitter-----------------------*/
 
 .accordion-heading a {
@@ -911,14 +942,22 @@ span.panel-title {
 }
 
 .collapse.in {
-padding: 10px 15px;
+  padding: 10px 15px;
 }
 
 .accordion-group {
   border:none;
 }
-
-
+/**info-page**/
+#info-page{
+	color:white;
+	overflow-y: scroll;
+   height: 100%;
+  overflow-x: hidden;
+}
+#containerRules{
+  width:60%;
+}
 /***-------------MODIFICATIONS PASSAGE BOOTSTRAP---------****/
 .ui-btn-up-a:hover,.ui-btn-up-a:active,
 .accordion-heading a:hover,.accordion-heading a:active{
@@ -938,7 +977,7 @@ padding: 10px 15px;
 
 .galleryList li{
   display: inline;
-  margin-left: 2%;
+ /* margin-left: 2%;*/
 }
 .galleryList a{
   margin-left: 2%;

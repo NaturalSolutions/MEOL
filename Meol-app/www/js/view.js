@@ -47,6 +47,24 @@ directory.views.HomeView = Backbone.View.extend({
 
 });
 	
+directory.views.InfoGameView = Backbone.View.extend({
+  templateLoader: directory.utils.templateLoader,
+  
+  tagName : 'div',
+  id : 'info-page',
+  
+  initialize : function() {
+    this.template = _.template(this.templateLoader.get('info-page'));
+  },
+
+  render : function() {
+    this.$el.html(this.template());
+    return this;
+  },
+
+});
+	
+	
 directory.views.SearchPage = Backbone.View.extend({
     tagName:'div',
     id : 'searchPage',
@@ -178,24 +196,27 @@ directory.views.playListGalleryView = Backbone.View.extend({
   
   
   initialize: function() {
-    this.collection.findAll();
+    //this.collection.findAll();
     this.collection.bind("reset", this.render, this);
 	this.currentProfil = this.options.currentProfil;
     this.template = _.template(this.templateLoader.get('play-gallery'));
   },
 
   render: function(eventName) {
-    $(this.el).html(this.template());
+    $(this.el).html(this.template({collection: this.collection}));
 	//test filter()
 	//var activeGall = this.collection.models.filter(function(gall) {return gall.get("level") === 1});
-    _.each(this.collection.models, function(gallery) {
-	 $("#play-list-gallery", this.el).append(new directory.views.playListGalleryItemView({model: gallery,currentProfil : this.currentProfil}).render().el);
-    }, this);
+    /*_.each(this.collection.models, function(gallery) {
+	   $("#play-list-gallery", this.el).append(new directory.views.playListGalleryItemView({model: gallery,currentProfil : this.currentProfil}).render().el);
+    }, this);*/
     return this;
   },
 });
 
-directory.views.playListGalleryItemView = Backbone.View.extend({
+
+
+/*subview playListGalleryView à enlever avec sa template
+ directory.views.playListGalleryItemView = Backbone.View.extend({
   tagName: "li",
   
   initialize: function() {
@@ -212,7 +233,7 @@ directory.views.playListGalleryItemView = Backbone.View.extend({
 	}
     return this;
   },
-});
+});*/
 
 directory.views.GalleryListItemView = Backbone.View.extend({
   tagName: "li",
@@ -327,7 +348,7 @@ directory.views.GalleryPanel = Backbone.View.extend({
    
 });
 
-directory.views.RequestPanel = Backbone.View.extend({
+/*directory.views.RequestPanel = Backbone.View.extend({
 
     initialize: function() {
         this.template = _.template(directory.utils.templateLoader.get('request-panel'));
@@ -338,7 +359,7 @@ directory.views.RequestPanel = Backbone.View.extend({
       return this;
     },
    
-});
+});*/
 
 directory.views.GalleryTaxonList = Backbone.View.extend({
     el:'div',
@@ -374,18 +395,20 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.currentScoreGame = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id')});
     this.template = _.template(this.templateLoader.get('play-gameboard'));
     this.model.bind("change", this.saveScore, this);
+	
   },
   
   render : function() {
     this.$el.html(this.template( {"gallery": this.model.toJSON(), "profil":this.currentProfil.toJSON()}));
     $('#map', this.$el).load('css/map/map_EOL.svg');
+	
     return this;
   },
   
   events:{
     'click #selectRandomContinent': 'selectRandomContinent',
-    'click #selectRandomTaxon' : 'loadTaxonPlay',
-    'change #meterScore' : 'updateScore',
+    'change #currentContinent' : 'loadTaxonPlay',
+    'change #scoreTotalValue' : 'updateScore',
 	'change #nbAnwserGoodValue' : 'updateNbAnwserGood',
 	'change #nbAnwserGoodSequenceValue' : 'updateNbAnwserGoodSequenceValue',
     'click #returnToGame' : 'returnToGame',
@@ -393,14 +416,14 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   
  
-  beforeClose : function getConfirm(){
+ /* beforeClose : function getConfirm(){
 	var dfd = $.Deferred();
 	var self = this;
     $('#confirmbox').modal({show:true,
                             backdrop:false,
                             keyboard: false,
     });
-    $('#confirmMessage').html("yes yes yes");
+    $('#confirmMessage').html("Do you want to leave the game?");
     $('#confirmTrue').click(function(){
 		self.saveScore();
         dfd.resolve(true);
@@ -411,7 +434,10 @@ directory.views.playGameboardView = Backbone.View.extend({
 		$('#confirmbox').modal('hide');
     });
 	return dfd.promise();
-  }	,
+  },*/
+  beforeClose : function(){
+   this.saveScore();
+  },
   
   returnToGame : function(event){
     d3.select("#gameDetailPanel").classed("hidden",true);
@@ -421,26 +447,58 @@ directory.views.playGameboardView = Backbone.View.extend({
   },                                             
   
   selectRandomContinent: function(event){
+	/*var activeContinent = this.model.attributes.activeContinent;
+	var desactiveContinent = this.model.attributes.desactiveContinent;
+	for( var desactive in desactiveContinent ){
+	  d3.select("#"+desactiveContinent[desactive]).remove();
+	};*/
     d3.select("#map svg").selectAll(".pion").classed("hideInfoContinent",true);
-    var A_continents = d3.select("#map svg").selectAll(".continent");
+	//d3.select("#map svg").selectAll(".pion").style("display","none");
+	d3.select("#selectRandomContinent").classed("hidden",true);
+	$("#firstMessagePlay").css("display","none");
+	$("#continentName").css("display","inherit");
+  
+	var A_continents = d3.select("#map svg").selectAll(".continent");
     var rand = A_continents[Math.floor(Math.random() * A_continents.length)];
-    var currentContinent =  rand[Math.floor(Math.random() * rand.length)];
-    d3.selectAll(".continent").style("fill", "#E1FA9F");
-    d3.select(currentContinent).style("fill", "#B9DE00");
+	var shuffleRand = shuffle(rand);
+	
+	var countAnime = 0;
+	while( countAnime < 1){
+	 animateContinent();
+	countAnime++;
+	};
+	
+	function animateContinent(){
+	var count=0;
+	var countReset=200;
+	  for( var item in shuffleRand ){	
+		d3.select(shuffleRand[item]).transition().delay(count).style("fill", "#B9DE00");
+		//d3.select("."+currentContinentclass).transition().delay(count).style("display","inherit");
+		//setTimeout(function(){d3.select(shuffleRand[item].id).classed("hideInfoContinent",true);},count);
+		//d3.select(shuffleRand[item].id).transition().delay(count).classed("hideInfoContinent",true);
+		d3.select(shuffleRand[item]).transition().delay(countReset).style("fill", "#E1FA9F");
+		//d3.select("."+currentContinentclass).transition().delay(countReset).style("display","none");
+		count+= 150;
+		countReset+=200;
+	  };
+	};
+	var currentContinent = shuffleRand[4];
+	d3.selectAll(".continent").transition().delay(1600).style("fill", "#E1FA9F");
+	d3.select(currentContinent).transition().delay(1600).style("fill", "#B9DE00");
+
     var currentContinentclass= currentContinent.id;
-    d3.select("."+currentContinentclass).classed("hideInfoContinent",false);
-    d3.select("#selectRandomTaxon").classed("hidden",false);
-    d3.select("#selectRandomContinent").classed("hidden",true);
+	//d3.selectAll(".pion").transition().delay(1600).style("display","none");
+	//d3.select("."+currentContinentclass).transition().delay(1700).style("display","inherit");
+	setTimeout(function(){d3.select("."+currentContinentclass).classed("hideInfoContinent",false);},1800);
     
-    d3.select("#requestPanel").classed("hidden",true);
-    d3.select("#selectRandomTaxon").classed("hidden",false);
+	$('#requestPanel').hide();
     
 	var currentContinentStr = currentContinent.id;
     if (currentContinentStr === 'america-south') currentContinentStr = 'South America';
     if (currentContinentStr === 'america-north') currentContinentStr = 'North America';
 	
     $(".txtCurrentContinent").html(currentContinentStr);
-    $("#currentContinent").val(currentContinentStr);
+    $("#currentContinent").val(currentContinentStr).trigger('change');
     
     $("#myModal").modal('hide');
   },
@@ -450,8 +508,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   updateScore: function(event){
-	var currentsc = parseInt($("#meterScore").val());
-	
+	var currentsc = parseInt($("#scoreTotalValue").val());
 	//Mise à jour de la table des scores
     this.currentScoreGame.set('score', currentsc);
   },
@@ -464,6 +521,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   updateNbAnwserGoodSequenceValue: function(event){
+	$("#bonusValue").val("0");
 	$("#nbAnwserGoodSequenceText").html($("#nbAnwserGoodSequenceValue").val());
 	var currentnbAnswerGoodSequence = $("#nbAnwserGoodSequenceValue").val();
 	var currentnbAnswerGoodRecordSequence = $("#nbAnwserGoodSequenceRecordText").text();
@@ -487,8 +545,22 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var scoreTaxon = parseInt($("#scoreValue").val());
 	var scoreBonus = parseInt($("#bonusValue").val());
     $("#scoreText").html(scoreTaxon);
-	var score = scoreTaxon + scoreBonus; 
-	$("#meterScore").val(score).trigger('change');
+	var score = scoreTaxon + scoreBonus;
+	$("#scoreTotalValue").val(score).trigger('change');
+	var scoreProgressBar = score/5;
+	$("#meterScore").css("width",scoreProgressBar+"%");
+	var scoreProgressTotal= $("#meterScore").css("width");
+	//progress Bar
+	/*if(parseInt(scoreProgressTotal) >= 100){
+	  $(".progress").fadeIn(3000).css("box-shadow","0px 0px 10px 4px #E2E9EF");
+	  alert("New Collection");
+	  $("#activateCollMessageModal").html("New collection!");
+	  $("#meterScore").css("width","0%");
+	  $(".progress").css("box-shadow","0px 0px 0px 0px #E2E9EF");
+	}else{
+	  $("#meterScore").css("width",scoreProgressBar+"%");
+	};*/
+	
 	//Modal Bonus
 	if(scoreBonus > 0){
 	$("#bonusMessageModal").html("+"+scoreBonus+" BONUS  points");
@@ -496,7 +568,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   
-  loadTaxonPlay: function(event){
+  loadTaxonPlay: function(event){        
     var currentscnbQuestionTotal = this.currentScoreGame.get('nbQuestionTotal');
     this.currentScoreGame.set('nbQuestionTotal', currentscnbQuestionTotal+1);
 	
@@ -521,7 +593,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     var falseItem = new directory.models.Item();
     falseItem.set('filename',  "unknown_taxon.jpg");
     falseItem.set('Titem_PK_Id',  "-1");
-    falseItem.set('preferredCommonNames',  "None of These Live Here.");
+    falseItem.set('preferredCommonNames',  "None of These Live Here");
     selectedItemsCollection.models[3] = falseItem;
     
     //Création de la vue des éléments du jeux
@@ -534,8 +606,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.listView.render();
     $('#taxonSelectList', this.el).append(this.listView.el);
     //Mise en forme du panel
-    d3.select("#requestPanel").classed("hidden",false);
-    d3.select("#selectRandomTaxon").classed("hidden",true);
+	$('#requestPanel').delay(2200).slideDown('slow');
     $(".playableTaxonHidden").hide();
 	$(".txtCurrentContinent").html(currentContinentStr);
     return this;
@@ -608,6 +679,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
     $("#scoreMessageModal").empty();
 	$("#bonusMessageModal").empty();
     $("#reponseMessageModal").empty();
+	$("#activateCollMessageModal").empty();
     $("#myModal h5").remove();
     var target = event.currentTarget.id;
     var arrayId = parseInt(target.replace("validate-", ''));
@@ -617,7 +689,8 @@ directory.views.RandomItemListView = Backbone.View.extend({
     $("#item-"+currentObjectId).addClass("gameCurrentSelectedItem");
     
     var currentContinentStr = $("#currentContinent").val();
-    
+    var weightTaxonIucn = 0;
+	var weightTaxonContinent = 0;
     
     //Selection des items corrects pour ce continent
     var correctItems = new Array();
@@ -634,6 +707,10 @@ directory.views.RandomItemListView = Backbone.View.extend({
           $("#item-"+this.model.models[id].attributes.Titem_PK_Id).removeClass("gradientGrey");
           $("#item-"+this.model.models[id].attributes.Titem_PK_Id).addClass("gameTrueSelectedItem");
           $("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
+		  var idTaxon = this.model.models[id];
+		  //var weightTaxonIucn = idTaxon.get('weightIucn');
+		  var weightTaxonIucn = idTaxon.attributes.weightIucn;
+		  var weightTaxonContinent = idTaxon.attributes.weightContinent;
         }
       }
     }
@@ -647,9 +724,13 @@ directory.views.RandomItemListView = Backbone.View.extend({
 	if(typeof(newArray) !== 'undefined'){
 	  var arrayLength = newArray.length;
 	  //pondération Nb total de bonnes réponses possibles à la question
-	  var weightNbPossibilyties = arrayLength*10;
+	  if (arrayLength > 1){
+		var weightNbPossibilyties = arrayLength*50;
+	  }else{
+		 var weightNbPossibilyties = 0;
+	  }
+	 
 	};
-	
 	
     var found = false;
     if ((correctItems[arrayId] == true )  || ((currentObjectId == -1 ) && (existTrueResponse == false))  )  {
@@ -679,10 +760,15 @@ directory.views.RandomItemListView = Backbone.View.extend({
       
     }
     else {
-		var weightTaxon = this.model.models[id].attributes.weightIucn+this.model.models[id].attributes.weightContinent;
+		if(weightTaxonContinent > 1){
+		  var ponderationContinent = weightTaxonContinent*10;
+		}else{
+		  var ponderationContinent = 0;
+		};
         var currentScore = parseInt($("#scoreValue").val());
-		var currentPonderation = weightTaxon + weightNbPossibilyties;
-        $("#scoreValue").val(currentScore+100-currentPonderation).trigger('change');
+		//var currentPonderation = weightTaxon + weightNbPossibilyties;
+		var currentPonderation = weightNbPossibilyties + ponderationContinent;
+        $("#scoreValue").val(currentScore+1000-currentPonderation).trigger('change');
 		//nb nbAnwserGood
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
         $("#nbAnwserGoodValue").val(currentNbAnwserGood+1).trigger('change');
@@ -692,7 +778,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		
 		//Message succes Modal
 		$("#txtMessageModal").html("Well Done!");
-		$("#scoreMessageModal").html(100-currentPonderation+" points");
+		$("#scoreMessageModal").html(1000-currentPonderation+" points");
     }
     
     d3.select("#selectRandomContinent").classed("hidden",false);

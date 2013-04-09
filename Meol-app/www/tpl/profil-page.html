@@ -9,17 +9,26 @@
 </div>
 
 <div id=profilPage>
-  <h1>PROFIL</h1> 
-  <h1><%=model.pseudo %></h1>
+  <h1 id="pictoProfil">PROFIL</h1> 
+  <h2><%=model.pseudo %></h2>
     <table>
       <% var i=0; 
-      _.each(collection, function(score) { %> 
+      _.each(collection, function(score) { %>
+      <tbody>
+        <thead>
+          <tr class="head gradientDarkBlue">
+        <td>Game Date</td>
+        <td>Good Answers</td>
+        <td>Score</td>
+      </tr>
+        </thead>
       <tr id="score-<%= score.Tscore_PK_Id %>">
-        <td><%= i %></td>
         <td><%= score.gameDate %></td>
         <td><%= score.nbQuestionTotal %></td>
         <td><%= score.score %></td>
       </tr>
       <% i = i+1; }); %>
+      </tbody>
   </table>
+    <button class="btn-primary"><a href='#infoGame'>Rules of the game</a></button>
 </div>

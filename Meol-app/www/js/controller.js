@@ -8,6 +8,7 @@ directory.Router = Backbone.Router.extend({
   routes: {
       "": "home",
       //"": "searchtaxon",
+      "infoGame": "infoGame",
       "searchtaxon": "searchtaxon",
       "gallery": "galleryDisplay",
       "gallery/:galleryId": "galleryDetailDisplay",
@@ -71,18 +72,20 @@ directory.Router = Backbone.Router.extend({
   },
 
   home: function(){
-    
     if (typeof (this.homePage) === 'undefined') this.homePage = new directory.views.HomeView();
     this.displayView(this.homePage);
   },
 
   searchtaxon: function() {
-      var self = this;
-      this.searchResults = new directory.models.TaxonCollection();
-      var currentView = new directory.views.SearchPage({model: this.searchResults});
-      this.displayView(currentView);
+    var self = this;
+    this.searchResults = new directory.models.TaxonCollection();
+    var currentView = new directory.views.SearchPage({model: this.searchResults});
+    this.displayView(currentView);
   },
-  
+  infoGame :function() {
+    this.infoGame = new directory.views.InfoGameView();
+    this.displayView(this.infoGame);
+  },
   displayView : function (view) {
     var self = this;
     var dfda = Array();
@@ -115,9 +118,14 @@ directory.Router = Backbone.Router.extend({
   },
   
   playListGallery: function() {
+    var self = this;
       var playListGalleryResults = new directory.models.GalleriesCollection();
-      var currentView = new directory.views.playListGalleryView({collection: playListGalleryResults, currentProfil : this.currentProfil});
-      this.displayView(currentView);
+      playListGalleryResults.fetch({
+        success: function(data) {
+          var currentView = new directory.views.playListGalleryView({collection: data, currentProfil : self.currentProfil});
+          self.displayView(currentView);
+        }
+      })
   },
 
   playGameboardDisplay : function(id) {

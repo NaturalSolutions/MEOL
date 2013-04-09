@@ -15,73 +15,76 @@
 <div id="gamePanel">
   <div class="collectionName"><h1><%= gallery.name %></h1></div>
 
-
-<div class="modal hide" id="myModal" data-backdrop="false">
-  <div class="modal-header gradientDarkBlue">
-    <h3><em id="txtMessageModal"></em></h3>
-  </div>
-  <div class="modal-body">
-    <h4 id="scoreMessageModal"></h4>
-    <h4 id='bonusMessageModal'></h4>
-    <ul id="reponseMessageModal"></ul>
-  </div>
-  <div class="modal-footer gradientDarkBlue">
-    <em>Try a new continent by clicking on the dice button!</em>
-  </div>
-</div>
-
-<div class="modal hide" id="confirmbox" data-backdrop="false">
-  <div class="modal-header gradientDarkBlue">
-  </div>
-  <div class="modal-body">
-    <p id="confirmMessage">Any confirmation message?</p>
-  </div>
-  <div class="modal-footer gradientDarkBlue">
-    <button type="button" data-dismiss="modal" aria-hidden="true" class="btn" id="confirmTrue">Validate</button>
-    <button type="button" data-dismiss="modal" aria-hidden="false" class="btn" id="confirmFalse">Cancel</button>
-  </div>
-</div>
-
-
-
-<div id="map" class=""></div>
-<div id="scorePanel">
-  <div id="iconUser" ></div>
-  <h2>Player 1</h2>
-  <meter id="meterScore" min="0" max="500" value="0"></meter>
-  <input id="scoreValue" type="hidden" value = "0"/>
-  <label>Score</label>
-  <span id ="scoreText" class="scoreSpan">0</span>
-  <label>BONUS</label>
-  <input id="bonusValue" type="hidden" value = "0"/>
-  <span id ="bonus" class="scoreSpan">0</span>
-  <input id="nbAnwserGoodValue" type="hidden" value = "0"/>
-  <!--<span id ="nbAnwserGoodText" class="scoreSpan">0</span>-->
-  <label>Sequence</label>
-  <input id="nbAnwserGoodSequenceRecordValue" type="hidden" value = "0"/>
-  <input id="nbAnwserGoodSequenceValue" type="hidden" value = "0"/>
-  <span class="scoreSpan">
-    <span id ="nbAnwserGoodSequenceText">0</span><span> / </span><span id ="nbAnwserGoodSequenceRecordText">0</span>
-  </span>
-</div>
-<div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div>
-<div><button id="selectRandomTaxon" class="pull-right hidden playRandom" ></button></div>
-<div class="">
-  <div class="">
-    <div id="requestPanel" class="hidden gradientDarkBlue">
-      <input id="currentContinent" type="hidden"/>
-      <div id="continentName" class=""><h2>Which one these can be found in <em><span class = "txtCurrentContinent">Continent</span>?</em></h2></div>
-      <div id="taxonSelectList" class="row-fluid"></div>
+  <div class="modal hide" id="myModal" data-backdrop="false">
+    <div class="modal-header gradientDarkBlue">
+      <h3><em id="txtMessageModal"></em></h3>
+    </div>
+    <div class="modal-body">
+      <h4 id="scoreMessageModal"></h4>
+      <h4 id='bonusMessageModal'></h4>
+      <h4 id='activateCollMessageModal'></h4>
+      <ul id="reponseMessageModal"></ul>
+    </div>
+    <div class="modal-footer gradientDarkBlue">
+      <em>Try a new continent by clicking on the dice button!</em>
     </div>
   </div>
+  
+  <div class="modal hide" id="confirmbox" data-backdrop="false">
+    <div class="modal-header gradientDarkBlue">
+    </div>
+    <div class="modal-body">
+      <p id="confirmMessage">Any confirmation message?</p>
+    </div>
+    <div class="modal-footer gradientDarkBlue">
+      <button type="button" data-dismiss="modal" aria-hidden="true" class="btn" id="confirmTrue">Validate</button>
+      <button type="button" data-dismiss="modal" aria-hidden="false" class="btn" id="confirmFalse">Cancel</button>
+    </div>
+  </div>
+
+
+
+  <div id="map" class=""></div>
+  <div id="scorePanel">
+    <div id="iconUser" ></div>
+    <h2>Player 1</h2>
+    <div class="progress progress-striped active">
+      <div class="bar" id="meterScore" style="width: 0;"></div>
+    </div>
+    <input id="scoreTotalValue" type="hidden" value ="0"/>
+    <input id="scoreValue" type="hidden" value = "0"/>
+    <label>Score</label>
+    <span id ="scoreText" class="scoreSpan">0</span>
+    <label>BONUS</label>
+    <input id="bonusValue" type="hidden" value = "0"/>
+    <span id ="bonus" class="scoreSpan">0</span>
+    <input id="nbAnwserGoodValue" type="hidden" value = "0"/>
+    <!--<span id ="nbAnwserGoodText" class="scoreSpan">0</span>-->
+    <label>Sequence</label>
+    <input id="nbAnwserGoodSequenceRecordValue" type="hidden" value = "0"/>
+    <input id="nbAnwserGoodSequenceValue" type="hidden" value = "0"/>
+    <span class="scoreSpan">
+      <span id ="nbAnwserGoodSequenceText">0</span><span> / </span><span id ="nbAnwserGoodSequenceRecordText">0</span>
+    </span>
+  </div>
+ 
+  <div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div> 
+    
+  <div id="requestPanel" class="gradientDarkBlue">
+    <input id="currentContinent" type="hidden"/>
+    <div id="firstMessagePlay" style="display:inherit;"><h2><em>Click on dice button to begin the party!</em><h2></div>
+    <div id="continentName" class="" style="display:none;"><h2>Which one these can be found in <em><span class = "txtCurrentContinent">Continent</span>?</em></h2></div>
+    <div id="taxonSelectList" class="row-fluid"></div>
+  </div>
+    
 </div>
 
-</div>
+
 
 <div id="gameDetailPanel" class="hidden">
   <button id="returnToGame" class="btn-primary">Back to game</button>
   <div id="graph-panel"></div>
 </div>
 <script>
-  
+     
 </script>

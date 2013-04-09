@@ -16,7 +16,41 @@
   <div id="listeVignetteCollectionPlay">
     <h1 id="pictoCollectionPlay">Playable collections</h1>
     <fieldset id ="radioCollection" class="" >
-      <ul id="play-list-gallery" class="galleryList"></ul>
+      <div id="play-list-gallery" class="galleryList">
+        <div>
+          <%
+            var groups = _.groupBy(collection.models,function(item,key,list){
+                return item.get('level');
+            });
+            _.each(groups,function(group,i,list){
+                var level = group[0].get('level');
+          %>
+            <ul class="head" >
+                <!-- use variables -->
+                <li><h2 class="gradientDarkBlue">LEVEL <%= level %></h2></li>
+            
+            <li>
+              <ul>
+             <%  
+              _.each(group,function(item,key,list){
+            %>
+                <!-- use variables -->
+                <li><a id='<%= item.get('collectionid') %>' href='#play/<%= item.get('collectionid') %>' class="ui-btn ui-btn-corner-all">
+                    <img src="data/images_collection/<%= item.get('logo') %>" class="list-icon"/>
+                    <div class="taxonName">
+                      <p><%= item.get('name') %></p>
+                    </div>
+                  </a>
+                </li>
+            
+            <% }); %>
+              </ul>
+            </li>
+          </ul>
+          <% }); %>
+          
+        </div>     
+      </div>
     </fieldset>
   </div>
 </div>
