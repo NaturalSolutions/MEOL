@@ -509,6 +509,33 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   updateScore: function(event){
 	var currentsc = parseInt($("#scoreTotalValue").val());
+	
+	var scoreProgressBar = currentsc/20;
+	window.count;
+	
+	var scoreProgressTotal= $("#meterScore").css("width");
+	//progress Bar
+	if(typeof(window.count) != 'undefined'){
+	  if(parseInt(scoreProgressBar) >= window.count){
+	  $(".progress").fadeIn(3000).css("box-shadow","0px 0px 10px 4px #E2E9EF");
+	  $("#meterScore").css("width",scoreProgressBar+"%");
+	  alert("New Collection");
+	  $("#activateCollMessageModal").html("New collection!");
+	  $("#meterScore").css("width","0%");
+	  $(".progress").css("box-shadow","0px 0px 0px 0px #E2E9EF");
+	  window.count += 100;
+	  }else{
+		$("#meterScore").css("width",scoreProgressBar+"%");
+	  };
+	}else{
+		window.count = 100;
+		$("#meterScore").css("width",scoreProgressBar+"%");
+	  };
+	
+	console.log(scoreProgressBar);
+	
+	
+	
 	//Mise à jour de la table des scores
     this.currentScoreGame.set('score', currentsc);
   },
@@ -547,9 +574,9 @@ directory.views.playGameboardView = Backbone.View.extend({
     $("#scoreText").html(scoreTaxon);
 	var score = scoreTaxon + scoreBonus;
 	$("#scoreTotalValue").val(score).trigger('change');
-	var scoreProgressBar = score/5;
+	/*var scoreProgressBar = score/5;
 	$("#meterScore").css("width",scoreProgressBar+"%");
-	var scoreProgressTotal= $("#meterScore").css("width");
+	var scoreProgressTotal= $("#meterScore").css("width");*/
 	//progress Bar
 	/*if(parseInt(scoreProgressTotal) >= 100){
 	  $(".progress").fadeIn(3000).css("box-shadow","0px 0px 10px 4px #E2E9EF");
@@ -779,7 +806,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		//Message succes Modal
 		$("#txtMessageModal").html("Well Done!");
 		$("#scoreMessageModal").html(1000-currentPonderation+" points");
-    }
+    };
     
     d3.select("#selectRandomContinent").classed("hidden",false);
     $("#myModal").modal('show');
@@ -793,6 +820,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
 
 directory.views.ProfilDetailView = Backbone.View.extend({
   tagName: "div",
+  id: 'plage-profile',
   
   initialize: function() {
     this.collection = new directory.models.ScoresCollection();

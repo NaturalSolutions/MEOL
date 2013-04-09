@@ -9,8 +9,9 @@
 </div>
 
 <div id=profilPage>
-  <h1 id="pictoProfil">PROFIL</h1> 
+  <h1 id="pictoProfil">PROFILE</h1> 
   <h2><%=model.pseudo %></h2>
+  <div id="profileTable">
     <table>
       <% var i=0; 
       _.each(collection, function(score) { %>
@@ -29,6 +30,7 @@
       </tr>
       <% i = i+1; }); %>
       </tbody>
-  </table>
+    </table>
+  </div>
     <button class="btn-primary"><a href='#infoGame'>Rules of the game</a></button>
 </div>

@@ -241,8 +241,13 @@ width:80%;
 margin:5% auto;
 }
 #profilPage{
-width:60%;
-margin:5% auto;
+  width:60%;
+  margin:5% auto;
+}
+
+#profileTable{
+  overflow-y: scroll;
+  max-height: 450px;
 }
 
 #listeVignetteCollection h1,#listeVignetteCollectionPlay h1,#profilPage h1{
@@ -384,6 +389,7 @@ input[type="radio"]{
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
   min-height:100%;
+  top:0;
 }
 #menu-lateral ul{
   padding-left: 10px;
@@ -952,8 +958,8 @@ span.panel-title {
 #info-page{
 	color:white;
 	overflow-y: scroll;
-   height: 100%;
-  overflow-x: hidden;
+	height: 100%;
+	overflow-x: hidden;
 }
 #containerRules{
   width:60%;
