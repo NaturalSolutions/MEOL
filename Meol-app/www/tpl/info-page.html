@@ -1,0 +1,97 @@
+<div id='menu-lateral'>
+  <ul>
+  <a href=''><img src='css/images/menu/logo_M-EOL-menu.png'/></a>
+  <li id='lien-discover'><a href='#gallery'></a></li>
+  <li id='lien-play'><a href='#play'></a></li>
+  <li id='lien-contribute'><a href='#' class='ui-disabled'></a></li>
+  <li id='lien-profil'><a href="#profil/1"></a></li>
+  </ul>
+</div>
+
+<div id="" class="container">
+  <div id="containerRules">
+    <h1 id="pictoInfo">Rules of the game</h1>
+    <fieldset>
+    <ul>
+        <li>
+            <h3>Calculating the level of a collection :</h3>
+            <ul>
+                <li><h4>Computing : averages or medians</h4>
+                    <ul> 
+                        <li>Done : Number of taxons per collection</li>
+                        <li>Potential :
+                            <ul>
+                                <li>Number of continents taxon</li>   
+                                <li>Number of occurrences per taxon</li>
+                                <li>IUCN status taxon</li>
+                                <li>Frequency taxon (INat ?)</li>
+                                <li>Weighting of taxonomic groups</li>
+                            </ul>
+                        </li>
+                        <li>Test on new collections: </br>
+                        <img src="data/averageCollection.jpg"/>      
+                        </li>
+                    </ul>
+                </li>
+        <li><h4><em>Human factor</em></h4>
+                    <ul>
+                        <li>in the body of the description of the collection..</li>
+                    </ul>
+                </li>
+        
+        
+            </ul>
+        </li>
+        <li>
+             <h3>Scoring </h3>
+                <ul>
+                  <li><span class="title">Score calcul</span> : If the aswer is correct the player win <span class="em">X</span> points weighted by following variables :
+                    <ul>
+                      <li>number of continents of selected taxon</li>
+                      <li>IUCN Status weight of selected taxon. The weight is based on Fibonacci number, the assumption is : taxa with status are more known.</li>
+                      <li>Total number of possible correct answers to the question</li>
+                     </ul>
+                  </li>
+                  <li><span class="title">Deck example</span>
+                   <pre>
+                      x points
+                       + x1 / number of continents
+                       + x2 / IUCN weight ( 2 = no status; 3 = LC ; 5 = NT; 8 = VU ; 13 = EN ; 21 = [CR; EW; EX])
+                       + x3 / number of possible correct answers
+                      = Nb of won points
+                    </pre>
+                  </li>
+               <li><span class="title">Bonus</span> : bbased on the number of correct aswers following (Fibonacci number).</br>The player win bonus 	starting from 3 correct answers then each new response make him win points.             
+                   <pre>
+                    [0;3[ = 0 * x
+                    3 = 3 * x
+                    4 = 5 * x
+                    5 = 8 * x
+                    6 = 13 * x
+                    7 = 21 * x
+                    8 = 34 * x
+                    ...</pre>
+                  </li>
+                <li> <span class="title">Number of won points during a game</span> : Points + Bonus
+                    In real time the progress bar goes to be present (bonus + point by deck) when the user exceeds the unlocking => message indicating that he has released a collection in which it will play once it has finished its part (end of part decided by the user)
+                </li>  
+                <li><span class="title">Game example</span>
+                  <pre>
+                    For each deck
+                    Good answer : 1000 points
+                     + if number of continent >1 then number of continent *-10
+                     + if IUCN weight >2 then IUCN weight *x (not done)
+                     + if number of possible correct answers >1 then number of possible correct answers *-50
+                    Bonus (x = 100)
+                    For example the player do :  3 correct aswers following, loose, then 5 correct aswers following
+                    ( 3*100) + (3*100) + (5*100) + (8*100) => 1900 points for the game
+                   </pre>
+                </li>
+            </ul>
+        </li> 
+      </ul>
+    </fieldset>
+
+  </div>
+</div>
+
