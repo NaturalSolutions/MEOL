@@ -10,7 +10,7 @@ function initializeDB(db){
       deferreds.push(runQuery(query , []));
        // creer la table gallery
       query = 'CREATE TABLE IF NOT EXISTS Tgallery (Tgallery_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-        + 'collectionid  NVARCHAR(200),  name  NVARCHAR(200),  description  NVARCHAR(2000), logo  NVARCHAR(200), level INTEGER)';
+        + 'collectionid  NVARCHAR(200),  name  NVARCHAR(200),  description  NVARCHAR(2000), logo  NVARCHAR(200), level INTEGER, ordre INTEGER)';
       deferreds.push(runQuery(query , []));
        // creer la table items
       query = 'CREATE TABLE IF NOT EXISTS Titems (Titem_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
@@ -62,8 +62,8 @@ console.log('loadGalleryFile');
   var arr = [];
   $.getJSON('data/collection_metadata.json', function(json) {
       $.each(json, function(galleryid, gal) {
-        var query = "Insert into  Tgallery (collectionid, name,  description, logo, level) values(?,?,?,?,?)";
-        var param = [galleryid , gal.name , gal.description, gal.logo, gal.level];
+        var query = "Insert into  Tgallery (collectionid, name,  description, logo, level, ordre) values(?,?,?,?,?, ?)";
+        var param = [galleryid , gal.name , gal.description, gal.logo, gal.level, gal.ordre];
         arr.push(runQuery(query , param) ); 
       });
       $.when.apply(this, arr).then(function () {
@@ -83,7 +83,7 @@ console.log('loadItemsFile');
   $.getJSON('data/items.json', function(json) {
       $.each(json, function(itemid, it) {
         var query = "Insert into  Titems (fk_collectionid, object_id, pageid, weightIucn, weightContinent,type, taxonConceptId, taxonName, preferredCommonNames, iNat, title, filename) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-        var param = [it.fk_collection , it.pageid , it.pageid, it.weightIucn, it.weightContinent, it.type, it.taxonConceptId, it.taxonName, it.common_name , it.iNat , it.title, it.filename];
+        var param = [it.fk_collection , it.pageid , it.pageid, it.weightIUCN, it.weightContinent, it.type, it.taxonConceptId, it.taxonName, it.common_name , it.iNat , it.title, it.filename];
         arr.push(runQuery(query , param) ); 
       });
       $.when.apply(this, arr).then(function () {

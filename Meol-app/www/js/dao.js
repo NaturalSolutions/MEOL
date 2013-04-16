@@ -204,7 +204,7 @@ directory.dao.GalleryDAO.prototype, {
     findByName: function(key, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT collectionid , name, description, logo, level " +
+                var sql = "SELECT collectionid , name, description, logo, level, ordre " +
                     "FROM Tgallery " +
                     "WHERE name LIKE ?  LIMIT 20";
 
@@ -228,7 +228,7 @@ directory.dao.GalleryDAO.prototype, {
     findByGalleryId: function(id, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo, level "+
+                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo, level, ordre "+
                     "FROM Tgallery " +
                     "WHERE collectionid = ? ";
                 tx.executeSql(sql, [id], function(tx, results) {
@@ -245,8 +245,8 @@ directory.dao.GalleryDAO.prototype, {
     findAll: function(callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo,level " +
-                    "FROM Tgallery ORDER BY level";
+                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo,level , ordre " +
+                    "FROM Tgallery ORDER BY level, ordre ";
              
                 tx.executeSql(sql,[], function(tx, results) {
                     var len = results.rows.length,

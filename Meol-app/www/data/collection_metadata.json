@@ -1,1 +1,6 @@
-{"53852":{"name":"M-EOL Frogs of the World","description":"","logo":"53852.jpg","level":"2"},"54041":{"name":"M-EOL The Origin of Spices","description":"","logo":"54041.jpg","level":"1"},"53853":{"name":"M-EOL Stick your tongue out!","description":"","logo":"53853.jpg","level":"2"},"53659":{"name":"M-EOL Life is Blue","description":"","logo":"53659.jpg","level":"2"},"53856":{"name":"M-EOL Herbivores in Action","description":"","logo":"53856.jpg","level":"2"},"53854":{"name":"M-EOL Trees of the World","description":"","logo":"53854.jpg","level":"2"}}
+{"53852":{"name":"M-EOL Frogs of the World","description":"","logo":"53852.jpg","level":"3","order":"2"},
+"54041":{"name":"M-EOL The Origin of Spices","description":"","logo":"54041.jpg","level":"1","order":"1"},
+"53853":{"name":"M-EOL Stick your tongue out!","description":"","logo":"53853.jpg","level":"2","order":"3"},
+"53659":{"name":"M-EOL Life is Blue","description":"","logo":"53659.jpg","level":"3","order":"1"},
+"53856":{"name":"M-EOL Herbivores in Action","description":"","logo":"53856.jpg","level":"2","order":"5"},
+"53854":{"name":"M-EOL Trees of the World","description":"","logo":"53854.jpg","level":"2","order":"6"}}
