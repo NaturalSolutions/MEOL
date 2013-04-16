@@ -200,15 +200,12 @@ directory.views.playListGalleryView = Backbone.View.extend({
     this.collection.bind("reset", this.render, this);
 	this.currentProfil = this.options.currentProfil;
     this.template = _.template(this.templateLoader.get('play-gallery'));
+	// Tgallery_PK_Id gallery 1 enabled by default (see template play-gallery)
+	if(typeof(directory.models.myGlogal.countCollection) =='undefined'){directory.models.myGlogal.countCollection = 1 ;};
   },
 
   render: function(eventName) {
     $(this.el).html(this.template({collection: this.collection}));
-	//test filter()
-	//var activeGall = this.collection.models.filter(function(gall) {return gall.get("level") === 1});
-    /*_.each(this.collection.models, function(gallery) {
-	   $("#play-list-gallery", this.el).append(new directory.views.playListGalleryItemView({model: gallery,currentProfil : this.currentProfil}).render().el);
-    }, this);*/
     return this;
   },
 });
@@ -393,8 +390,6 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.itemsCollection.findAllByCollectionid(collectionId);
     this.currentProfil = this.options.currentProfil;
     this.currentScoreGame = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id')});
-	//this.currentGlobals = directory.models.myGlogal;
-	//var currentScoreTaxon = this.currentGlobals.bind("change",this.saveScore,this);
 	this.template = _.template(this.templateLoader.get('play-gameboard'));
     this.model.bind("change", this.saveScore, this);
 	
@@ -536,8 +531,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var scoreProgressBar = currentsc/20;
 	var scoreProgressTotal= $("#meterScore").css("width");
 	if(directory.models.myGlogal.countCollection){
-	  if(parseInt(scoreProgressBar) >= directory.models.myGlogal.countCollection){
-		var resteScore = scoreProgressBar - directory.models.myGlogal.countCollection;
+	  if(parseInt(scoreProgressBar) >= directory.models.myGlogal.countCollection*100){
+		var resteScore = scoreProgressBar - directory.models.myGlogal.countCollection*100;
 		setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
 		$("#meterScore").css("width",scoreProgressBar+"%");
 		$("#activateCollMessageModal").html("<em>New collection!</em>");
@@ -545,17 +540,17 @@ directory.views.playGameboardView = Backbone.View.extend({
 		setTimeout(function(){$("#meterScore").fadeIn(1000).css("width",resteScore+"%");},3000);
 		setTimeout(function(){$("#collectionModal").hide().alert();},3000);
 		setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
-		directory.models.myGlogal.countCollection += 100;
+		directory.models.myGlogal.countCollection += 1;
 	  }else{
-		if(directory.models.myGlogal.countCollection > 100){
-		   var currentScoreProgressBar = scoreProgressBar - (directory.models.myGlogal.countCollection-100);
+		if(directory.models.myGlogal.countCollection > 1){
+		   var currentScoreProgressBar = scoreProgressBar - (directory.models.myGlogal.countCollection-1)*100;
 		  $("#meterScore").css("width",currentScoreProgressBar+"%");
 		}else{
 		 $("#meterScore").css("width",scoreProgressBar+"%"); 
 		};
 	  };
 	}else{
-		directory.models.myGlogal.countCollection = 100;
+		directory.models.myGlogal.countCollection = 1;
 		$("#meterScore").css("width",(scoreProgressBar)+"%");
 	  };	
 	//Mise à jour de la table des scores

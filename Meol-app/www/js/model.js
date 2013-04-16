@@ -85,6 +85,7 @@ directory.models.TaxonCollection = Backbone.Collection.extend({
 
 directory.models.Gallery = Backbone.Model.extend({
   defaults: {
+    "Tgallery_PK_Id":null,
     "collectionid":null,
     "name":"",
     "description":"",
@@ -284,7 +285,7 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
 //global
 directory.models.myGlogal = Backbone.Model.extend({
 
-  countCollection: null,
+  countCollection: 1,
   globalScore: 0,
   globalBonus: 0,
   globalSequence:0,

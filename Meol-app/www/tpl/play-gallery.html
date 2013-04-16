@@ -35,7 +35,9 @@
               _.each(group,function(item,key,list){
             %>
                 <!-- use variables -->
-                <li><a id='<%= item.get('collectionid') %>' href='#play/<%= item.get('collectionid') %>' class="ui-btn ui-btn-corner-all">
+                <li><a id='<%= item.get('collectionid') %>' href='#play/<%= item.get('collectionid') %>' class="ui-btn ui-btn-corner-all
+                  <% if(item.get('Tgallery_PK_Id') > directory.models.myGlogal.countCollection){%><%="ui-disabled"%><%}; %>
+                  ">
                     <img src="data/images_collection/<%= item.get('logo') %>" class="list-icon"/>
                     <div class="taxonName">
                       <p><%= item.get('name') %></p>

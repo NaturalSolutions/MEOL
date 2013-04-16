@@ -228,7 +228,7 @@ directory.dao.GalleryDAO.prototype, {
     findByGalleryId: function(id, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT collectionid , name, description, logo, level "+
+                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo, level "+
                     "FROM Tgallery " +
                     "WHERE collectionid = ? ";
                 tx.executeSql(sql, [id], function(tx, results) {
@@ -245,7 +245,7 @@ directory.dao.GalleryDAO.prototype, {
     findAll: function(callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT collectionid , name, description, logo,level " +
+                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo,level " +
                     "FROM Tgallery ORDER BY level";
              
                 tx.executeSql(sql,[], function(tx, results) {
