@@ -821,7 +821,19 @@ div.gameFalseSelectedItem{
 div.gameTrueSelectedItem{
   background-color: #B9DE00;
 }
-
+/***----------------------alert collectionModal-----------------***/
+#collectionModal.alert{
+  z-index: 1;
+  position: fixed;
+  right: 120px;
+  top: 0;
+  color :#4B6377;
+  background:#B9DE00;
+  padding:2px;
+}
+#collectionModal.alert h4{
+  color :#4B6377;
+}
 /***----------------------Modal---------------------------------***/
 .modal-backdrop {
   background-color: transparent;

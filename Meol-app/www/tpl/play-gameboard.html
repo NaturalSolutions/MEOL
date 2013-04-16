@@ -22,13 +22,19 @@
     <div class="modal-body">
       <h4 id="scoreMessageModal"></h4>
       <h4 id='bonusMessageModal'></h4>
-      <h4 id='activateCollMessageModal'></h4>
       <ul id="reponseMessageModal"></ul>
     </div>
     <div class="modal-footer gradientDarkBlue">
       <em>Try a new continent by clicking on the dice button!</em>
     </div>
   </div>
+  
+  <div class="alert alert-block fade in" id="collectionModal" style="display: none;" >
+    <div class="modal-body">
+      <h4 id='activateCollMessageModal'></h4>
+    </div>
+  </div>
+  
   
   <div class="modal hide" id="confirmbox" data-backdrop="false">
     <div class="modal-header gradientDarkBlue">
@@ -49,22 +55,23 @@
     <div id="iconUser" ></div>
     <h2>Player 1</h2>
     <div class="progress progress-striped active">
-      <div class="bar" id="meterScore" style="width: 0;"></div>
+      <div class="bar" id="meterScore" style="width:<% if(typeof(directory.models.myGlogal.globalProgressBar) != 'undefined') { %> <%= directory.models.myGlogal.globalProgressBar %> <% }else{%>0<%};%>;"></div>
     </div>
     <input id="scoreTotalValue" type="hidden" value ="0"/>
-    <input id="scoreValue" type="hidden" value = "0"/>
+    <input id="scoreValue" type="hidden" value = "<% if(typeof(directory.models.myGlogal.globalScore) != 'undefined') { %> <%= directory.models.myGlogal.globalScore %> <% }else{%>0<%};%>"/>
     <label>Score</label>
-    <span id ="scoreText" class="scoreSpan">0</span>
+    <span id ="scoreText" class="scoreSpan"><% if(typeof(directory.models.myGlogal.globalScore) != 'undefined') { %> <%= directory.models.myGlogal.globalScore %> <% }else{%>0<%};%></span>
     <label>BONUS</label>
-    <input id="bonusValue" type="hidden" value = "0"/>
-    <span id ="bonus" class="scoreSpan">0</span>
+    <input id="bonusValue" type="hidden" value = "<% if(typeof(directory.models.myGlogal.globalBonus) != 'undefined') { %> <%= directory.models.myGlogal.globalBonus %> <% }else{%>0<%};%>"/>
+    <span id ="bonus" class="scoreSpan"><% if(typeof(directory.models.myGlogal.globalBonus) != 'undefined') { %> <%= directory.models.myGlogal.globalBonus %> <% }else{%>0<%};%></span>
     <input id="nbAnwserGoodValue" type="hidden" value = "0"/>
-    <!--<span id ="nbAnwserGoodText" class="scoreSpan">0</span>-->
     <label>Sequence</label>
-    <input id="nbAnwserGoodSequenceRecordValue" type="hidden" value = "0"/>
-    <input id="nbAnwserGoodSequenceValue" type="hidden" value = "0"/>
+    <!--<input id="nbAnwserGoodSequenceRecordValue" type="hidden" value = "<% if(typeof(directory.models.myGlogal.globalSequenceRecord) != 'undefined') { %> <%= directory.models.myGlogal.globalSequenceRecord %> <% }else{%>0<%};%>"/>-->
+    <input id="nbAnwserGoodSequenceValue" type="hidden" value = "<% if(typeof(directory.models.myGlogal.globalSequence) != 'undefined') { %> <%= directory.models.myGlogal.globalSequence %> <% }else{%>0<%};%>"/>
     <span class="scoreSpan">
-      <span id ="nbAnwserGoodSequenceText">0</span><span> / </span><span id ="nbAnwserGoodSequenceRecordText">0</span>
+      <span id ="nbAnwserGoodSequenceText"><% if(typeof(directory.models.myGlogal.globalSequence) != 'undefined') { %> <%= directory.models.myGlogal.globalSequence %> <% }else{%>0<%};%></span>
+      <span> / </span>
+      <span id ="nbAnwserGoodSequenceRecordText"><% if(typeof(directory.models.myGlogal.globalSequenceRecord) != 'undefined') { %> <%= directory.models.myGlogal.globalSequenceRecord %> <% }else{%>0<%};%></span>
     </span>
   </div>
  

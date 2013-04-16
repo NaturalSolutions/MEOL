@@ -5,7 +5,7 @@ var directory = {
     dao: {},
     models: {},
     views: {},
-    utils: {}
+    utils: {},
 };
 
 // ----------------------------------------------- The Application initialisation ------------------------------------------ //

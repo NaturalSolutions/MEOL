@@ -89,9 +89,7 @@ directory.models.Gallery = Backbone.Model.extend({
     "name":"",
     "description":"",
     "logo":"",
-    "level":0,
-    "activeContinent":["america-north","america-south","africa","asia","africa","oceania"],
-    "desactiveContinent":["antartica"],
+    "level":0
   },
   
   dao:directory.dao.GalleryDAO,
@@ -223,7 +221,7 @@ directory.models.ProfilsCollection = Backbone.Collection.extend({
      new this.dao(directory.db).findAllByCollectionid(key, function(data) {
           self.reset(data);
       });
-  }
+  },
     
 });
 
@@ -283,3 +281,18 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
   },
   
 });
+//global
+directory.models.myGlogal = Backbone.Model.extend({
+
+  countCollection: null,
+  globalScore: 0,
+  globalBonus: 0,
+  globalSequence:0,
+  globalSequenceRecord:0,
+  globalProgressBar:0,
+
+  initialize:function(){
+  console.log(this.globalScore)
+  },
+});
+ 

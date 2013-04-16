@@ -393,7 +393,9 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.itemsCollection.findAllByCollectionid(collectionId);
     this.currentProfil = this.options.currentProfil;
     this.currentScoreGame = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id')});
-    this.template = _.template(this.templateLoader.get('play-gameboard'));
+	//this.currentGlobals = directory.models.myGlogal;
+	//var currentScoreTaxon = this.currentGlobals.bind("change",this.saveScore,this);
+	this.template = _.template(this.templateLoader.get('play-gameboard'));
     this.model.bind("change", this.saveScore, this);
 	
   },
@@ -452,6 +454,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 	for( var desactive in desactiveContinent ){
 	  d3.select("#"+desactiveContinent[desactive]).remove();
 	};*/
+	//test persistance global app
+	console.log(directory.models.myGlogal.globalScore);
     d3.select("#map svg").selectAll(".pion").classed("hideInfoContinent",true);
 	//d3.select("#map svg").selectAll(".pion").style("display","none");
 	d3.select("#selectRandomContinent").classed("hidden",true);
@@ -482,7 +486,19 @@ directory.views.playGameboardView = Backbone.View.extend({
 		countReset+=200;
 	  };
 	};
-	var currentContinent = shuffleRand[4];
+	var currentContinent = shuffleRand[1];
+	var currentContinentStr = $("#currentContinent").val();
+	var currentContinentShufStr = currentContinent.id;
+    if (currentContinentShufStr === 'america-south') currentContinentShufStr = 'South America';
+    if (currentContinentShufStr === 'america-north') currentContinentShufStr = 'North America';
+	if(typeof(currentContinentStr) != 'undefined'){
+	  if(currentContinentShufStr.toLowerCase() == currentContinentStr.toLowerCase()){
+	   currentContinent = shuffleRand[1+1];
+	  };
+	};
+	
+	//currentContinent == shuffleRand[1]
+	//var currentContinent = shuffleRand[4];
 	d3.selectAll(".continent").transition().delay(1600).style("fill", "#E1FA9F");
 	d3.select(currentContinent).transition().delay(1600).style("fill", "#B9DE00");
 
@@ -505,37 +521,43 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   saveScore: function () {
     this.currentScoreGame.save();
+	//globals score
+	directory.models.myGlogal.globalScore = parseInt($("#scoreValue").val());
+	directory.models.myGlogal.globalBonus = parseInt($("#bonusValue").val());
+	directory.models.myGlogal.globalSequence = parseInt($("#nbAnwserGoodSequenceValue").val());
+	directory.models.myGlogal.globalSequenceRecord = parseInt($("#nbAnwserGoodSequenceRecordText").text());
+	directory.models.myGlogal.globalProgressBar = $("#meterScore").css("width");
   },
   
   updateScore: function(event){
 	var currentsc = parseInt($("#scoreTotalValue").val());
 	
-	var scoreProgressBar = currentsc/20;
-	window.count;
-	
-	var scoreProgressTotal= $("#meterScore").css("width");
 	//progress Bar
-	if(typeof(window.count) != 'undefined'){
-	  if(parseInt(scoreProgressBar) >= window.count){
-	  $(".progress").fadeIn(3000).css("box-shadow","0px 0px 10px 4px #E2E9EF");
-	  $("#meterScore").css("width",scoreProgressBar+"%");
-	  alert("New Collection");
-	  $("#activateCollMessageModal").html("New collection!");
-	  $("#meterScore").css("width","0%");
-	  $(".progress").css("box-shadow","0px 0px 0px 0px #E2E9EF");
-	  window.count += 100;
-	  }else{
+	var scoreProgressBar = currentsc/20;
+	var scoreProgressTotal= $("#meterScore").css("width");
+	if(directory.models.myGlogal.countCollection){
+	  if(parseInt(scoreProgressBar) >= directory.models.myGlogal.countCollection){
+		var resteScore = scoreProgressBar - directory.models.myGlogal.countCollection;
+		setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
 		$("#meterScore").css("width",scoreProgressBar+"%");
+		$("#activateCollMessageModal").html("<em>New collection!</em>");
+		setTimeout(function(){$("#collectionModal").show().alert();},100);
+		setTimeout(function(){$("#meterScore").fadeIn(1000).css("width",resteScore+"%");},3000);
+		setTimeout(function(){$("#collectionModal").hide().alert();},3000);
+		setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
+		directory.models.myGlogal.countCollection += 100;
+	  }else{
+		if(directory.models.myGlogal.countCollection > 100){
+		   var currentScoreProgressBar = scoreProgressBar - (directory.models.myGlogal.countCollection-100);
+		  $("#meterScore").css("width",currentScoreProgressBar+"%");
+		}else{
+		 $("#meterScore").css("width",scoreProgressBar+"%"); 
+		};
 	  };
 	}else{
-		window.count = 100;
-		$("#meterScore").css("width",scoreProgressBar+"%");
-	  };
-	
-	console.log(scoreProgressBar);
-	
-	
-	
+		directory.models.myGlogal.countCollection = 100;
+		$("#meterScore").css("width",(scoreProgressBar)+"%");
+	  };	
 	//Mise à jour de la table des scores
     this.currentScoreGame.set('score', currentsc);
   },
@@ -574,22 +596,13 @@ directory.views.playGameboardView = Backbone.View.extend({
     $("#scoreText").html(scoreTaxon);
 	var score = scoreTaxon + scoreBonus;
 	$("#scoreTotalValue").val(score).trigger('change');
-	/*var scoreProgressBar = score/5;
-	$("#meterScore").css("width",scoreProgressBar+"%");
-	var scoreProgressTotal= $("#meterScore").css("width");*/
-	//progress Bar
-	/*if(parseInt(scoreProgressTotal) >= 100){
-	  $(".progress").fadeIn(3000).css("box-shadow","0px 0px 10px 4px #E2E9EF");
-	  alert("New Collection");
-	  $("#activateCollMessageModal").html("New collection!");
-	  $("#meterScore").css("width","0%");
-	  $(".progress").css("box-shadow","0px 0px 0px 0px #E2E9EF");
-	}else{
-	  $("#meterScore").css("width",scoreProgressBar+"%");
-	};*/
+	
 	
 	//Modal Bonus
 	if(scoreBonus > 0){
+	//setTimeout(function(){$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");},400);
+	$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");
+	setTimeout(function(){$("#bonus").fadeIn(2000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},2400);
 	$("#bonusMessageModal").html("+"+scoreBonus+" BONUS  points");
 	}
   },
@@ -598,11 +611,37 @@ directory.views.playGameboardView = Backbone.View.extend({
   loadTaxonPlay: function(event){        
     var currentscnbQuestionTotal = this.currentScoreGame.get('nbQuestionTotal');
     this.currentScoreGame.set('nbQuestionTotal', currentscnbQuestionTotal+1);
+	var currentContinentStr = $("#currentContinent").val();
 	
-    //Selection des 3 taxons de façon aléatoire
-    var selectedItemsCollection = new directory.models.ItemsCollection();
+	//Recherche jusqu'à 4x si indexId1 est sur le currentContinent
+	var selectedItemsCollection = new directory.models.ItemsCollection();
     var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
-    selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
+	var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
+	var countPresence=0;
+	if(typeof(currentContinentStr) !== 'undefined'){
+	  for (var idNat in presence) {
+		if(countPresence > 20 || currentContinentStr == presence[idNat] || typeof(presence[idNat]) == 'undefined'){
+		  break;
+		};
+		if(typeof(presence[idNat]) !== 'undefined'){
+		  while (currentContinentStr != presence[idNat]) {
+		  if(countPresence > 20){
+			break;
+		  };
+		  indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
+		  var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
+			countPresence +=1;
+		  };
+		  selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
+		};	
+	  };
+		
+	  selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
+	};
+    //Selection des 3 taxons de façon aléatoire
+   /* var selectedItemsCollection = new directory.models.ItemsCollection();
+    var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
+    selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];*/
     
     var indexId2 = Math.floor(Math.random()*this.itemsCollection.models.length)
     while ( indexId2 ==indexId1 )  {
@@ -627,7 +666,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     if (typeof(this.listView) !== 'undefined') {
       this.listView.remove();
     }
-	var currentContinentStr = $("#currentContinent").val();
+	//var currentContinentStr = $("#currentContinent").val();
     this.listView = new directory.views.RandomItemListView({ model: selectedItemsCollection});
     this.listView.gallery = this.model;
     this.listView.render();
@@ -738,9 +777,9 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		  //var weightTaxonIucn = idTaxon.get('weightIucn');
 		  var weightTaxonIucn = idTaxon.attributes.weightIucn;
 		  var weightTaxonContinent = idTaxon.attributes.weightContinent;
-        }
-      }
-    }
+        };
+      };
+    };
 	//Nb total de bonnes réponses possibles à la question
 	var newArray = [];
 	for (var i=0;i<correctItems.length;i++){
