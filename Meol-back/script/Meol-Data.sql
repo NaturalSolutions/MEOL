@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Lun 08 Avril 2013 à 09:56
--- Version du serveur: 5.1.67
--- Version de PHP: 5.3.2-1ubuntu4.19
+-- Généré le : Mar 16 Avril 2013 à 16:10
+-- Version du serveur: 5.1.62
+-- Version de PHP: 5.3.2-1ubuntu4.17
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS `Collection` (
   `logo` varchar(250) NOT NULL,
   `type` varchar(250) NOT NULL,
   `full_hierarchy` text NOT NULL,
-  `level` int(11) NOT NULL
+  `level` int(11) NOT NULL,
+  `ordre` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
