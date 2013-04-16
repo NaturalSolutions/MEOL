@@ -26,10 +26,11 @@ TRUNCATE TABLE  Taxon;
 TRUNCATE TABLE Collection_Items;
 TRUNCATE TABLE Collection;
  * */
-define("BASEPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-back/');
+define("BASEPATH", '/data/nsData/files/users/asahl/git/MEOL/Meol-back/');
 define("DATAPATH", 'Data/');
 define("ARCHIVEPATH", 'Archives/');
-define("LOGPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-back/');
+define("LOGPATH", '/data/nsData/files/users/asahl/git/MEOL/Meol-back/');
+
 
 //define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: May 2012');
 define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: April 2013');
@@ -144,10 +145,15 @@ WHERE objectid =fk_iucn AND  title = 'IUCNConservationStatus'";
 $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
 
 
-
 //Mise à jour du poids Contient
 $sql = "UPDATE Taxon SET weightContinent =  LENGTH(iNat) - LENGTH(REPLACE(iNat, ',', '')) +1 WHERE NOT iNat = ''";
 $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
+
+//Mise à jour ordre des collections
+$sql = "UPDATE Collection SET ordre = 0";
+$req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
+
+
 mysql_close();
 
 ?> 
