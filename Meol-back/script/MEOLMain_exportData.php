@@ -67,7 +67,7 @@ foreach ($collections  as $idCol) {
   //Test si la collection n'existe pas déjà en base
   $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
   mysql_select_db( constant('DB_NAME'),$db);
-  $sql = 'SELECT  id, `nom` , `description` , `logo` , `type` , `full_hierarchy` , level FROM `Collection` WHERE  id = '. $idCol;
+  $sql = 'SELECT  id, `nom` , `description` , `logo` , `type` , `full_hierarchy` , `level` , `ordre` FROM `Collection` WHERE  id = '. $idCol;
   $result = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
 
   while ($row = mysql_fetch_assoc($result)) {
@@ -76,6 +76,7 @@ foreach ($collections  as $idCol) {
     $collectionMetadata[$idCol]['description'] =$row['description'];
     $collectionMetadata[$idCol]['logo'] =$row['logo'];
     $collectionMetadata[$idCol]['level'] =$row['level'];
+    $collectionMetadata[$idCol]['ordre'] =$row['ordre'];
   
     //Création du fichier de hiérarchie
     print "\n************************************************************************************\n";
@@ -127,9 +128,10 @@ foreach ($collections  as $idCol) {
 $tcolId = substr($tcolId, 0, -1);
 
 
-//Création du fichier collection metadata
+
+//Création du fichier items
 print "\n************************************************************************************\n";
-print "Collection metadata: $idCol \n";
+print "formatItems: $idCol \n";
 $items= (Object) $items;
 $items = json_encode ($items, JSON_HEX_QUOT);
 $fp = fopen(constant('BASEPATH').constant('DATAPATH').'/items.json', 'w');
@@ -138,9 +140,9 @@ fclose($fp);
 print "END collection items: $idCol \n";
 
 
-//Création du fichier items
+//Création du fichier collection metadata
 print "\n************************************************************************************\n";
-print "formatItems: $idCol \n";
+print "Collection metadata: $idCol \n";
 $collectionMetadata= (Object) $collectionMetadata;
 $collectionMetadata = json_encode ($collectionMetadata, JSON_HEX_QUOT);
 $fp = fopen(constant('BASEPATH').constant('DATAPATH').'/collection_metadata.json', 'w');
