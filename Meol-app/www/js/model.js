@@ -291,6 +291,7 @@ directory.models.myGlogal = Backbone.Model.extend({
   globalSequence:0,
   globalSequenceRecord:0,
   globalProgressBar:0,
+  globalNbGalleries:0,
 
   initialize:function(){
   console.log(this.globalScore)
