@@ -38,10 +38,10 @@ class Collection {
     
     //Détermine si la collection est de type taxon ou photo
     $coltype = $this->determineCollectionType($collectionData->item_types);
-    /*
+   
     $this->buildCollectionItem($collectionData->collection_items);
     $hier = $this->buildUnifiedHierarchy();
-    */
+    
     $this->save2BD($coltype);
 
   }
