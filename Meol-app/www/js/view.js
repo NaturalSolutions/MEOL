@@ -385,6 +385,12 @@ directory.views.playGameboardView = Backbone.View.extend({
   id: 'play-gameboard',
                                           
   initialize : function() {
+	var galleries = new directory.models.GalleriesCollection();
+	galleries.fetch({
+        success: function(gal) {
+		  directory.models.myGlogal.globalNbGalleries = gal.models.length;
+        }
+    });
     this.itemsCollection = new directory.models.ItemsCollection();
     var collectionId = this.model.id;
     this.itemsCollection.findAllByCollectionid(collectionId);
@@ -472,11 +478,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var countReset=200;
 	  for( var item in shuffleRand ){	
 		d3.select(shuffleRand[item]).transition().delay(count).style("fill", "#B9DE00");
-		//d3.select("."+currentContinentclass).transition().delay(count).style("display","inherit");
-		//setTimeout(function(){d3.select(shuffleRand[item].id).classed("hideInfoContinent",true);},count);
-		//d3.select(shuffleRand[item].id).transition().delay(count).classed("hideInfoContinent",true);
 		d3.select(shuffleRand[item]).transition().delay(countReset).style("fill", "#E1FA9F");
-		//d3.select("."+currentContinentclass).transition().delay(countReset).style("display","none");
 		count+= 150;
 		countReset+=200;
 	  };
@@ -492,14 +494,10 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  };
 	};
 	
-	//currentContinent == shuffleRand[1]
-	//var currentContinent = shuffleRand[4];
 	d3.selectAll(".continent").transition().delay(1600).style("fill", "#E1FA9F");
 	d3.select(currentContinent).transition().delay(1600).style("fill", "#B9DE00");
 
     var currentContinentclass= currentContinent.id;
-	//d3.selectAll(".pion").transition().delay(1600).style("display","none");
-	//d3.select("."+currentContinentclass).transition().delay(1700).style("display","inherit");
 	setTimeout(function(){d3.select("."+currentContinentclass).classed("hideInfoContinent",false);},1800);
     
 	$('#requestPanel').hide();
@@ -526,11 +524,11 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   updateScore: function(event){
 	var currentsc = parseInt($("#scoreTotalValue").val());
-	
+	console.log(directory.models.myGlogal.globalNbGalleries);
 	//progress Bar
 	var scoreProgressBar = currentsc/20;
 	var scoreProgressTotal= $("#meterScore").css("width");
-	if(directory.models.myGlogal.countCollection){
+	if(directory.models.myGlogal.countCollection < directory.models.myGlogal.globalNbGalleries){
 	  if(parseInt(scoreProgressBar) >= directory.models.myGlogal.countCollection*100){
 		var resteScore = scoreProgressBar - directory.models.myGlogal.countCollection*100;
 		setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
@@ -550,9 +548,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 		};
 	  };
 	}else{
-		directory.models.myGlogal.countCollection = 1;
-		$("#meterScore").css("width",(scoreProgressBar)+"%");
-	  };	
+		$("#meterScore").css("width","100");
+	};	
 	//Mise à jour de la table des scores
     this.currentScoreGame.set('score', currentsc);
   },
@@ -769,8 +766,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
           $("#item-"+this.model.models[id].attributes.Titem_PK_Id).addClass("gameTrueSelectedItem");
           $("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
 		  var idTaxon = this.model.models[id];
-		  //var weightTaxonIucn = idTaxon.get('weightIucn');
-		  var weightTaxonIucn = idTaxon.attributes.weightIucn;
+		  var weightTaxonIucn = idTaxon.get('weightIucn');
 		  var weightTaxonContinent = idTaxon.attributes.weightContinent;
         };
       };
@@ -826,9 +822,13 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		}else{
 		  var ponderationContinent = 0;
 		};
+		if(weightTaxonIucn > 1){
+		  var ponderationIucn = weightTaxonIucn*10;
+		}else{
+		  var ponderationIucn = 0;
+		};
         var currentScore = parseInt($("#scoreValue").val());
-		//var currentPonderation = weightTaxon + weightNbPossibilyties;
-		var currentPonderation = weightNbPossibilyties + ponderationContinent;
+		var currentPonderation = weightNbPossibilyties + ponderationContinent + ponderationIucn;
         $("#scoreValue").val(currentScore+1000-currentPonderation).trigger('change');
 		//nb nbAnwserGood
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
