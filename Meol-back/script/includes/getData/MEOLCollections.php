@@ -20,12 +20,18 @@ class Collections {
   private function buildCollectionItem($items) {
     print "BUILD COLLECTION List $this->_collectionid \n";
     foreach($items as $item) {
-     $this->_collectionsList[] = $item->object_id;
+      $level = $item->annotation;
+      $level = str_replace('Level:', '', $level);
+      //Si pas de niveau spécifié => valeur par défault
+      if ($level === '' ) {
+        $level = constant('DEFAULT_LEVEL');
+      }
+      $this->_collectionsList[] = array('id' => $item->object_id, 'level' => $level);
     }
   }
   
   public function getCollectionsList (){
     return  $this->_collectionsList;
-}
+  }
 }
 

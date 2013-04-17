@@ -6,6 +6,7 @@ require_once('includes/getData/iNatContinent.php');
 
 require_once('includes/UtilsInput.php');
 
+require_once('includes/constants.php');
 
 require_once('includes/Model/MEOLModelTaxon.php');
 require_once('includes/Model/MEOLModelObjectText.php');
@@ -19,23 +20,7 @@ TRUNCATE TABLE  Taxon;
 TRUNCATE TABLE Collection_Items;
 TRUNCATE TABLE Collection;
  * */
-define("BASEPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-back/');
-define("DATAPATH", 'Data/');
-define("ARCHIVEPATH", 'Archives/');
-define("LOGPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-back/');
-
-//define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: May 2012');
-define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: April 2013');
-
-
-
-//Constantes BD
-define("DB_SERVER", 'localhost');
-define("DB_NAME", 'Meol-Data');
-define("DB_USER", 'meol');
-define("DB_PSW", '123456');
-
-
+ 
 //Fichier de log
 $flog = fopen(constant('LOGPATH').'log.txt', 'w');
 $ferr = fopen(constant('LOGPATH').'error.txt', 'w');
@@ -61,8 +46,8 @@ $items = array();
 
 $tcolId='';   
     
-foreach ($collections  as $idCol) {
-  
+foreach ($collections  as $col) {
+  $idCol = $col['id'];
   //Récupération des données de la collection
   //Test si la collection n'existe pas déjà en base
   $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));

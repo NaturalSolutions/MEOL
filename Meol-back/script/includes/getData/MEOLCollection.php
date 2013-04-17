@@ -19,12 +19,13 @@ class Collection {
 	private $_utils;
 
 
-	public function __construct($collectionid) {
+	public function __construct($collectionid, $collectionLevel) {
     $this->_utils = new Utils();
 		$this->_taxons=array();
 		$this->_items=array();
 		$this->_nonTerminalTaxa=array();
 		$this->_collectionid=$collectionid;
+    $this->_collectionMetadata['leveltxt'] = $collectionLevel;
     
     //Récupération des données de la collection
     $collectionWS = file_get_contents('http://eol.org/api/collections/1.0/'.$collectionid.'.json');
@@ -34,11 +35,13 @@ class Collection {
 		$this->_collectionMetadata['name']=$collectionData->name;
 		$this->_collectionMetadata['description']=$collectionData->description;
     $this->saveCollectionLogoFile($collectionData->logo_url);
+    
     //Détermine si la collection est de type taxon ou photo
     $coltype = $this->determineCollectionType($collectionData->item_types);
+    /*
     $this->buildCollectionItem($collectionData->collection_items);
     $hier = $this->buildUnifiedHierarchy();
-
+    */
     $this->save2BD($coltype);
 
   }
@@ -48,10 +51,12 @@ class Collection {
     $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
     mysql_select_db( constant('DB_NAME'),$db);
 
-    $sql = 'INSERT INTO `Meol-Data`.`Collection` (`id` ,`nom` ,`description` ,`logo` ,`type`, full_hierarchy) VALUES (';
+    $sql = 'INSERT INTO `Meol-Data`.`Collection` (`id`, level ,`nom` ,`description`,  level_txt ,`logo` ,`type`, full_hierarchy) VALUES (';
     $sql .= $this->_collectionid .' , ';
+    $sql .= constant('LEVEL_'.$this->_collectionMetadata['leveltxt']).' , ';
     $sql .= "'". $this->_collectionMetadata['name'] ."','";
     $sql .= $this->_collectionMetadata['description']."','";
+    $sql .= $this->_collectionMetadata['leveltxt']."','";
     $sql .=$this->_collectionMetadata['logo']."','" .$coltype."' , ";
     $sql .= "'".mysql_real_escape_string($this->_d3jsHierarchy, $db )."');";
     

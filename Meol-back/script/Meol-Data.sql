@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Mar 16 Avril 2013 à 16:10
+-- Généré le : Mer 17 Avril 2013 à 15:02
 -- Version du serveur: 5.1.62
 -- Version de PHP: 5.3.2-1ubuntu4.17
 
@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `Collection` (
   `type` varchar(250) NOT NULL,
   `full_hierarchy` text NOT NULL,
   `level` int(11) NOT NULL,
-  `ordre` int(11) NOT NULL
+  `ordre` int(11) NOT NULL,
+  `level_txt` varchar(20) NOT NULL DEFAULT 'Medium'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
