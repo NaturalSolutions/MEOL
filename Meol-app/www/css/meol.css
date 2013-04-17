@@ -303,6 +303,7 @@ margin:3%;
 }
 .head h2{
   padding-left:10px;
+  font-size:18px;
 }
 #play-list-gallery .list-icon{
   max-width:80%;
@@ -312,7 +313,7 @@ margin:3%;
 }
 fieldset#radioCollection {
 overflow-y: scroll;
-max-height: 500px;
+max-height: 580px;
 }
 /*-----------------BOUTON RADIO-----------------------*/
 
@@ -999,11 +1000,11 @@ span.panel-title {
 }
 .galleryList a{
   margin-left: 2%;
-  width: 142px;
+  width: 105px;
   float: left;
   font-size: 12px;
   margin-bottom: 3%;
-  height: 160px;
+  height: 120px;
   overflow-y: hidden;
   border: 1px solid #344551;
   background: #4c6377;
