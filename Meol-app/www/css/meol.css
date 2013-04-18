@@ -1000,16 +1000,22 @@ span.panel-title {
 }
 .galleryList a{
   margin-left: 2%;
-  width: 105px;
   float: left;
   font-size: 12px;
   margin-bottom: 3%;
-  height: 120px;
   overflow-y: hidden;
   border: 1px solid #344551;
   background: #4c6377;
   font-weight: bold;
   color:white;
+}
+.galleryList a{
+  height: 160px;
+  width: 142px;
+}
+#play-list-gallery a{
+  height: 120px;
+  width: 105px;
 }
 .galleryList a:hover, .galleryList a:active, .action button:hover {
   color:#B9DE00;
