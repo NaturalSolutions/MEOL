@@ -2,7 +2,12 @@
 
 // Creating the application namespace
 var directory = {
+    config: {
+            // Find pathname portion of the URL and clean it (remove trailing slash if any)
+            root: window.location.pathname.replace(/\/(?:index.html)?$/, '')
+        },
     dao: {},
+    data: {},
     models: {},
     views: {},
     utils: {},
@@ -31,13 +36,18 @@ function init(){
 
   $.when.apply(null, deferreds).done(function() {
     console.log ('all deferreds finished');
-    directory.app = new directory.Router();
-    Backbone.history.start();
+    directory.data.galleriesList = new directory.models.GalleriesCollection();
+    directory.data.galleriesList.fetch({
+        success: function(data) {      
+            directory.app = new directory.Router();
+            Backbone.history.start();
+            $('#dataloader-img').remove();
+            $("body").removeClass("ui-disabled");
+        }
+      });
     /*directory.app.bind("all",function(route, router) {
     console.log("Different Page: " + route);
 });*/
-    $('#dataloader-img').remove();
-    $("body").removeClass("ui-disabled");
   });
 }
 

@@ -10,8 +10,8 @@ directory.Router = Backbone.Router.extend({
       //"": "searchtaxon",
       "infoGame": "infoGame",
       "searchtaxon": "searchtaxon",
-      "gallery": "galleryDisplay",
-      "gallery/:galleryId": "galleryDetailDisplay",
+      "gallery": "discoverGalleryList",
+      "gallery/:galleryId": "discoverGalleryTaxonomicTreeView",
       "play" : "playListGallery",
       "play/:galleryId" : "playGameboardDisplay",
       "profil/:profilId" : "profilDisplay",
@@ -111,52 +111,41 @@ directory.Router = Backbone.Router.extend({
       });
     },
                                        
-  galleryDisplay: function() {
-      var galleryListResults = new directory.models.GalleriesCollection();
-      var currentView = new directory.views.GalleryListView({model: galleryListResults});
+  discoverGalleryList: function() {
+      var currentView = new directory.views.GalleryListView({model: directory.data.galleriesList});
       this.displayView(currentView);
   },
   
   playListGallery: function() {
-    var self = this;
-      var playListGalleryResults = new directory.models.GalleriesCollection();
-      playListGalleryResults.fetch({
-        success: function(data) {
-          var currentView = new directory.views.playListGalleryView({collection: data, currentProfil : self.currentProfil});
-          self.displayView(currentView);
-        }
-      })
+    //console.log(directory.data.galleriesList);
+    var currentView = new directory.views.playListGalleryView({collection: directory.data.galleriesList, currentProfil : self.currentProfil});
+    this.displayView(currentView);
   },
 
   playGameboardDisplay : function(id) {
-    var self = this;
-    /*if (typeof this.gameView !== 'undefined') {
-      this.gameView.remove();
-    } */
-    var gallery = new directory.models.Gallery({id:id, collectionid: id});
-    //if (typeof(this.gameView) !== 'undefined') this.gameView.destroy_view();
-    gallery.fetch({
-      success: function(data) {
-            var currentView = new directory.views.playGameboardView({model: data, currentProfil : self.currentProfil});
-            //self.currentView.currentProfil= ;
-            self.displayView(currentView);
-            //$(self.gameView.el).attr('id', 'play-gameboard');
-            //self.slidePage(self.gameView);
-      }
-    })
+    var self = this;   
+    var gallery = directory.data.galleriesList.findWhere( {'collectionid': id});
+    
+    gallery.set('id', id);
+    
+    if(gallery.get('active') == "false"){
+       alert(gallery.get('active'));
+       window.history.back();
+       return false;
+    }else{
+      var currentView = new directory.views.playGameboardView({model: gallery, currentProfil : self.currentProfil});
+      self.displayView(currentView);
+    }
+  
   },
-      
-  galleryDetailDisplay: function(id) {
-      var self = this;
-      var gallery = new directory.models.Gallery({id:id, collectionid: id});
-      gallery.fetch({
-          success: function(data) {
-            var currentView = new directory.views.GalleryDetailView({model: data});
-            //this.galleryListView = new directory.views.GalleryListView();
-            self.displayView(currentView);
-            
-          }
-      });
+  //graph discoverView    
+  discoverGalleryTaxonomicTreeView: function(id) {
+    var gallery = directory.data.galleriesList.findWhere( {'collectionid': id});
+    
+    gallery.set('id', id);
+    
+    var currentView = new directory.views.GalleryDetailView({model: gallery});
+    this.displayView(currentView);          
   },
 
   profilDisplay: function(id) {

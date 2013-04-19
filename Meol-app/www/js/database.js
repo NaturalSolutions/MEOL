@@ -10,7 +10,7 @@ function initializeDB(db){
       deferreds.push(runQuery(query , []));
        // creer la table gallery
       query = 'CREATE TABLE IF NOT EXISTS Tgallery (Tgallery_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-        + 'collectionid  NVARCHAR(200),  name  NVARCHAR(200),  description  NVARCHAR(2000), logo  NVARCHAR(200), level INTEGER, ordre INTEGER)';
+        + 'collectionid  NVARCHAR(200),  name  NVARCHAR(200),  description  NVARCHAR(2000), logo  NVARCHAR(200), level INTEGER, ordre INTEGER, active BOOLEAN)';
       deferreds.push(runQuery(query , []));
        // creer la table items
       query = 'CREATE TABLE IF NOT EXISTS Titems (Titem_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
@@ -22,7 +22,7 @@ function initializeDB(db){
       deferreds.push(runQuery(query , []));
 
       query = 'CREATE TABLE IF NOT EXISTS Tscore (Tscore_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-        + 'fk_profil INTEGER, gameDate DATETIME, nbQuestionTotal INTEGER, nbAnswerGood INTEGER, nbAnswerGoodSequence INTEGER, score INTEGER'
+        + 'fk_profil INTEGER, fk_gallery INTEGER, gameDate DATETIME, nbQuestionTotal INTEGER, nbAnswerGood INTEGER, nbAnswerGoodSequence INTEGER, score INTEGER'
         + 'nbQuestionTotalAfrica INTEGER ,nbQuestionTotalAsia INTEGER ,nbQuestionTotalAntartica INTEGER ,nbQuestionTotalEurope INTEGER ,nbQuestionTotalOceania INTEGER ,nbQuestionTotalAmericaNorth INTEGER ,nbQuestionTotalAmericaSouth INTEGER,'
         + 'nbAnswerGoodAfrica INTEGER ,nbAnswerGoodAsia INTEGER ,nbAnswerGoodAntartica INTEGER ,nbAnswerGoodEurope INTEGER ,nbAnswerGoodOceania INTEGER ,nbAnswerGoodAmericaNorth INTEGER ,nbAnswerGoodAmericaSouth INTEGER )';
       deferreds.push(runQuery(query , []));
@@ -62,8 +62,8 @@ console.log('loadGalleryFile');
   var arr = [];
   $.getJSON('data/collection_metadata.json', function(json) {
       $.each(json, function(galleryid, gal) {
-        var query = "Insert into  Tgallery (collectionid, name,  description, logo, level, ordre) values(?,?,?,?,?, ?)";
-        var param = [galleryid , gal.name , gal.description, gal.logo, gal.level, gal.ordre];
+        var query = "Insert into  Tgallery (collectionid, name,  description, logo, level, ordre, active) values(?,?,?,?,?,?,?)";
+        var param = [galleryid , gal.name , gal.description, gal.logo, gal.level, gal.ordre, gal.active];
         arr.push(runQuery(query , param) ); 
       });
       $.when.apply(this, arr).then(function () {

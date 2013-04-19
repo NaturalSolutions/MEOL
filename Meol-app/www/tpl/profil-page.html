@@ -18,16 +18,18 @@
       <tbody>
         <thead>
           <tr class="head gradientDarkBlue">
-        <td>Game Date</td>
-        <td>Good Answers</td>
-        <td>Score</td>
-      </tr>
+            <td>Collection</td>
+            <td>Game Date</td>
+            <td>Good Answers</td>
+            <td>Score</td>
+          </tr>
         </thead>
-      <tr id="score-<%= score.Tscore_PK_Id %>">
-        <td><%= score.gameDate %></td>
-        <td><%= score.nbQuestionTotal %></td>
-        <td><%= score.score %></td>
-      </tr>
+        <tr id="score-<%= score.Tscore_PK_Id %>">
+          <td><%= score.fk_gallery %></td>
+          <td><%= score.gameDate %></td>
+          <td><%= score.nbQuestionTotal %></td>
+          <td><%= score.score %></td>
+        </tr>
       <% i = i+1; }); %>
       </tbody>
     </table>

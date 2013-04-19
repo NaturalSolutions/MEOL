@@ -58,7 +58,12 @@ Backbone.sync = function(method, model, options) {
       }
   }
   else if (method === "create") {
-    dao.create(model, function(data) {
+    dao.createScore(model, function(data) {
+      options.success(data);
+    });
+  }
+  else if (method === "update") {
+    dao.updateGalleryActive(model, function(data) {
       options.success(data);
     });
   }
@@ -200,11 +205,22 @@ directory.dao.TaxonDAO.prototype, {
 
 _.extend(
 directory.dao.GalleryDAO.prototype, {
-
+    updateGalleryActive: function(model, callback) {
+        this.db.transaction(
+            function(tx) {
+                var sql = "UPDATE Tgallery SET active= ? WHERE collectionid = ? ";
+                tx.executeSql(sql, [model.get('active'), model.get('collectionid')]);
+            },
+            function(tx, error) {
+                console.log(tx);
+                alert("Transaction Error: " + error);
+            }
+        );
+    },
     findByName: function(key, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT collectionid , name, description, logo, level, ordre " +
+                var sql = "SELECT collectionid , name, description, logo, level, ordre, active " +
                     "FROM Tgallery " +
                     "WHERE name LIKE ?  LIMIT 20";
 
@@ -228,7 +244,7 @@ directory.dao.GalleryDAO.prototype, {
     findByGalleryId: function(id, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo, level, ordre "+
+                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo, level, ordre, active "+
                     "FROM Tgallery " +
                     "WHERE collectionid = ? ";
                 tx.executeSql(sql, [id], function(tx, results) {
@@ -245,7 +261,7 @@ directory.dao.GalleryDAO.prototype, {
     findAll: function(callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo,level , ordre " +
+                var sql = "SELECT Tgallery_PK_Id, collectionid , name, description, logo,level , ordre, active " +
                     "FROM Tgallery ORDER BY level, ordre ";
              
                 tx.executeSql(sql,[], function(tx, results) {
@@ -409,12 +425,12 @@ directory.dao.ScoreDAO.prototype, {
     "creationDate":new Date()
   },
  * ***/
-    create: function(model, callback) {
+    createScore: function(model, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = 'INSERT INTO  Tscore (fk_profil , gameDate , nbQuestionTotal, nbAnswerGood, nbAnswerGoodSequence, score) ' +
-                          ' VALUES (?, ?, ?, ?, ?, ?) ';
-                tx.executeSql(sql, [model.get('fk_profil'), model.get('gameDate'), model.get('nbQuestionTotal'), model.get('nbAnswerGood'),model.get('nbAnswerGoodSequence'),model.get('score')]);
+                var sql = 'INSERT INTO  Tscore (fk_profil ,fk_gallery, gameDate , nbQuestionTotal, nbAnswerGood, nbAnswerGoodSequence, score) ' +
+                          ' VALUES (?, ?, ?, ?, ?, ?,?) ';
+                tx.executeSql(sql, [model.get('fk_profil'), model.get('fk_gallery'),model.get('gameDate'), model.get('nbQuestionTotal'), model.get('nbAnswerGood'),model.get('nbAnswerGoodSequence'),model.get('score')]);
             },
             function(tx, error) {
                 console.log(tx);

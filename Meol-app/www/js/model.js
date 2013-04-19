@@ -90,7 +90,8 @@ directory.models.Gallery = Backbone.Model.extend({
     "name":"",
     "description":"",
     "logo":"",
-    "level":0
+    "level":0,
+    "active": false
   },
   
   dao:directory.dao.GalleryDAO,
@@ -118,21 +119,28 @@ directory.models.GalleriesCollection = Backbone.Collection.extend({
   },
 
   findAll: function(key) {
-    self = this;
+    var self = this;
     new this.dao(directory.db).findAll(function(data) {
       self.reset(data);
     });
   },
- //TODO findAllPlayGalleries et findAllGraphGalleries
+  
+  galleryIsActive: function(ordre) {
+    var selectedGallery = this.findWhere( {'ordre': ordre});
+    return selectedGallery.get('active');
+  },
+  
+   changeGalleryActivateState: function(ordre) {
+    if (this.galleryIsActive(ordre) !== 'true') {
+      var newStatus = 'true';
+      var collectionid = this.findWhere( {'ordre': ordre}).get('collectionid');
+      this.findWhere( {'ordre': ordre}).set('id', collectionid)
+        .set('active', newStatus)
+        .save();  
+    }
+   },
 });
-/*
-_.extend(
-  directory.models.GalleriesCollection.prototype , {
-    dao: function() {
-        return new directory.dao.GalleryDAO();
-    }, 
-  }
-);*/
+
 // The Items Model
 directory.models.Item = Backbone.Model.extend({
   defaults: {
@@ -231,6 +239,7 @@ directory.models.ProfilsCollection = Backbone.Collection.extend({
 directory.models.Score = Backbone.Model.extend({
   defaults: {
     "fk_profil":null,
+    "fk_gallery":0,
     "gameDate" :new Date(),
     "nbQuestionTotal":0,
     "nbAnswerGood":0,
@@ -273,13 +282,13 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
           self.reset(data);
       });
   },
-  findScoreMaxByProfilId : function (id) {
+/*findScoreMaxByProfilId : function (id) {
      self = this;
      id = parseInt(id);
      new this.dao(directory.db).findScoreMaxByProfilId(id, function(data) {
           self.reset(data);
       });
-  },
+  },*/
   
 });
 //global
@@ -291,7 +300,6 @@ directory.models.myGlogal = Backbone.Model.extend({
   globalSequence:0,
   globalSequenceRecord:0,
   globalProgressBar:0,
-  globalNbGalleries:0,
 
   initialize:function(){
   console.log(this.globalScore)

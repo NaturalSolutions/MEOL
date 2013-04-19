@@ -26,27 +26,21 @@
                 var level = group[0].get('level');
           %>
             <ul class="head" >
-                <!-- use variables -->
-                <li><h2 class="gradientDarkBlue">LEVEL <%= level %></h2></li>
-            
+              <li><h2 class="gradientDarkBlue">LEVEL <%= level %></h2></li>
             <li>
               <ul>
              <%  
               _.each(group,function(item,key,list){
             %>
-                <!-- use variables -->
-                <li><a id='<%= item.get('collectionid') %>' href='#play/<%= item.get('collectionid') %>' class="ui-btn ui-btn-corner-all
-                  <% if(item.get('ordre') > directory.models.myGlogal.countCollection){%><%="ui-disabled"%><%}; %>
-                  ">
-                    <img src="data/images_collection/<%= item.get('logo') %>" class="list-icon"/>
-                    <div class="taxonName">
-                      <p><%= item.get('name') %></p>
-                    </div>
+               <li><a id='<%= item.get('collectionid') %>' href='#play/<%= item.get('collectionid') %>' class="ui-btn ui-btn-corner-all
+                <% if(item.get('active') == "false"){%><%="ui-disabled"%><%}; %>">
+                  <img src="data/images_collection/<%= item.get('logo') %>" class="list-icon"/>
+                  <div class="taxonName">
+                    <p><%= item.get('name') %></p>
+                  </div>
                   </a>
-                  <%console.log(item.get('ordre'));%>
                 </li>
-            
-            <% }); console.log(directory.models.myGlogal.countCollection); %>
+            <% });%>
               </ul>
             </li>
           </ul>
