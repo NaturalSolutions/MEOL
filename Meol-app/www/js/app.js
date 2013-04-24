@@ -44,7 +44,9 @@ function init(){
             $('#dataloader-img').remove();
             $("body").removeClass("ui-disabled");
         }
-      });
+    });
+    
+   
     /*directory.app.bind("all",function(route, router) {
     console.log("Different Page: " + route);
 });*/

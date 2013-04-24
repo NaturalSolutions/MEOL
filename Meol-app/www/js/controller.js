@@ -117,7 +117,7 @@ directory.Router = Backbone.Router.extend({
   },
   
   playListGallery: function() {
-    //console.log(directory.data.galleriesList);
+    console.log(directory.data.galleriesList);
     var currentView = new directory.views.playListGalleryView({collection: directory.data.galleriesList, currentProfil : self.currentProfil});
     this.displayView(currentView);
   },
@@ -133,8 +133,17 @@ directory.Router = Backbone.Router.extend({
        window.history.back();
        return false;
     }else{
-      var currentView = new directory.views.playGameboardView({model: gallery, currentProfil : self.currentProfil});
-      self.displayView(currentView);
+      var selfProfil =self.currentProfil;
+      var scoreByfk_profil = new directory.models.ScoresCollection();
+      var max =  scoreByfk_profil.findAllScoreByProfilId(selfProfil);
+      console.log(max);
+      scoreByfk_profil.fetch({
+          success: function(data) {
+          var lastScoreByGallery = data.findWhere({'fk_gallery': parseInt(id)});
+          var currentView = new directory.views.playGameboardView({model: gallery, currentProfil : self.currentProfil, lastScoreByGallery: lastScoreByGallery});
+          self.displayView(currentView);
+          }
+      });
     }
   
   },

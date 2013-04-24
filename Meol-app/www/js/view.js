@@ -221,7 +221,7 @@ directory.views.playListGalleryView = Backbone.View.extend({
 	this.currentProfil = this.options.currentProfil;
     this.template = _.template(this.templateLoader.get('play-gallery'));
 	// Tgallery_PK_Id gallery 1 enabled by default (see template play-gallery)
-	if(typeof(directory.models.myGlogal.countCollection) =='undefined'){directory.models.myGlogal.countCollection = 1 ;};
+	//if(typeof(directory.models.myGlogal.countCollection) =='undefined'){directory.models.myGlogal.countCollection = 1 ;};
   },
 
   render: function(eventName) {
@@ -412,18 +412,27 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var currentCollectionOrdre = this.model.get('ordre');
 	var  nextCollectionOrdre = currentCollectionOrdre+1;
 	this.nextGalleryActive = directory.data.galleriesList.galleryIsActive(nextCollectionOrdre);
-
+	
+	if(typeof(this.options.lastScoreByGallery) != 'undefined'){
+	  this.lastScoreByGallery =this.options.lastScoreByGallery;
+	}
+	else
+	{this.lastScoreByGallery = new directory.models.ScoresCollection()}
+	
     this.itemsCollection.findAllByCollectionid(collectionId);
     this.currentProfil = this.options.currentProfil;
     this.currentScoreGame = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id'),"fk_gallery":collectionId});
 	this.template = _.template(this.templateLoader.get('play-gameboard'));
     this.model.bind("change", this.saveScore, this);
+	//enlever ?
+	//this.model.bind("change", this.render, this);
   },
   
   render : function() {
-    this.$el.html(this.template( {"gallery": this.model.toJSON(), "profil":this.currentProfil.toJSON(),"score":this.currentScoreGame.toJSON()}));
+    this.$el.html(this.template( {"gallery": this.model.toJSON(), "profil":this.currentProfil.toJSON(),"score":this.lastScoreByGallery.toJSON()}));
     $('#map', this.$el).load('css/map/map_EOL.svg');
 	console.log(this.nextGalleryActive);
+	
     return this;
   },
   
@@ -474,8 +483,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	for( var desactive in desactiveContinent ){
 	  d3.select("#"+desactiveContinent[desactive]).remove();
 	};*/
-	//test persistance global app
-	console.log(directory.models.myGlogal.globalScore);
+	
     d3.select("#map svg").selectAll(".pion").classed("hideInfoContinent",true);
 	//d3.select("#map svg").selectAll(".pion").style("display","none");
 	d3.select("#selectRandomContinent").classed("hidden",true);
@@ -532,43 +540,60 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   saveScore: function () {
-    this.currentScoreGame.save();
+	var nextCollectionOrdre = this.model.get('ordre')+1;
+	var currentsc = parseInt($("#scoreValue").val());
+	  if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true' || typeof(this.lastScoreByGallery.get('score')) === 'undefined') {
+		this.currentScoreGame.set('score', currentsc)
+		.set('fk_gallery', this.model.get('collectionid'))
+		.save();
+	  }else{
+		if(this.lastScoreByGallery.get('score') != currentsc){
+		  this.lastScoreByGallery.set('score', currentsc).save();
+		}
+	  };
+	
 	//globals score
-	directory.models.myGlogal.globalScore = parseInt($("#scoreValue").val());
+	/*directory.models.myGlogal.globalScore = parseInt($("#scoreValue").val());
 	directory.models.myGlogal.globalBonus = parseInt($("#bonusValue").val());
 	directory.models.myGlogal.globalSequence = parseInt($("#nbAnwserGoodSequenceValue").val());
 	directory.models.myGlogal.globalSequenceRecord = parseInt($("#nbAnwserGoodSequenceRecordText").text());
-	directory.models.myGlogal.globalProgressBar = $("#meterScore").css("width");
+	directory.models.myGlogal.globalProgressBar = $("#meterScore").css("width");*/
   },
   
   updateScore: function(event){
 	var currentsc = parseInt($("#scoreTotalValue").val());
-	var countGallery = this.model.get('ordre');
 	//progress Bar
 	var scoreProgressBar = currentsc/20;
 	var scoreProgressTotal= $("#meterScore").css("width");
-	if(parseInt(scoreProgressBar) >= countGallery*100){
-		  var nextCollectionOrdre = this.model.get('ordre')+1;
-		  if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
+	var currentCollectionOrdre = this.model.get('ordre');
+	var nextCollectionOrdre = this.model.get('ordre')+1;
+	  //if nextCollection false
+  	  if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
+		//if score >= seuil (galleryOrdre = x,  seuil = x*100) => nextCollection activate True
+		if(parseInt(scoreProgressBar) >= 100){
 			var nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
-			var resteScore = scoreProgressBar - countGallery*100;
+			//var resteScore = scoreProgressBar - countGallery*100;
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
 			$("#meterScore").css("width",scoreProgressBar+"%");
 			$("#activateCollMessageModal").html("<em>New collection!<br/>"+nextCollectionName+"</em>");
 			setTimeout(function(){$("#collectionModal").show().alert();},100);
-			setTimeout(function(){$("#meterScore").fadeIn(1000).css("width",resteScore+"%");},3000);
+			setTimeout(function(){$("#meterScore").fadeIn(1000).css("width","100%");},3000);
 			setTimeout(function(){$("#collectionModal").hide().alert();},3000);
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
-			directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);  
-		}
-	}else{
-		if(directory.models.myGlogal.countCollection > 1){
-		  var currentScoreProgressBar = scoreProgressBar - (directory.models.myGlogal.countCollection-1)*100;
-		  $("#meterScore").css("width",currentScoreProgressBar+"%");
-		}else{
-		 $("#meterScore").css("width",scoreProgressBar+"%");
+			directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
+		// score < seuil (galleryOrdre = x,  seuil = x*100) 
+	  	}else{
+			$("#meterScore").css("width",scoreProgressBar+"%");
 		};
-	};
+	  
+	  // nextCollection activate TRUE : bonus, GoodSequence equal last value in DB
+	  }else{
+		  $("#meterScore").fadeIn(1000).css("width","100%");
+		  $("#nbAnwserGoodSequenceText").html("0");
+		  $("#bonusValue").val("0");
+		  $("#nbAnwserGoodSequenceRecordText").html("0"); 
+  	};
+
 	//Mise à jour de la table des scores
     this.currentScoreGame.set('score', currentsc);
   },
@@ -582,6 +607,12 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   updateNbAnwserGoodSequenceValue: function(event){
 	$("#bonusValue").val("0");
+	var nextCollectionOrdre = this.model.get('ordre')+1;
+	
+	var scoreTaxon = parseInt($("#scoreValue").val());
+	$("#scoreText").html(scoreTaxon);
+	
+	if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
 	$("#nbAnwserGoodSequenceText").html($("#nbAnwserGoodSequenceValue").val());
 	var currentnbAnswerGoodSequence = $("#nbAnwserGoodSequenceValue").val();
 	var currentnbAnswerGoodRecordSequence = $("#nbAnwserGoodSequenceRecordText").text();
@@ -602,9 +633,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  var currentsc = this.currentScoreGame.get('nbAnswerGoodSequence');
 	  this.currentScoreGame.set('nbAnswerGoodSequence', currentsc+1);
 	}
-	var scoreTaxon = parseInt($("#scoreValue").val());
+	
 	var scoreBonus = parseInt($("#bonusValue").val());
-    $("#scoreText").html(scoreTaxon);
 	var score = scoreTaxon + scoreBonus;
 	$("#scoreTotalValue").val(score).trigger('change');
 	
@@ -615,6 +645,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");
 	setTimeout(function(){$("#bonus").fadeIn(2000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},2400);
 	$("#bonusMessageModal").html("+"+scoreBonus+" BONUS  points");
+	}
 	}
   },
   
@@ -828,9 +859,9 @@ directory.views.RandomItemListView = Backbone.View.extend({
       $("#scoreValue").val(currentScore+0).trigger('change');
 	  //nb NbAnwserGood
 	  var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
-      $("#nbAnwserGoodValue").val(currentNbAnwserGood+0).trigger('change');
+	  $("#nbAnwserGoodValue").val(currentNbAnwserGood+0).trigger('change');
 	  //nb nbAnwserGoodSequence
-      $("#nbAnwserGoodSequenceValue").val(0).trigger('change');
+	  $("#nbAnwserGoodSequenceValue").val(0).trigger('change');
       //Message Modal
       $("#txtMessageModal").html("Sorry!");
       

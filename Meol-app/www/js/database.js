@@ -10,7 +10,7 @@ function initializeDB(db){
       deferreds.push(runQuery(query , []));
        // creer la table gallery
       query = 'CREATE TABLE IF NOT EXISTS Tgallery (Tgallery_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-        + 'collectionid  NVARCHAR(200),  name  NVARCHAR(200),  description  NVARCHAR(2000), logo  NVARCHAR(200), level INTEGER, ordre INTEGER, active BOOLEAN)';
+        + 'collectionid  NVARCHAR(200),  name  NVARCHAR(200),  description  NVARCHAR(2000), logo  NVARCHAR(200), level INTEGER, ordre INTEGER, active NVARCHAR(10))';
       deferreds.push(runQuery(query , []));
        // creer la table items
       query = 'CREATE TABLE IF NOT EXISTS Titems (Titem_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '

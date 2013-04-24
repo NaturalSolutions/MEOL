@@ -130,7 +130,7 @@ directory.models.GalleriesCollection = Backbone.Collection.extend({
     return selectedGallery.get('active');
   },
   
-   changeGalleryActivateState: function(ordre) {
+  changeGalleryActivateState: function(ordre) {
     if (this.galleryIsActive(ordre) !== 'true') {
       var newStatus = 'true';
       var collectionid = this.findWhere( {'ordre': ordre}).get('collectionid');
@@ -138,7 +138,7 @@ directory.models.GalleriesCollection = Backbone.Collection.extend({
         .set('active', newStatus)
         .save();  
     }
-   },
+  },
 });
 
 // The Items Model
@@ -282,7 +282,7 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
           self.reset(data);
       });
   },
-/*findScoreMaxByProfilId : function (id) {
+ /* findScoreMaxByProfilId : function (id) {
      self = this;
      id = parseInt(id);
      new this.dao(directory.db).findScoreMaxByProfilId(id, function(data) {
@@ -290,9 +290,15 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
       });
   },*/
   
+  findScoreMaxByProfilId: function(id) {
+    var selectedGallery = this.findWhere( {'fk_gallery': id});
+    //var scoreByGallery = selectedGallery.pluck('score'); 
+   return selectedGallery;
+  }
 });
+
 //global
-directory.models.myGlogal = Backbone.Model.extend({
+/*directory.models.myGlogal = Backbone.Model.extend({
 
   countCollection: 1,
   globalScore: 0,
@@ -300,9 +306,9 @@ directory.models.myGlogal = Backbone.Model.extend({
   globalSequence:0,
   globalSequenceRecord:0,
   globalProgressBar:0,
-
+  
   initialize:function(){
-  console.log(this.globalScore)
+  console.log(this.globalScore);
   },
-});
+});*/
  

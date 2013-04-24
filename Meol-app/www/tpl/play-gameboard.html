@@ -51,26 +51,24 @@
     <div id="iconUser" ></div>
     <h2>Player 1</h2>
     <div class="progress progress-striped active">
-      <div class="bar" id="meterScore" style="width:<% if(typeof(directory.models.myGlogal.globalProgressBar) != 'undefined') { %> <%= directory.models.myGlogal.globalProgressBar %> <% }else{%>0<%};%>;"></div>
+      <div class="bar" id="meterScore" style="width:<% if(typeof(score.score) != 'undefined') { %> <%= score.score/20 %>%<% }else{%>0<%};%>"></div>
     </div>
     <input id="scoreTotalValue" type="hidden" value ="0"/>
-    <input id="scoreValue" type="hidden" value = "<% if(typeof(directory.models.myGlogal.globalScore) != 'undefined') { %> <%= directory.models.myGlogal.globalScore %> <% }else{%>0<%};%>"/>
+    <input id="scoreValue" type="hidden" value = "<% if(typeof(score.score) != 'undefined') { %> <%= score.score %> <% }else{%>0<%};%>"/>
     <label>Score</label>
-    <span id ="scoreText" class="scoreSpan"><% if(typeof(directory.models.myGlogal.globalScore) != 'undefined') { %> <%= directory.models.myGlogal.globalScore %> <% }else{%>0<%};%></span>
+    <span id ="scoreText" class="scoreSpan"><% if(typeof(score.score) != 'undefined') { %> <%= score.score %> <% }else{%>0<%};%></span>
     <label>BONUS</label>
-    <input id="bonusValue" type="hidden" value = "<% if(typeof(directory.models.myGlogal.globalBonus) != 'undefined') { %> <%= directory.models.myGlogal.globalBonus %> <% }else{%>0<%};%>"/>
-    <span id ="bonus" class="scoreSpan"><% if(typeof(directory.models.myGlogal.globalBonus) != 'undefined') { %> <%= directory.models.myGlogal.globalBonus %> <% }else{%>0<%};%></span>
+    <input id="bonusValue" type="hidden" value = "0"/>
+    <span id ="bonus" class="scoreSpan">0</span>
     <input id="nbAnwserGoodValue" type="hidden" value = "0"/>
     <label>Sequence</label>
-    <!--<input id="nbAnwserGoodSequenceRecordValue" type="hidden" value = "<% if(typeof(directory.models.myGlogal.globalSequenceRecord) != 'undefined') { %> <%= directory.models.myGlogal.globalSequenceRecord %> <% }else{%>0<%};%>"/>-->
-    <input id="nbAnwserGoodSequenceValue" type="hidden" value = "<% if(typeof(directory.models.myGlogal.globalSequence) != 'undefined') { %> <%= directory.models.myGlogal.globalSequence %> <% }else{%>0<%};%>"/>
+    <input id="nbAnwserGoodSequenceValue" type="hidden" value = "<% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %> <%= score.nbAnswerGoodSequence %> <% }else{%>0<%};%>"/>
     <span class="scoreSpan">
-      <span id ="nbAnwserGoodSequenceText"><% if(typeof(directory.models.myGlogal.globalSequence) != 'undefined') { %> <%= directory.models.myGlogal.globalSequence %> <% }else{%>0<%};%></span>
+      <span id ="nbAnwserGoodSequenceText"><% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %> <%= score.nbAnswerGoodSequence %> <% }else{%>0<%};%></span>
       <span> / </span>
-      <span id ="nbAnwserGoodSequenceRecordText"><% if(typeof(directory.models.myGlogal.globalSequenceRecord) != 'undefined') { %> <%= directory.models.myGlogal.globalSequenceRecord %> <% }else{%>0<%};%></span>
+      <span id ="nbAnwserGoodSequenceRecordText"><% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %> <%= score.nbAnswerGoodSequence %> <% }else{%>0<%};%></span>
     </span>
   </div>
- <%console.log(score)%>
   <div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div> 
     
   <div id="requestPanel" class="gradientDarkBlue">

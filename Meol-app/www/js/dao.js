@@ -63,11 +63,11 @@ Backbone.sync = function(method, model, options) {
     });
   }
   else if (method === "update") {
-    dao.updateGalleryActive(model, function(data) {
-      options.success(data);
-    });
-  }
-};
+       dao.updateGalleryActive(model, function(data) {
+        options.success(data);  
+       });
+    }
+  };
 
 
 
@@ -438,6 +438,18 @@ directory.dao.ScoreDAO.prototype, {
             }
         );
     },
+    /*updateScore: function(model, callback) {
+        this.db.transaction(
+            function(tx) {
+                var sql = "UPDATE Tscore SET score= ? WHERE fk_gallery = ? AND fk_profil = ?";
+                tx.executeSql(sql, [model.get('score'), model.get('fk_gallery'), model.get('fk_profil')]);
+            },
+            function(tx, error) {
+                console.log(tx);
+                alert("Transaction Error: " + error);
+            }
+        );
+    },*/
 
     findAllScoreByProfilId: function(key, callback) {
         this.db.transaction(
@@ -461,7 +473,7 @@ directory.dao.ScoreDAO.prototype, {
         );
     },
    
-    findScoreMaxByProfilId: function(id, callback) {
+   findScoreMaxByProfilId: function(id, callback) {
         this.db.transaction(
             function(tx) {
                 var sql = "SELECT MAX(score) FROM Tscore WHERE fk_profil = ?";
@@ -485,7 +497,7 @@ directory.dao.ScoreDAO.prototype, {
      findAll: function(callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT * FROM Tscore LIMIT 3" ;
+                var sql = "SELECT * FROM Tscore ORDER BY Tscore_PK_Id DESC" ;
              
                 tx.executeSql(sql,[], function(tx, results) {
                     var len = results.rows.length, profils = [], i = 0;
