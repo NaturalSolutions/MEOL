@@ -813,10 +813,10 @@ directory.views.RandomItemListView = Backbone.View.extend({
     //Selection des items corrects pour ce continent
     var correctItems = new Array();
     var existTrueResponse = false;
-    $("#reponseMessageModal").before('<h5>The correct answer was...</h5>');
     for (var id in this.model.models) {
       correctItems[id] = false;
       var presence = this.model.models[id].attributes.iNat.split(",");
+	  
       for (var idNat in presence) {
         if (currentContinentStr.toLowerCase() == presence[idNat].toLowerCase()) {
           correctItems[id] = true;
@@ -843,8 +843,10 @@ directory.views.RandomItemListView = Backbone.View.extend({
 	  //pondération Nb total de bonnes réponses possibles à la question
 	  if (arrayLength > 1){
 		var weightNbPossibilyties = arrayLength*50;
+		$("#reponseMessageModal").before('<h5>Correct answers were...</h5>');
 	  }else{
-		 var weightNbPossibilyties = 0;
+		var weightNbPossibilyties = 0;
+		$("#reponseMessageModal").before('<h5>The correct answer was...</h5>');
 	  }
 	 
 	};
