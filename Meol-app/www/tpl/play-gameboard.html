@@ -51,7 +51,7 @@
     <div id="iconUser" ></div>
     <h2>Player 1</h2>
     <div class="progress progress-striped active">
-      <div class="bar" id="meterScore" style="width:<% if(typeof(score.score) != 'undefined') { %> <%= score.score/20 %>%<% }else{%>0<%};%>"></div>
+      <div class="bar" id="meterScore" style="width:<% if(typeof(score.score) != 'undefined') { %> <%= score.score/200 %>%<% }else{%>0<%};%>"></div>
     </div>
     <input id="scoreTotalValue" type="hidden" value ="0"/>
     <input id="scoreValue" type="hidden" value = "<% if(typeof(score.score) != 'undefined') { %> <%= score.score %> <% }else{%>0<%};%>"/>
@@ -64,13 +64,15 @@
     <label>Sequence</label>
     <input id="nbAnwserGoodSequenceValue" type="hidden" value = "<% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %> <%= score.nbAnswerGoodSequence %> <% }else{%>0<%};%>"/>
     <span class="scoreSpan">
-      <span id ="nbAnwserGoodSequenceText"><% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %> <%= score.nbAnswerGoodSequence %> <% }else{%>0<%};%></span>
+      <span id ="nbAnwserGoodSequenceText"><% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %><%=score.nbAnswerGoodSequence%><% }else{%>0<%};%></span>
       <span> / </span>
-      <span id ="nbAnwserGoodSequenceRecordText"><% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %> <%= score.nbAnswerGoodSequence %> <% }else{%>0<%};%></span>
+      <span id ="nbAnwserGoodSequenceRecordText"><% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %><%=score.nbAnswerGoodSequence%><% }else{%>0<%};%></span>
     </span>
+    <label>Score Total</label>
+    <span id ="allScore" class="scoreSpan"><% if(typeof(allScore) != 'undefined') { %> <%= allScore %> <% }else{%>0<%};%></span>
   </div>
-  <div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div> 
-    
+  <div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div>
+  
   <div id="requestPanel" class="gradientDarkBlue">
     <input id="currentContinent" type="hidden"/>
     <div id="firstMessagePlay" style="display:inherit;"><h2><em>Click on dice button to begin the party!</em><h2></div>

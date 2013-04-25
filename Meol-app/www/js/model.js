@@ -91,6 +91,7 @@ directory.models.Gallery = Backbone.Model.extend({
     "description":"",
     "logo":"",
     "level":0,
+    "ordre":0,
     "active": false
   },
   
@@ -127,11 +128,14 @@ directory.models.GalleriesCollection = Backbone.Collection.extend({
   
   galleryIsActive: function(ordre) {
     var selectedGallery = this.findWhere( {'ordre': ordre});
-    return selectedGallery.get('active');
+    if(typeof(selectedGallery) !== 'undefined'){
+      return selectedGallery.get('active');
+    }
+   
   },
   
   changeGalleryActivateState: function(ordre) {
-    if (this.galleryIsActive(ordre) !== 'true') {
+    if (this.galleryIsActive(ordre) !== 'true' && this.galleryIsActive(ordre) !== 'undefined') {
       var newStatus = 'true';
       var collectionid = this.findWhere( {'ordre': ordre}).get('collectionid');
       this.findWhere( {'ordre': ordre}).set('id', collectionid)

@@ -419,6 +419,22 @@ directory.views.playGameboardView = Backbone.View.extend({
 	else
 	{this.lastScoreByGallery = new directory.models.ScoresCollection()}
 	
+	if(typeof(this.options.scoreByfk_profil) !== 'undefined'){
+	  this.scoreByfk_profil =this.options.scoreByfk_profil;
+	 // this.scoreByfk_profil.comparator = function(scoreByDateByCollection) {
+	  //return scoreByDateByCollection.get("score");
+	  //};
+	  var scoreAll = this.scoreByfk_profil.pluck('score');
+	  this.ScoreGlobal = 0;
+	  for( var item in scoreAll ){
+		this.ScoreGlobal += parseInt(scoreAll[item]);
+	  }
+	}
+	else{
+	  this.ScoreGlobal = new directory.models.ScoresCollection()
+	}
+
+	console.log(this.ScoreGlobal);
     this.itemsCollection.findAllByCollectionid(collectionId);
     this.currentProfil = this.options.currentProfil;
     this.currentScoreGame = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id'),"fk_gallery":collectionId});
@@ -429,7 +445,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   render : function() {
-    this.$el.html(this.template( {"gallery": this.model.toJSON(), "profil":this.currentProfil.toJSON(),"score":this.lastScoreByGallery.toJSON()}));
+    this.$el.html(this.template( {"gallery": this.model.toJSON(), "profil":this.currentProfil.toJSON(),"score":this.lastScoreByGallery.toJSON(),"allScore":this.ScoreGlobal}));
     $('#map', this.$el).load('css/map/map_EOL.svg');
 	console.log(this.nextGalleryActive);
 	
@@ -478,14 +494,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   },                                             
   
   selectRandomContinent: function(event){
-	/*var activeContinent = this.model.attributes.activeContinent;
-	var desactiveContinent = this.model.attributes.desactiveContinent;
-	for( var desactive in desactiveContinent ){
-	  d3.select("#"+desactiveContinent[desactive]).remove();
-	};*/
-	
     d3.select("#map svg").selectAll(".pion").classed("hideInfoContinent",true);
-	//d3.select("#map svg").selectAll(".pion").style("display","none");
 	d3.select("#selectRandomContinent").classed("hidden",true);
 	$("#firstMessagePlay").css("display","none");
 	$("#continentName").css("display","inherit");
@@ -541,8 +550,8 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   saveScore: function () {
 	var nextCollectionOrdre = this.model.get('ordre')+1;
-	var currentsc = parseInt($("#scoreValue").val());
-	  if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true' || typeof(this.lastScoreByGallery.get('score')) === 'undefined') {
+	var currentsc = parseInt($("#scoreTotalValue").val());
+	 /* if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true' || typeof(this.lastScoreByGallery.get('score')) === 'undefined') {
 		this.currentScoreGame.set('score', currentsc)
 		.set('fk_gallery', this.model.get('collectionid'))
 		.save();
@@ -550,20 +559,16 @@ directory.views.playGameboardView = Backbone.View.extend({
 		if(this.lastScoreByGallery.get('score') != currentsc){
 		  this.lastScoreByGallery.set('score', currentsc).save();
 		}
-	  };
-	
-	//globals score
-	/*directory.models.myGlogal.globalScore = parseInt($("#scoreValue").val());
-	directory.models.myGlogal.globalBonus = parseInt($("#bonusValue").val());
-	directory.models.myGlogal.globalSequence = parseInt($("#nbAnwserGoodSequenceValue").val());
-	directory.models.myGlogal.globalSequenceRecord = parseInt($("#nbAnwserGoodSequenceRecordText").text());
-	directory.models.myGlogal.globalProgressBar = $("#meterScore").css("width");*/
+	  };*/
+	 this.currentScoreGame.set('score', currentsc)
+		.set('fk_gallery', this.model.get('collectionid'))
+		.save();
   },
   
   updateScore: function(event){
 	var currentsc = parseInt($("#scoreTotalValue").val());
-	//progress Bar
-	var scoreProgressBar = currentsc/20;
+	//progress BaractivateCollMessageModal
+	var scoreProgressBar = currentsc/200;
 	var scoreProgressTotal= $("#meterScore").css("width");
 	var currentCollectionOrdre = this.model.get('ordre');
 	var nextCollectionOrdre = this.model.get('ordre')+1;
@@ -571,16 +576,18 @@ directory.views.playGameboardView = Backbone.View.extend({
   	  if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
 		//if score >= seuil (galleryOrdre = x,  seuil = x*100) => nextCollection activate True
 		if(parseInt(scoreProgressBar) >= 100){
+		  if(parseInt(nextCollectionOrdre) < parseInt(directory.data.galleriesList.length)){
 			var nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
-			//var resteScore = scoreProgressBar - countGallery*100;
+			directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
+			setTimeout(function(){$("#collectionModal").show().alert();},100);
+			setTimeout(function(){$("#collectionModal").hide().alert();},3000);
+		  }
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
 			$("#meterScore").css("width",scoreProgressBar+"%");
 			$("#activateCollMessageModal").html("<em>New collection!<br/>"+nextCollectionName+"</em>");
-			setTimeout(function(){$("#collectionModal").show().alert();},100);
 			setTimeout(function(){$("#meterScore").fadeIn(1000).css("width","100%");},3000);
-			setTimeout(function(){$("#collectionModal").hide().alert();},3000);
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
-			directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
+			
 		// score < seuil (galleryOrdre = x,  seuil = x*100) 
 	  	}else{
 			$("#meterScore").css("width",scoreProgressBar+"%");
@@ -589,9 +596,9 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  // nextCollection activate TRUE : bonus, GoodSequence equal last value in DB
 	  }else{
 		  $("#meterScore").fadeIn(1000).css("width","100%");
-		  $("#nbAnwserGoodSequenceText").html("0");
-		  $("#bonusValue").val("0");
-		  $("#nbAnwserGoodSequenceRecordText").html("0"); 
+		  //$("#nbAnwserGoodSequenceText").html("0");
+		 // $("#bonusValue").val("0");
+		  //$("#nbAnwserGoodSequenceRecordText").html("0"); 
   	};
 
 	//Mise à jour de la table des scores
@@ -610,15 +617,15 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var nextCollectionOrdre = this.model.get('ordre')+1;
 	
 	var scoreTaxon = parseInt($("#scoreValue").val());
-	$("#scoreText").html(scoreTaxon);
+	//var scoreTaxon = parseInt($("#scoreTotalValue").val());
+	//$("#scoreText").html(scoreTaxon);
 	
-	if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
 	$("#nbAnwserGoodSequenceText").html($("#nbAnwserGoodSequenceValue").val());
 	var currentnbAnswerGoodSequence = $("#nbAnwserGoodSequenceValue").val();
 	var currentnbAnswerGoodRecordSequence = $("#nbAnwserGoodSequenceRecordText").text();
 	var bonusFibo = fiboSuite() ;
 	
-	if(currentnbAnswerGoodSequence > currentnbAnswerGoodRecordSequence){
+	if(parseInt(currentnbAnswerGoodSequence) > parseInt(currentnbAnswerGoodRecordSequence)){
 	  $("#nbAnwserGoodSequenceRecordText").html($("#nbAnwserGoodSequenceValue").val());
 	  var currentNbAnwserGoodSequenceValue = parseInt($("#nbAnwserGoodSequenceValue").val());
 	  var currentFibo = bonusFibo(currentNbAnwserGoodSequenceValue);
@@ -637,6 +644,9 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var scoreBonus = parseInt($("#bonusValue").val());
 	var score = scoreTaxon + scoreBonus;
 	$("#scoreTotalValue").val(score).trigger('change');
+	$("#scoreText").html(score);
+	var scoreAllGalleries = score + this.ScoreGlobal ;
+	$('#allscore').html(scoreAllGalleries);
 	
 	
 	//Modal Bonus
@@ -646,7 +656,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	setTimeout(function(){$("#bonus").fadeIn(2000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},2400);
 	$("#bonusMessageModal").html("+"+scoreBonus+" BONUS  points");
 	}
-	}
+	
   },
   
   
@@ -655,19 +665,19 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.currentScoreGame.set('nbQuestionTotal', currentscnbQuestionTotal+1);
 	var currentContinentStr = $("#currentContinent").val();
 	
-	//Recherche jusqu'à 4x si indexId1 est sur le currentContinent
+	//Recherche jusqu'à 40x si indexId1 est sur le currentContinent
 	var selectedItemsCollection = new directory.models.ItemsCollection();
     var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
 	var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
 	var countPresence=0;
 	if(typeof(currentContinentStr) !== 'undefined'){
 	  for (var idNat in presence) {
-		if(countPresence > 20 || currentContinentStr == presence[idNat] || typeof(presence[idNat]) == 'undefined'){
+		if(countPresence > 40 || currentContinentStr == presence[idNat] || typeof(presence[idNat]) == 'undefined'){
 		  break;
 		};
 		if(typeof(presence[idNat]) !== 'undefined'){
 		  while (currentContinentStr != presence[idNat]) {
-		  if(countPresence > 20){
+		  if(countPresence > 40){
 			break;
 		  };
 		  indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);

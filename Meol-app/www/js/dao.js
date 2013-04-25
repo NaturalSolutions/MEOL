@@ -63,11 +63,18 @@ Backbone.sync = function(method, model, options) {
     });
   }
   else if (method === "update") {
-       dao.updateGalleryActive(model, function(data) {
+   /* if (model.attributes) {
+        if ( (model.attributes.fk_gallery)) {
+          dao.updateScore(model.attributes.fk_gallery, function(data) {
+              options.success(data);
+          });
+        }
+    }else{*/
+      dao.updateGalleryActive(model, function(data) {
         options.success(data);  
-       });
-    }
-  };
+      });
+   }
+ };
 
 
 
@@ -438,19 +445,19 @@ directory.dao.ScoreDAO.prototype, {
             }
         );
     },
-    /*updateScore: function(model, callback) {
+        updateScore: function(model, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "UPDATE Tscore SET score= ? WHERE fk_gallery = ? AND fk_profil = ?";
-                tx.executeSql(sql, [model.get('score'), model.get('fk_gallery'), model.get('fk_profil')]);
+                var sql = "UPDATE Tscore SET * WHERE fk_gallery = ? ";
+                tx.executeSql(sql, [model.get('fk_gallery')]);
             },
             function(tx, error) {
                 console.log(tx);
                 alert("Transaction Error: " + error);
             }
         );
-    },*/
-
+    },
+   
     findAllScoreByProfilId: function(key, callback) {
         this.db.transaction(
             function(tx) {

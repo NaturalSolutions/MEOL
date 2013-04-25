@@ -135,12 +135,10 @@ directory.Router = Backbone.Router.extend({
     }else{
       var selfProfil =self.currentProfil;
       var scoreByfk_profil = new directory.models.ScoresCollection();
-      var max =  scoreByfk_profil.findAllScoreByProfilId(selfProfil);
-      console.log(max);
       scoreByfk_profil.fetch({
           success: function(data) {
           var lastScoreByGallery = data.findWhere({'fk_gallery': parseInt(id)});
-          var currentView = new directory.views.playGameboardView({model: gallery, currentProfil : self.currentProfil, lastScoreByGallery: lastScoreByGallery});
+          var currentView = new directory.views.playGameboardView({model: gallery, currentProfil : self.currentProfil, lastScoreByGallery: lastScoreByGallery, scoreByfk_profil:data});
           self.displayView(currentView);
           }
       });
