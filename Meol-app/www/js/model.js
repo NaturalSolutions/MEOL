@@ -286,33 +286,21 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
           self.reset(data);
       });
   },
- /* findScoreMaxByProfilId : function (id) {
-     self = this;
-     id = parseInt(id);
-     new this.dao(directory.db).findScoreMaxByProfilId(id, function(data) {
-          self.reset(data);
-      });
-  },*/
-  
-  findScoreMaxByProfilId: function(id) {
-    var selectedGallery = this.findWhere( {'fk_gallery': id});
-    //var scoreByGallery = selectedGallery.pluck('score'); 
-   return selectedGallery;
-  }
-});
-
-//global
-/*directory.models.myGlogal = Backbone.Model.extend({
-
-  countCollection: 1,
-  globalScore: 0,
-  globalBonus: 0,
-  globalSequence:0,
-  globalSequenceRecord:0,
-  globalProgressBar:0,
-  
-  initialize:function(){
-  console.log(this.globalScore);
-  },
-});*/
  
+  findScoreMaxByGallery: function() {
+     var d = $.Deferred();
+     (new this.dao(directory.db)).findScoreMaxByGallery(function(data) {
+          d.resolve(data);
+      });
+     return d;
+  },
+  
+  findScoreMaxByGalleryId: function(id) {
+     var d = $.Deferred();
+     (new this.dao(directory.db)).findScoreMaxByGalleryId(function(data) {
+          d.resolve(data);
+      });
+     return d;
+  }
+  
+});

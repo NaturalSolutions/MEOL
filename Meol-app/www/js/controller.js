@@ -136,11 +136,16 @@ directory.Router = Backbone.Router.extend({
       var selfProfil =self.currentProfil;
       var scoreByfk_profil = new directory.models.ScoresCollection();
       scoreByfk_profil.fetch({
-          success: function(data) {
-          var lastScoreByGallery = data.findWhere({'fk_gallery': parseInt(id)});
-          var currentView = new directory.views.playGameboardView({model: gallery, currentProfil : self.currentProfil, lastScoreByGallery: lastScoreByGallery, scoreByfk_profil:data});
+        success: function(data) {
+        var lastScoreByGallery = data.findWhere({'fk_gallery': parseInt(id)});
+        var deferred = data.findScoreMaxByGallery();
+        deferred.done(function(items) {
+          var score = 0;
+          _.each(items, function(item) {score += item.score_max;});
+          var currentView = new directory.views.playGameboardView({model: gallery, currentProfil : self.currentProfil, lastScoreByGallery: lastScoreByGallery, scoreByfk_profil:data, ScoreGlobal: score});
           self.displayView(currentView);
-          }
+          });  
+        }
       });
     }
   

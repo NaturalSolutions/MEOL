@@ -413,35 +413,27 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var  nextCollectionOrdre = currentCollectionOrdre+1;
 	this.nextGalleryActive = directory.data.galleriesList.galleryIsActive(nextCollectionOrdre);
 	
-	if(typeof(this.options.lastScoreByGallery) != 'undefined'){
+	if(typeof(this.options.lastScoreByGallery) !== 'undefined'){
 	  this.lastScoreByGallery =this.options.lastScoreByGallery;
 	}
 	else
 	{this.lastScoreByGallery = new directory.models.ScoresCollection()}
 	
 	if(typeof(this.options.scoreByfk_profil) !== 'undefined'){
-	  this.scoreByfk_profil =this.options.scoreByfk_profil;
-	 // this.scoreByfk_profil.comparator = function(scoreByDateByCollection) {
-	  //return scoreByDateByCollection.get("score");
-	  //};
-	  var scoreAll = this.scoreByfk_profil.pluck('score');
-	  this.ScoreGlobal = 0;
-	  for( var item in scoreAll ){
-		this.ScoreGlobal += parseInt(scoreAll[item]);
-	  }
+	  this.scoreByfk_profil = this.options.scoreByfk_profil;
 	}
 	else{
-	  this.ScoreGlobal = new directory.models.ScoresCollection()
+	  this.scoreByfk_profil = new directory.models.ScoresCollection();
 	}
 
-	console.log(this.ScoreGlobal);
+	this.ScoreGlobal = this.options.ScoreGlobal;
+
     this.itemsCollection.findAllByCollectionid(collectionId);
     this.currentProfil = this.options.currentProfil;
     this.currentScoreGame = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id'),"fk_gallery":collectionId});
 	this.template = _.template(this.templateLoader.get('play-gameboard'));
     this.model.bind("change", this.saveScore, this);
-	//enlever ?
-	//this.model.bind("change", this.render, this);
+
   },
   
   render : function() {
@@ -616,7 +608,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	$("#bonusValue").val("0");
 	var nextCollectionOrdre = this.model.get('ordre')+1;
 	
-	var scoreTaxon = parseInt($("#scoreValue").val());
+	var scoreTaxon = parseInt($("#scoreTotalValue").val());
 	//var scoreTaxon = parseInt($("#scoreTotalValue").val());
 	//$("#scoreText").html(scoreTaxon);
 	
@@ -640,7 +632,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  var currentsc = this.currentScoreGame.get('nbAnswerGoodSequence');
 	  this.currentScoreGame.set('nbAnswerGoodSequence', currentsc+1);
 	}
-	
+
 	var scoreBonus = parseInt($("#bonusValue").val());
 	var score = scoreTaxon + scoreBonus;
 	$("#scoreTotalValue").val(score).trigger('change');
@@ -867,8 +859,8 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		$("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
       }
 	 
-      var currentScore = parseInt($("#scoreValue").val());
-      $("#scoreValue").val(currentScore+0).trigger('change');
+      var currentScore = parseInt($("#scoreTotalValue").val());
+      $("#scoreTotalValue").val(currentScore+0).trigger('change');
 	  //nb NbAnwserGood
 	  var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
 	  $("#nbAnwserGoodValue").val(currentNbAnwserGood+0).trigger('change');
@@ -889,9 +881,9 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		}else{
 		  var ponderationIucn = 0;
 		};
-        var currentScore = parseInt($("#scoreValue").val());
+        var currentScore = parseInt($("#scoreTotalValue").val());
 		var currentPonderation = weightNbPossibilyties + ponderationContinent + ponderationIucn;
-        $("#scoreValue").val(currentScore+1000-currentPonderation).trigger('change');
+        $("#scoreTotalValue").val(currentScore+1000-currentPonderation).trigger('change');
 		//nb nbAnwserGood
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
         $("#nbAnwserGoodValue").val(currentNbAnwserGood+1).trigger('change');

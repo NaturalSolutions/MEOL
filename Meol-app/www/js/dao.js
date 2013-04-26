@@ -480,15 +480,34 @@ directory.dao.ScoreDAO.prototype, {
         );
     },
    
-   findScoreMaxByProfilId: function(id, callback) {
+   findScoreMaxByGallery: function(callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT MAX(score) FROM Tscore WHERE fk_profil = ?";
+                var sql = "SELECT fk_gallery, MAX(score) AS score_max FROM Tscore GROUP BY fk_gallery";
+                tx.executeSql(sql,[], function(tx, results) {
+                    var len = results.rows.length,
+                        items = [];
+                    for (var i = 0; i < len; i++) {
+                        items[i] = results.rows.item(i);
+                    }
+                    callback(items);
+                });
+            },
+            function(tx, error) {
+                console.log(tx);
+                alert("Transaction Error: " + error);
+            }
+        );
+    },
+    
+     findScoreMaxByGalleryId: function(id,callback) {
+        this.db.transaction(
+            function(tx) {
+                var sql = "SELECT MAX(score) AS score_max FROM Tscore WHERE fk_gallery = ?";
                 tx.executeSql(sql,[id], function(tx, results) {
                     var len = results.rows.length,
-                        items = [],
-                        i = 0;
-                    for (; i < len; i = i + 1) {
+                        items = [];
+                    for (var i = 0; i < len; i++) {
                         items[i] = results.rows.item(i);
                     }
                     callback(items);
