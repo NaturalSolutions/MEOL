@@ -439,7 +439,6 @@ directory.views.playGameboardView = Backbone.View.extend({
   render : function() {
     this.$el.html(this.template( {"gallery": this.model.toJSON(), "profil":this.currentProfil.toJSON(),"score":this.lastScoreByGallery.toJSON(),"allScore":this.ScoreGlobal}));
     $('#map', this.$el).load('css/map/map_EOL.svg');
-	console.log(this.nextGalleryActive);
 	
     return this;
   },
@@ -609,8 +608,6 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var nextCollectionOrdre = this.model.get('ordre')+1;
 	
 	var scoreTaxon = parseInt($("#scoreTotalValue").val());
-	//var scoreTaxon = parseInt($("#scoreTotalValue").val());
-	//$("#scoreText").html(scoreTaxon);
 	
 	$("#nbAnwserGoodSequenceText").html($("#nbAnwserGoodSequenceValue").val());
 	var currentnbAnswerGoodSequence = $("#nbAnwserGoodSequenceValue").val();
@@ -638,7 +635,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	$("#scoreTotalValue").val(score).trigger('change');
 	$("#scoreText").html(score);
 	var scoreAllGalleries = score + this.ScoreGlobal ;
-	$('#allscore').html(scoreAllGalleries);
+	$('#allScore').html(scoreAllGalleries);
 	
 	
 	//Modal Bonus
