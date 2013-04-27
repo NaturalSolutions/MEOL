@@ -628,8 +628,12 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  $("#scoreTotalValue").val(score).trigger('change');
 	  $("#scoreText").html(score);
 	}
-	if(score == 0){
+	if(score === 0 || score > parseInt(this.lastScoreByGallery.get('score'))){
 	  var scoreAllGalleries = score + this.ScoreGlobal ;
+	  $('#allScore').html(scoreAllGalleries); 
+	}
+	if(parseInt(this.lastScoreByGallery.get('score')) > this.ScoreGlobal){
+	  var scoreAllGalleries = score;
 	  $('#allScore').html(scoreAllGalleries); 
 	}
 	if(score > this.ScoreGlobal){

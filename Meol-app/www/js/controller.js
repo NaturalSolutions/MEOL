@@ -117,7 +117,6 @@ directory.Router = Backbone.Router.extend({
   },
   
   playListGallery: function() {
-    console.log(directory.data.galleriesList);
     var currentView = new directory.views.playListGalleryView({collection: directory.data.galleriesList, currentProfil : self.currentProfil});
     this.displayView(currentView);
   },
@@ -140,8 +139,14 @@ directory.Router = Backbone.Router.extend({
         var lastScoreByGallery = data.findWhere({'fk_gallery': parseInt(id)});
         var deferred = data.findScoreMaxByGallery();
         deferred.done(function(items) {
+          console.log(items)
           var score = 0;
-          _.each(items, function(item) {score += item.score_max;});
+          _.each(items, function(item) {
+            score += item.score_max;
+            if(item.fk_gallery == id){
+             var lastScoreByGallery = item.score_max;
+            }
+          });
           var currentView = new directory.views.playGameboardView({model: gallery, currentProfil : self.currentProfil, lastScoreByGallery: lastScoreByGallery, scoreByfk_profil:data, ScoreGlobal: score});
           self.displayView(currentView);
           });  
