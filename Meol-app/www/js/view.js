@@ -540,20 +540,12 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   saveScore: function () {
-	var nextCollectionOrdre = this.model.get('ordre')+1;
 	var currentsc = parseInt($("#scoreTotalValue").val());
-	 /* if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true' || typeof(this.lastScoreByGallery.get('score')) === 'undefined') {
-		this.currentScoreGame.set('score', currentsc)
+	if(currentsc > 0){
+	  this.currentScoreGame.set('score', currentsc)
 		.set('fk_gallery', this.model.get('collectionid'))
 		.save();
-	  }else{
-		if(this.lastScoreByGallery.get('score') != currentsc){
-		  this.lastScoreByGallery.set('score', currentsc).save();
-		}
-	  };*/
-	 this.currentScoreGame.set('score', currentsc)
-		.set('fk_gallery', this.model.get('collectionid'))
-		.save();
+	}  
   },
   
   updateScore: function(event){
@@ -632,10 +624,19 @@ directory.views.playGameboardView = Backbone.View.extend({
 
 	var scoreBonus = parseInt($("#bonusValue").val());
 	var score = scoreTaxon + scoreBonus;
-	$("#scoreTotalValue").val(score).trigger('change');
-	$("#scoreText").html(score);
-	var scoreAllGalleries = score + this.ScoreGlobal ;
-	$('#allScore').html(scoreAllGalleries);
+	if(score > 0){
+	  $("#scoreTotalValue").val(score).trigger('change');
+	  $("#scoreText").html(score);
+	}
+	if(score == 0){
+	  var scoreAllGalleries = score + this.ScoreGlobal ;
+	  $('#allScore').html(scoreAllGalleries); 
+	}
+	if(score > this.ScoreGlobal){
+	  var scoreAllGalleries = score;
+	  $('#allScore').html(scoreAllGalleries); 
+	}
+	
 	
 	
 	//Modal Bonus
