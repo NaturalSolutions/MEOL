@@ -67,14 +67,14 @@ directory.models.TaxonCollection = Backbone.Collection.extend({
   },
 
   findByName: function(key) {
-     self = this;
+    var self = this;
      new this.dao(directory.db).findByName(key, function(data) {
           self.reset(data);
       });
   },
 
   findAllByCollectionid: function(key) {
-     self = this;
+    var self = this;
      new this.dao(directory.db).findAllByCollectionid(key, function(data) {
           self.reset(data);
       });
@@ -185,7 +185,7 @@ directory.models.ItemsCollection = Backbone.Collection.extend({
   },
     
   findAllByCollectionid: function(key) {
-     self = this;
+    var self = this;
      key = parseInt(key);
      new this.dao(directory.db).findByGalleryId(key, function(data) {
           self.reset(data);
@@ -223,14 +223,14 @@ directory.models.ProfilsCollection = Backbone.Collection.extend({
   },
   
   findById: function(key) {
-     self = this;
+    var self = this;
      new this.dao(directory.db).findById(key, function(data) {
           self.reset(data);
       });
   },
   
   findByPseudo: function(key) {
-     self = this;
+    var self = this;
      new this.dao(directory.db).findAllByCollectionid(key, function(data) {
           self.reset(data);
       });
@@ -281,7 +281,7 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
   },
   
   findAllScoreByProfilId : function (id) {
-     self = this;
+     var self = this;
      new this.dao(directory.db).findAllScoreByProfilId(id, function(data) {
           self.reset(data);
       });
@@ -294,13 +294,5 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
       });
      return d;
   },
-  
-  findScoreMaxByGalleryId: function(id) {
-     var d = $.Deferred();
-     (new this.dao(directory.db)).findScoreMaxByGalleryId(function(data) {
-          d.resolve(data);
-      });
-     return d;
-  }
   
 });

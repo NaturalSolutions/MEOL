@@ -414,10 +414,12 @@ directory.views.playGameboardView = Backbone.View.extend({
 	this.nextGalleryActive = directory.data.galleriesList.galleryIsActive(nextCollectionOrdre);
 	
 	if(typeof(this.options.lastScoreByGallery) !== 'undefined'){
-	  this.lastScoreByGallery =this.options.lastScoreByGallery;
+	  this.lastScoreByGallery = this.options.lastScoreByGallery;
 	}
-	else
-	{this.lastScoreByGallery = new directory.models.ScoresCollection()}
+	else{
+	  this.lastScoreByGallery = new directory.models.ScoresCollection();
+	  this.lastScoreByGallery.score = 0;
+	}
 	
 	if(typeof(this.options.scoreByfk_profil) !== 'undefined'){
 	  this.scoreByfk_profil = this.options.scoreByfk_profil;
@@ -510,14 +512,14 @@ directory.views.playGameboardView = Backbone.View.extend({
 		countReset+=200;
 	  };
 	};
-	var currentContinent = shuffleRand[1];
+	var currentContinent = shuffleRand[2];
 	var currentContinentStr = $("#currentContinent").val();
 	var currentContinentShufStr = currentContinent.id;
-    if (currentContinentShufStr === 'america-south') currentContinentShufStr = 'South America';
+    if (currentContinentShufStr === 'america-south') currentContinentShufStr = 'south america';
     if (currentContinentShufStr === 'america-north') currentContinentShufStr = 'North America';
-	if(typeof(currentContinentStr) != 'undefined'){
+	if(typeof(currentContinentStr) !== 'undefined'){
 	  if(currentContinentShufStr.toLowerCase() == currentContinentStr.toLowerCase()){
-	   currentContinent = shuffleRand[1+1];
+	   currentContinent = shuffleRand[2+1];
 	  };
 	};
 	
@@ -559,7 +561,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   	  if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
 		//if score >= seuil (galleryOrdre = x,  seuil = x*100) => nextCollection activate True
 		if(parseInt(scoreProgressBar) >= 100){
-		  if(parseInt(nextCollectionOrdre) < parseInt(directory.data.galleriesList.length)){
+		  if(parseInt(nextCollectionOrdre) <= parseInt(directory.data.galleriesList.length)){
 			var nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
 			directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
 			setTimeout(function(){$("#collectionModal").show().alert();},100);
@@ -621,14 +623,14 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  var currentsc = this.currentScoreGame.get('nbAnswerGoodSequence');
 	  this.currentScoreGame.set('nbAnswerGoodSequence', currentsc+1);
 	}
-
+	
 	var scoreBonus = parseInt($("#bonusValue").val());
 	var score = scoreTaxon + scoreBonus;
 	if(score > 0){
 	  $("#scoreTotalValue").val(score).trigger('change');
 	  $("#scoreText").html(score);
 	}
-	if(score === 0 || score > parseInt(this.lastScoreByGallery.get('score'))){
+	if(score === 0 || score > parseInt(this.lastScoreByGallery.score) || score > parseInt(this.lastScoreByGallery.get('score'))){
 	  var scoreAllGalleries = score + this.ScoreGlobal ;
 	  $('#allScore').html(scoreAllGalleries); 
 	}
@@ -663,15 +665,16 @@ directory.views.playGameboardView = Backbone.View.extend({
 	var selectedItemsCollection = new directory.models.ItemsCollection();
     var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
 	var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
+	var capCurrentContinent = capitaliseFirstLetter(currentContinentStr);
 	var countPresence=0;
 	if(typeof(currentContinentStr) !== 'undefined'){
 	  for (var idNat in presence) {
-		if(countPresence > 40 || currentContinentStr == presence[idNat] || typeof(presence[idNat]) == 'undefined'){
+		if(countPresence > 6 || capCurrentContinent  == presence[idNat] || typeof(presence[idNat]) === 'undefined'){
 		  break;
 		};
-		if(typeof(presence[idNat]) !== 'undefined'){
-		  while (currentContinentStr != presence[idNat]) {
-		  if(countPresence > 40){
+		if(typeof(presence[idNat]) != 'undefined'){
+		  while (capCurrentContinent != presence[idNat]) {
+		  if(countPresence > 6){
 			break;
 		  };
 		  indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);

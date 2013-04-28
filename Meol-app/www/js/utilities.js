@@ -36,7 +36,7 @@ var fiboSuite = function(){
                       return memo[n] ;
    }
    return fibo ;
-}
+};
 
 //Shuffle
 function shuffle(a){
@@ -54,4 +54,9 @@ function shuffle(a){
 		l = l - 1;
 	}
 	return a;
-  }
+  };
+// capitaliseFirstLetter
+function capitaliseFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
