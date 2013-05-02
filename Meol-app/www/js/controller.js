@@ -15,6 +15,7 @@ directory.Router = Backbone.Router.extend({
       "play" : "playListGallery",
       "play/:galleryId" : "playGameboardDisplay",
       "profil/:profilId" : "profilDisplay",
+      "contribute" : "contributeDisplay",
       //"taxon/:taxonConceptId": "taxonDetails",
   },
 
@@ -74,6 +75,11 @@ directory.Router = Backbone.Router.extend({
   home: function(){
     if (typeof (this.homePage) === 'undefined') this.homePage = new directory.views.HomeView();
     this.displayView(this.homePage);
+  },
+  
+  contributeDisplay : function(){
+    this.contribute = new directory.views.contributeView();
+    this.displayView(this.contribute);
   },
 
   searchtaxon: function() {
@@ -173,13 +179,13 @@ directory.Router = Backbone.Router.extend({
       profil.fetch({
           success: function(data) {
             var deferred = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
-           // var allScoreById = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
-           deferred.done(function(items) {
+			// var allScoreById = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
+			deferred.done(function(items) {
             console.log(items);
             var currentView = new directory.views.ProfilDetailView({model: data, allScoreById : items});
             self.displayView(currentView);
-          });
-         }
+			});
+			}
       });
   },
 

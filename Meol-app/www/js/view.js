@@ -69,7 +69,6 @@ directory.views.HomeView = directory.views.BaseView.extend({
 	
 directory.views.InfoGameView = Backbone.View.extend({
   templateLoader: directory.utils.templateLoader,
-  
   tagName : 'div',
   id : 'info-page',
   
@@ -922,4 +921,7 @@ directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
 
 });
 
-
+directory.views.contributeView =  directory.views.BaseView.extend({
+ template: 'contribute-page',
+ 
+});
