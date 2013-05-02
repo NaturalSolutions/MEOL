@@ -280,12 +280,21 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
   initialize: function() {
   },
   
-  findAllScoreByProfilId : function (id) {
+  /*findAllScoreByProfilId : function (id) {
      var self = this;
      new this.dao(directory.db).findAllScoreByProfilId(id, function(data) {
           self.reset(data);
       });
+  },*/
+  
+   findAllScoreByProfilId : function (id) {
+     var c = $.Deferred();
+     (new this.dao(directory.db)).findAllScoreByProfilId(id,function(data) {
+          c.resolve(data);
+      });
+     return c;
   },
+  
  
   findScoreMaxByGallery: function() {
      var d = $.Deferred();

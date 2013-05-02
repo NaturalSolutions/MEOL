@@ -4,35 +4,13 @@
     <li id='lien-discover'><a href='#gallery'></a></li>
     <li id='lien-play'><a href='#play'></a></li>
     <li id='lien-contribute'><a href='#' class='ui-disabled'></a></li>
-    <li id='lien-profil'><a href='#' class='ui-btn-active ui-state-persist'></a></li>
+    <li id='lien-profil'><a href="#profil/<%= model.get('Tprofil_PK_Id')%>" class='ui-btn-active ui-state-persist'></a></li>
   </ul>
 </div>
 
 <div id=profilPage>
   <h1 id="pictoProfil">PROFILE</h1> 
-  <h2><%=model.pseudo %></h2>
-  <div id="profileTable">
-    <table>
-      <% var i=0; 
-      _.each(collection, function(score) { %>
-      <tbody>
-        <thead>
-          <tr class="head gradientDarkBlue">
-            <td>Collection</td>
-            <td>Game Date</td>
-            <td>Good Answers</td>
-            <td>Score</td>
-          </tr>
-        </thead>
-        <tr id="score-<%= score.Tscore_PK_Id %>">
-          <td><%= score.fk_gallery %></td>
-          <td><%= score.gameDate %></td>
-          <td><%= score.nbQuestionTotal %></td>
-          <td><%= score.score %></td>
-        </tr>
-      <% i = i+1; }); %>
-      </tbody>
-    </table>
-  </div>
-    <button class="btn-primary"><a href='#infoGame'>Rules of the game</a></button>
+  <h2><%=model.get('pseudo') %></h2>
+  <h3>Current Level :</h3>
+  <div id="profileTable"></div> 
 </div>

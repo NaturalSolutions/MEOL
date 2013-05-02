@@ -167,13 +167,19 @@ directory.Router = Backbone.Router.extend({
 
   profilDisplay: function(id) {
       var self = this;
-     
       var profil = new directory.models.Profil({Tprofil_PK_Id:id});
+      var collection = new directory.models.ScoresCollection();
+       
       profil.fetch({
           success: function(data) {
-            var currentView = new directory.views.ProfilDetailView({model: data});
+            var deferred = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
+           // var allScoreById = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
+           deferred.done(function(items) {
+            console.log(items);
+            var currentView = new directory.views.ProfilDetailView({model: data, allScoreById : items});
             self.displayView(currentView);
-          }
+          });
+         }
       });
   },
 

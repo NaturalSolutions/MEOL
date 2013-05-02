@@ -276,7 +276,17 @@ margin:0 auto;
  text-align:center;  
 }
 
-#listeVignetteCollection h1{
+#pictoProfil{
+ background-image:url(./images/pictos-eol/icon-user.png);
+ background-position:left center;
+ background-repeat:no-repeat;
+ background-size:60px;
+}
+h1#pictoProfil {
+  width:300px;
+}
+
+#listeVignetteCollection h1 {
   width:400px;
 }
 

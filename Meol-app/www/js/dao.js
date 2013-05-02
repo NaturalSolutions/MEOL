@@ -461,8 +461,7 @@ directory.dao.ScoreDAO.prototype, {
     findAllScoreByProfilId: function(key, callback) {
         this.db.transaction(
             function(tx) {
-                var sql = 'SELECT * FROM  Tscore ' +
-                          ' WHERE fk_profil = ?';
+                var sql = 'SELECT fk_gallery, MAX(score) AS score_max, gameDate FROM Tscore WHERE fk_profil = ? GROUP BY fk_gallery ';
                 tx.executeSql(sql, [key], function(tx, results) {
                     var len = results.rows.length,
                         score = [],

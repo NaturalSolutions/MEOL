@@ -1,0 +1,22 @@
+<div id="profileTableScore">
+    <table>
+      <% console.log(collection)%>
+      <% var i=0; 
+      _.each(collection, function(score) { %>
+     
+      <tbody>
+        <thead>
+          <tr class="head gradientDarkBlue">
+            <td>Collection</td>
+            <td>Score</td>
+          </tr>
+        </thead>
+        <tr id="score-<%= collection[i].fk_profil %>">
+          <td><%= collection[i].fk_gallery%></td>
+          <td><%= collection[i].score_max%></td>
+        </tr>
+      <% i = i+1; }); %>
+      </tbody>
+    </table>
+</div>
+

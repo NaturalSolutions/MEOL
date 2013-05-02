@@ -35,7 +35,7 @@ Backbone.View.prototype.close = function () {
 
     directory.views.BaseView = Backbone.Layout.extend({
         prefix: directory.config.root + '/tpl/',
-        el: false, // LM will use template's root node
+       // el: false, // LM will use template's root node
 
         fetch: function(path) {
             path += '.html';
@@ -54,7 +54,7 @@ Backbone.View.prototype.close = function () {
 
         serialize: function() {
             if (this.model) return this.model.toJSON();
-			return true;
+			      return true;
         }
     });
 
@@ -218,7 +218,7 @@ directory.views.playListGalleryView = Backbone.View.extend({
   initialize: function() {
     //this.collection.findAll();
     this.collection.bind("reset", this.render, this);
-	this.currentProfil = this.options.currentProfil;
+	  this.currentProfil = this.options.currentProfil;
     this.template = _.template(this.templateLoader.get('play-gallery'));
 	// Tgallery_PK_Id gallery 1 enabled by default (see template play-gallery)
 	//if(typeof(directory.models.myGlogal.countCollection) =='undefined'){directory.models.myGlogal.countCollection = 1 ;};
@@ -230,27 +230,6 @@ directory.views.playListGalleryView = Backbone.View.extend({
   },
 });
 
-
-
-/*subview playListGalleryView à enlever avec sa template
- directory.views.playListGalleryItemView = Backbone.View.extend({
-  tagName: "li",
-  
-  initialize: function() {
-	//EN COURS remonter le currentScoreGame ....à mettre dans la view PlayListGallery
-	this.galleryActive = 1;
-    this.template = _.template(directory.utils.templateLoader.get('play-list-gallery'));
-  },
-
-  render: function(eventName) {
-	if(this.galleryActive < this.model.get("level")){
-	  $(this.el).addClass("ui-disabled").html(this.template(this.model.toJSON()));
-	}else{
-	  $(this.el).html(this.template(this.model.toJSON()));
-	}
-    return this;
-  },
-});*/
 
 directory.views.GalleryListItemView = Backbone.View.extend({
   tagName: "li",
@@ -406,29 +385,29 @@ directory.views.playGameboardView = Backbone.View.extend({
   id: 'play-gameboard',
                                           
   initialize : function() {
-	var self = this;
+	  var self = this;
     this.itemsCollection = new directory.models.ItemsCollection();
     var collectionId = this.model.get('collectionid');
-	var currentCollectionOrdre = this.model.get('ordre');
-	var  nextCollectionOrdre = currentCollectionOrdre+1;
-	this.nextGalleryActive = directory.data.galleriesList.galleryIsActive(nextCollectionOrdre);
+	  var currentCollectionOrdre = this.model.get('ordre');
+	  var  nextCollectionOrdre = currentCollectionOrdre+1;
+	  this.nextGalleryActive = directory.data.galleriesList.galleryIsActive(nextCollectionOrdre);
 	
-	if(typeof(this.options.lastScoreByGallery) !== 'undefined'){
-	  this.lastScoreByGallery = this.options.lastScoreByGallery;
-	}
-	else{
-	  this.lastScoreByGallery = new directory.models.ScoresCollection();
-	  this.lastScoreByGallery.score = 0;
-	}
+	  if(typeof(this.options.lastScoreByGallery) !== 'undefined'){
+	    this.lastScoreByGallery = this.options.lastScoreByGallery;
+	  }
+	  else{
+	    this.lastScoreByGallery = new directory.models.ScoresCollection();
+	    this.lastScoreByGallery.score = 0;
+	  }
 	
-	if(typeof(this.options.scoreByfk_profil) !== 'undefined'){
-	  this.scoreByfk_profil = this.options.scoreByfk_profil;
-	}
-	else{
-	  this.scoreByfk_profil = new directory.models.ScoresCollection();
-	}
+	  if(typeof(this.options.scoreByfk_profil) !== 'undefined'){
+	    this.scoreByfk_profil = this.options.scoreByfk_profil;
+	  }
+	  else{
+	    this.scoreByfk_profil = new directory.models.ScoresCollection();
+	  }
 
-	this.ScoreGlobal = this.options.ScoreGlobal;
+	  this.ScoreGlobal = this.options.ScoreGlobal;
 
     this.itemsCollection.findAllByCollectionid(collectionId);
     this.currentProfil = this.options.currentProfil;
@@ -449,8 +428,8 @@ directory.views.playGameboardView = Backbone.View.extend({
     'click #selectRandomContinent': 'selectRandomContinent',
     'change #currentContinent' : 'loadTaxonPlay',
     'change #scoreTotalValue' : 'updateScore',
-	'change #nbAnwserGoodValue' : 'updateNbAnwserGood',
-	'change #nbAnwserGoodSequenceValue' : 'updateNbAnwserGoodSequenceValue',
+	  'change #nbAnwserGoodValue' : 'updateNbAnwserGood',
+	  'change #nbAnwserGoodSequenceValue' : 'updateNbAnwserGoodSequenceValue',
     'click #returnToGame' : 'returnToGame',
   },
   
@@ -488,30 +467,31 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   selectRandomContinent: function(event){
     d3.select("#map svg").selectAll(".pion").classed("hideInfoContinent",true);
-	d3.select("#selectRandomContinent").classed("hidden",true);
-	$("#firstMessagePlay").css("display","none");
-	$("#continentName").css("display","inherit");
+	  d3.select("#selectRandomContinent").classed("hidden",true);
+	  $("#firstMessagePlay").css("display","none");
+	  $("#continentName").css("display","inherit");
   
-	var A_continents = d3.select("#map svg").selectAll(".continent");
+	  var A_continents = d3.select("#map svg").selectAll(".continent");
     var rand = A_continents[Math.floor(Math.random() * A_continents.length)];
-	var shuffleRand = shuffle(rand);
+	  var shuffleRand = shuffle(rand);
 	
-	var countAnime = 0;
-	while( countAnime < 1){
-	 animateContinent();
-	countAnime++;
-	};
+	  var countAnime = 0;
+	  while( countAnime < 1){
+	  animateContinent();
+	  countAnime++;
+	  };
 	
 	function animateContinent(){
-	var count=0;
-	var countReset=200;
+	  var count=0;
+	  var countReset=200;
 	  for( var item in shuffleRand ){	
-		d3.select(shuffleRand[item]).transition().delay(count).style("fill", "#B9DE00");
-		d3.select(shuffleRand[item]).transition().delay(countReset).style("fill", "#E1FA9F");
-		count+= 150;
-		countReset+=200;
+		  d3.select(shuffleRand[item]).transition().delay(count).style("fill", "#B9DE00");
+		  d3.select(shuffleRand[item]).transition().delay(countReset).style("fill", "#E1FA9F");
+		  count+= 150;
+		  countReset+=200;
 	  };
 	};
+	
 	var currentContinent = shuffleRand[2];
 	var currentContinentStr = $("#currentContinent").val();
 	var currentContinentShufStr = currentContinent.id;
@@ -526,8 +506,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 	d3.selectAll(".continent").transition().delay(1600).style("fill", "#E1FA9F");
 	d3.select(currentContinent).transition().delay(1600).style("fill", "#B9DE00");
 
-    var currentContinentclass= currentContinent.id;
-	setTimeout(function(){d3.select("."+currentContinentclass).classed("hideInfoContinent",false);},1800);
+   var currentContinentclass= currentContinent.id;
+	 setTimeout(function(){d3.select("."+currentContinentclass).classed("hideInfoContinent",false);},1800);
     
 	$('#requestPanel').hide();
     
@@ -551,22 +531,21 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   updateScore: function(event){
-	var currentsc = parseInt($("#scoreTotalValue").val());
-	//progress BaractivateCollMessageModal
-	var scoreProgressBar = currentsc/200;
-	var scoreProgressTotal= $("#meterScore").css("width");
-	var currentCollectionOrdre = this.model.get('ordre');
-	var nextCollectionOrdre = this.model.get('ordre')+1;
+	  var currentsc = parseInt($("#scoreTotalValue").val());
+	  var scoreProgressBar = currentsc/200;
+	  var scoreProgressTotal= $("#meterScore").css("width");
+	  var currentCollectionOrdre = this.model.get('ordre');
+	  var nextCollectionOrdre = this.model.get('ordre')+1;
 	  //if nextCollection false
-  	  if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
+  	if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
 		//if score >= seuil (galleryOrdre = x,  seuil = x*100) => nextCollection activate True
-		if(parseInt(scoreProgressBar) >= 100){
-		  if(parseInt(nextCollectionOrdre) <= parseInt(directory.data.galleriesList.length)){
-			var nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
-			directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
-			setTimeout(function(){$("#collectionModal").show().alert();},100);
-			setTimeout(function(){$("#collectionModal").hide().alert();},3000);
-		  }
+		  if(parseInt(scoreProgressBar) >= 100){
+		   if(parseInt(nextCollectionOrdre) <= parseInt(directory.data.galleriesList.length)){
+			  var nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
+			  directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
+			  setTimeout(function(){$("#collectionModal").show().alert();},100);
+			  setTimeout(function(){$("#collectionModal").hide().alert();},3000);
+		   }
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
 			$("#meterScore").css("width",scoreProgressBar+"%");
 			$("#activateCollMessageModal").html("<em>New collection!<br/>"+nextCollectionName+"</em>");
@@ -574,9 +553,9 @@ directory.views.playGameboardView = Backbone.View.extend({
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
 			
 		// score < seuil (galleryOrdre = x,  seuil = x*100) 
-	  	}else{
+	    }else{
 			$("#meterScore").css("width",scoreProgressBar+"%");
-		};
+		  };
 	  
 	  // nextCollection activate TRUE : bonus, GoodSequence equal last value in DB
 	  }else{
@@ -591,57 +570,57 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   updateNbAnwserGood: function(event){
-	$("#nbAnwserGoodText").html($("#nbAnwserGoodValue").val());
+	  $("#nbAnwserGoodText").html($("#nbAnwserGoodValue").val());
 	 //Mise à jour de la table des scores
-	var currentsc = parseInt($("#nbAnwserGoodValue").val());
+	  var currentsc = parseInt($("#nbAnwserGoodValue").val());
     this.currentScoreGame.set('nbAnswerGood', currentsc);
   },
   
   updateNbAnwserGoodSequenceValue: function(event){
-	$("#bonusValue").val("0");
-	var nextCollectionOrdre = this.model.get('ordre')+1;
+	  $("#bonusValue").val("0");
+	  var nextCollectionOrdre = this.model.get('ordre')+1;
 	
-	var scoreTaxon = parseInt($("#scoreTotalValue").val());
+	  var scoreTaxon = parseInt($("#scoreTotalValue").val());
 	
-	$("#nbAnwserGoodSequenceText").html($("#nbAnwserGoodSequenceValue").val());
-	var currentnbAnswerGoodSequence = $("#nbAnwserGoodSequenceValue").val();
-	var currentnbAnswerGoodRecordSequence = $("#nbAnwserGoodSequenceRecordText").text();
-	var bonusFibo = fiboSuite() ;
+	  $("#nbAnwserGoodSequenceText").html($("#nbAnwserGoodSequenceValue").val());
+	  var currentnbAnswerGoodSequence = $("#nbAnwserGoodSequenceValue").val();
+	  var currentnbAnswerGoodRecordSequence = $("#nbAnwserGoodSequenceRecordText").text();
+	  var bonusFibo = fiboSuite() ;
 	
-	if(parseInt(currentnbAnswerGoodSequence) > parseInt(currentnbAnswerGoodRecordSequence)){
-	  $("#nbAnwserGoodSequenceRecordText").html($("#nbAnwserGoodSequenceValue").val());
-	  var currentNbAnwserGoodSequenceValue = parseInt($("#nbAnwserGoodSequenceValue").val());
-	  var currentFibo = bonusFibo(currentNbAnwserGoodSequenceValue);
-	  if (currentFibo < 2) {
-		currentFibo = 0;
-	  }else{
-		currentFibo *=100;
-	  }
+	  if(parseInt(currentnbAnswerGoodSequence) > parseInt(currentnbAnswerGoodRecordSequence)){
+	   $("#nbAnwserGoodSequenceRecordText").html($("#nbAnwserGoodSequenceValue").val());
+	   var currentNbAnwserGoodSequenceValue = parseInt($("#nbAnwserGoodSequenceValue").val());
+	   var currentFibo = bonusFibo(currentNbAnwserGoodSequenceValue);
+	   if (currentFibo < 2) {
+		  currentFibo = 0;
+	   }else{
+		  currentFibo *=100;
+		 }
 	  $("#bonusValue").val(currentFibo).trigger('change');
 	  $("#bonus").html($("#bonusValue").val());
 	  //Mise à jour de la table des scores
 	  var currentsc = this.currentScoreGame.get('nbAnswerGoodSequence');
 	  this.currentScoreGame.set('nbAnswerGoodSequence', currentsc+1);
-	}
+	 }
 	
-	var scoreBonus = parseInt($("#bonusValue").val());
-	var score = scoreTaxon + scoreBonus;
-	if(score > 0){
+	 var scoreBonus = parseInt($("#bonusValue").val());
+	 var score = scoreTaxon + scoreBonus;
+	 if(score > 0){
 	  $("#scoreTotalValue").val(score).trigger('change');
 	  $("#scoreText").html(score);
-	}
-	if(score === 0 || score > parseInt(this.lastScoreByGallery.score) || score > parseInt(this.lastScoreByGallery.get('score'))){
+	 }
+	 if(score === 0 || score > parseInt(this.lastScoreByGallery.score) || score > parseInt(this.lastScoreByGallery.get('score'))){
 	  var scoreAllGalleries = score + this.ScoreGlobal ;
 	  $('#allScore').html(scoreAllGalleries); 
-	}
-	if(parseInt(this.lastScoreByGallery.get('score')) > this.ScoreGlobal){
+   }
+	 if(parseInt(this.lastScoreByGallery.get('score')) > this.ScoreGlobal){
 	  var scoreAllGalleries = score;
 	  $('#allScore').html(scoreAllGalleries); 
-	}
-	if(score > this.ScoreGlobal){
+   }
+   if(score > this.ScoreGlobal){
 	  var scoreAllGalleries = score;
 	  $('#allScore').html(scoreAllGalleries); 
-	}
+   }
 	
 	
 	
@@ -911,22 +890,36 @@ directory.views.RandomItemListView = Backbone.View.extend({
   },
 });
 
-directory.views.ProfilDetailView = Backbone.View.extend({
-  tagName: "div",
-  id: 'plage-profile',
+directory.views.ProfilDetailView =  directory.views.BaseView.extend({
+  template: 'profil-page',
   
   initialize: function() {
-    this.collection = new directory.models.ScoresCollection();
-    this.template = _.template(directory.utils.templateLoader.get('profil-page'));
-    this.collection.findAllScoreByProfilId(this.model.get('Tprofil_PK_Id'));
+    this.collection = this.options.allScoreById; 
     this.model.bind("reset", this.render, this);
-    this.collection.bind("reset", this.render, this);
-    this.collection.bind("change", this.render, this);
+    this.currentGalleryName = directory.data.galleriesList.findWhere( {'collectionid': this.collection.fk_gallery});
   },
-
-  render: function(eventName) {
-    //backbone.js View template {collection: this.collection, model:this.model}
-    this.$el.html(this.template({"collection":this.collection.toJSON(), "model":this.model.toJSON()}));
-    return this;
+  
+  
+ beforeRender: function() {
+   this.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:this.collection,model:this.model }));
   },
+ 
+  serialize: function() {
+    return {model:this.model};
+  },
+   
 });
+
+directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
+ template: 'profil-table',
+ 
+ initialize: function() { 
+   this.model.bind("reset", this.render, this);
+ },  
+ serialize: function() {
+   return {collection:this.collection};
+ },
+
+});
+
+
