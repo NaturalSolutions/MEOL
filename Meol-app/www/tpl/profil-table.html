@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tr id="score-<%= collection[i].fk_profil %>">
-          <td><%= collection[i].fk_gallery%></td>
+          <td><%= directory.data.galleriesList.findWhere({'collectionid' : String(collection[i].fk_gallery)}).get('name')%></td>
           <td><%= collection[i].score_max%></td>
         </tr>
       <% i = i+1; }); %>

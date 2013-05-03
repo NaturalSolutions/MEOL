@@ -133,6 +133,13 @@ directory.models.GalleriesCollection = Backbone.Collection.extend({
     }
    
   },
+  galleryOrdreById: function(collectionid) {
+    var selectedGallery = this.findWhere( {'collectionid': collectionid});
+    if(typeof(selectedGallery) !== 'undefined'){
+      return selectedGallery.get('ordre');
+    }
+   
+  },
   
   changeGalleryActivateState: function(ordre) {
     if (this.galleryIsActive(ordre) !== 'true' && this.galleryIsActive(ordre) !== 'undefined') {

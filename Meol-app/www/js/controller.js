@@ -182,8 +182,18 @@ directory.Router = Backbone.Router.extend({
             var deferred = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
 			// var allScoreById = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
 			deferred.done(function(items) {
+				var score = 0;
+				var ordreMax = 1;
+				_.each(items, function(item) {
+					var ordreCurrent = directory.data.galleriesList.galleryOrdreById(String(item.fk_gallery));
+					if(ordreCurrent > ordreMax){
+						ordreMax = ordreCurrent;
+					};
+					score += item.score_max;	
+				});
             console.log(items);
-            var currentView = new directory.views.ProfilDetailView({model: data, allScoreById : items});
+            console.log(ordreMax);
+            var currentView = new directory.views.ProfilDetailView({model: data, allScoreById : items, scoreTotal : score, ordreMax : ordreMax});
             self.displayView(currentView);
 			});
 			}

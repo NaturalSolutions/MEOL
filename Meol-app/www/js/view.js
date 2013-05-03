@@ -894,9 +894,10 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   
   initialize: function() {
     this.collection = this.options.allScoreById; 
-    this.scoreTotal = this.options.scoreTotal; 
+    this.scoreTotal = this.options.scoreTotal;
+    var ordreMax = this.options.ordreMax;
     this.model.bind("reset", this.render, this);
-    this.currentGalleryName = directory.data.galleriesList.findWhere( {'collectionid': this.collection.fk_gallery});
+    this.lastActiveGalleryName = directory.data.galleriesList.findWhere({'ordre' : parseInt(ordreMax)}).get('name');
   },
   
   
@@ -905,7 +906,7 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   },
  
   serialize: function() {
-    return {model:this.model,scoreTotal : this.scoreTotal};
+    return {model:this.model,scoreTotal : this.scoreTotal, lastActiveGalleryName :  this.lastActiveGalleryName };
   },
    
 });
