@@ -18,7 +18,7 @@ function initializeDB(db){
       deferreds.push(runQuery(query , []));
        // creer la table profil et score
       query = 'CREATE TABLE IF NOT EXISTS Tprofil (Tprofil_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '
-        + 'pseudo  NVARCHAR(50), avatar  NVARCHAR(200), creationDate DATETIME)';
+        + 'pseudo  NVARCHAR(50), avatar  NVARCHAR(200),email  NVARCHAR(80), creationDate DATETIME)';
       deferreds.push(runQuery(query , []));
 
       query = 'CREATE TABLE IF NOT EXISTS Tscore (Tscore_PK_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, '

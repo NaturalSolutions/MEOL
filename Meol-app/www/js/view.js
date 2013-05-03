@@ -900,7 +900,7 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   
   
  beforeRender: function() {
-   this.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:this.collection,model:this.model }));
+   this.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:this.collection,model:this.model })).render();
   },
  
   serialize: function() {

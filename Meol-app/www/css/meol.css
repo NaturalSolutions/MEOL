@@ -240,9 +240,10 @@ width:35px;
 width:80%;
 margin:5% auto;
 }
-#profilPage{
+#profilPage,.containerContents{
   width:60%;
   margin:5% auto;
+  color:white;
 }
 
 #profileTable{
@@ -250,7 +251,7 @@ margin:5% auto;
   max-height: 450px;
 }
 
-#listeVignetteCollection h1,#listeVignetteCollectionPlay h1,#profilPage h1{
+#listeVignetteCollection h1,#listeVignetteCollectionPlay h1,#profilPage h1, .containerContents h1{
 color: #B9DE00;
 /*border: 1px dashed #4C6377;
 text-transform: uppercase;*/
@@ -282,11 +283,18 @@ margin:0 auto;
  background-repeat:no-repeat;
  background-size:60px;
 }
-h1#pictoProfil {
+h1#pictoProfil{
   width:300px;
 }
+.containerContents p{
+  color:white;
+  margin : 5%
+}
 
-#listeVignetteCollection h1 {
+.containerContents h1  {
+  width:350px;
+}
+#listeVignetteCollection h1{
   width:400px;
 }
 
@@ -444,6 +452,12 @@ input[type="radio"]{
   border: none;
   background:transparent;
   background-image:url(images/menu/icon-menu-profil-hover.png);
+}
+
+#lien-contribute a.ui-btn-active {
+  border: none;
+  background:transparent;
+  background-image:url(images/menu/icon-menu-contribute-hover.png);
 }
 
 .container{

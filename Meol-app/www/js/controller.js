@@ -175,6 +175,7 @@ directory.Router = Backbone.Router.extend({
       var self = this;
       var profil = new directory.models.Profil({Tprofil_PK_Id:id});
       var collection = new directory.models.ScoresCollection();
+      collection.bind("reset", this.render, this);
        
       profil.fetch({
           success: function(data) {

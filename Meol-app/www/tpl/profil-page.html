@@ -3,14 +3,16 @@
     <a href=''><img src='css/images/menu/logo_M-EOL-menu.png'/></a>
     <li id='lien-discover'><a href='#gallery'></a></li>
     <li id='lien-play'><a href='#play'></a></li>
-    <li id='lien-contribute'><a href='#' class='ui-disabled'></a></li>
+    <li id='lien-contribute'><a href='#contribute'></a></li>
     <li id='lien-profil'><a href="#profil/<%= model.get('Tprofil_PK_Id')%>" class='ui-btn-active ui-state-persist'></a></li>
   </ul>
 </div>
 
 <div id=profilPage>
-  <h1 id="pictoProfil">PROFILE</h1> 
+  <h1 id="pictoProfil">Profile</h1> 
   <h2><%=model.get('pseudo') %></h2>
   <h3>Current Level :</h3>
+  <h3>Score Total :</h3>
   <div id="profileTable"></div> 
+  
 </div>
