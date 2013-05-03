@@ -58,10 +58,20 @@ Backbone.sync = function(method, model, options) {
       }
   }
   else if (method === "create") {
-    dao.createScore(model, function(data) {
-      options.success(data);
-    });
+    if (model.attributes) {
+      if ( (model.attributes.pseudo)) {
+        dao.updatePseudoProfile(model, function(data) {
+          options.success(data);
+        });
+      } 
+    }
+    else {
+      dao.createScore(model, function(data) {
+       options.success(data);
+      });
+    }
   }
+    
   else if (method === "update") {
    /* if (model.attributes) {
         if ( (model.attributes.fk_gallery)) {
@@ -356,6 +366,19 @@ directory.dao.ProfilDAO.prototype, {
     "creationDate":new Date()
   },
  * ***/
+  updatePseudoProfile: function(model, callback) {
+        this.db.transaction(
+            function(tx) {
+                var sql = "UPDATE Tprofil SET pseudo= ? WHERE Tprofil_PK_Id = ? ";
+                tx.executeSql(sql, [model.get('pseudo'), model.get('Tprofil_PK_Id')]);
+            },
+            function(tx, error) {
+                console.log(tx);
+                alert("Transaction Error: " + error);
+            }
+        );
+    },
+
     findByPseudo: function(key, callback) {
         this.db.transaction(
             function(tx) {

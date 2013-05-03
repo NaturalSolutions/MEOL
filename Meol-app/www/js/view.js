@@ -411,7 +411,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.itemsCollection.findAllByCollectionid(collectionId);
     this.currentProfil = this.options.currentProfil;
     this.currentScoreGame = new directory.models.Score({"fk_profil":this.currentProfil.get('Tprofil_PK_Id'),"fk_gallery":collectionId});
-	this.template = _.template(this.templateLoader.get('play-gameboard'));
+		this.template = _.template(this.templateLoader.get('play-gameboard'));
     this.model.bind("change", this.saveScore, this);
 
   },
@@ -465,68 +465,68 @@ directory.views.playGameboardView = Backbone.View.extend({
   },                                             
   
   selectRandomContinent: function(event){
-    d3.select("#map svg").selectAll(".pion").classed("hideInfoContinent",true);
-	  d3.select("#selectRandomContinent").classed("hidden",true);
-	  $("#firstMessagePlay").css("display","none");
-	  $("#continentName").css("display","inherit");
-  
-	  var A_continents = d3.select("#map svg").selectAll(".continent");
-    var rand = A_continents[Math.floor(Math.random() * A_continents.length)];
-	  var shuffleRand = shuffle(rand);
-	
-	  var countAnime = 0;
-	  while( countAnime < 1){
-	  animateContinent();
-	  countAnime++;
-	  };
-	
-	function animateContinent(){
-	  var count=0;
-	  var countReset=200;
-	  for( var item in shuffleRand ){	
-		  d3.select(shuffleRand[item]).transition().delay(count).style("fill", "#B9DE00");
-		  d3.select(shuffleRand[item]).transition().delay(countReset).style("fill", "#E1FA9F");
-		  count+= 150;
-		  countReset+=200;
-	  };
-	};
-	
-	var currentContinent = shuffleRand[2];
-	var currentContinentStr = $("#currentContinent").val();
-	var currentContinentShufStr = currentContinent.id;
-    if (currentContinentShufStr === 'america-south') currentContinentShufStr = 'south america';
-    if (currentContinentShufStr === 'america-north') currentContinentShufStr = 'North America';
-	if(typeof(currentContinentStr) !== 'undefined'){
-	  if(currentContinentShufStr.toLowerCase() == currentContinentStr.toLowerCase()){
-	   currentContinent = shuffleRand[2+1];
-	  };
-	};
-	
-	d3.selectAll(".continent").transition().delay(1600).style("fill", "#E1FA9F");
-	d3.select(currentContinent).transition().delay(1600).style("fill", "#B9DE00");
+		d3.select("#map svg").selectAll(".pion").classed("hideInfoContinent",true);
+		d3.select("#selectRandomContinent").classed("hidden",true);
+		$("#firstMessagePlay").css("display","none");
+		$("#continentName").css("display","inherit");
 
-   var currentContinentclass= currentContinent.id;
-	 setTimeout(function(){d3.select("."+currentContinentclass).classed("hideInfoContinent",false);},1800);
-    
-	$('#requestPanel').hide();
-    
-	var currentContinentStr = currentContinent.id;
-    if (currentContinentStr === 'america-south') currentContinentStr = 'South America';
-    if (currentContinentStr === 'america-north') currentContinentStr = 'North America';
+		var A_continents = d3.select("#map svg").selectAll(".continent");
+		var rand = A_continents[Math.floor(Math.random() * A_continents.length)];
+		var shuffleRand = shuffle(rand);
+
+		var countAnime = 0;
+		while( countAnime < 1){
+			animateContinent();
+			countAnime++;
+		};
 	
-    $(".txtCurrentContinent").html(currentContinentStr);
-    $("#currentContinent").val(currentContinentStr).trigger('change');
-    
-    $("#myModal").modal('hide');
-  },
+		function animateContinent(){
+			var count=0;
+			var countReset=200;
+			for( var item in shuffleRand ){	
+				d3.select(shuffleRand[item]).transition().delay(count).style("fill", "#B9DE00");
+				d3.select(shuffleRand[item]).transition().delay(countReset).style("fill", "#E1FA9F");
+				count+= 150;
+				countReset+=200;
+			};
+		};
+		
+		var currentContinent = shuffleRand[2];
+		var currentContinentStr = $("#currentContinent").val();
+		var currentContinentShufStr = currentContinent.id;
+			if (currentContinentShufStr === 'america-south') currentContinentShufStr = 'south america';
+			if (currentContinentShufStr === 'america-north') currentContinentShufStr = 'North America';
+		if(typeof(currentContinentStr) !== 'undefined'){
+			if(currentContinentShufStr.toLowerCase() == currentContinentStr.toLowerCase()){
+			 currentContinent = shuffleRand[2+1];
+			};
+		};
+		
+		d3.selectAll(".continent").transition().delay(1600).style("fill", "#E1FA9F");
+		d3.select(currentContinent).transition().delay(1600).style("fill", "#B9DE00");
+
+		var currentContinentclass= currentContinent.id;
+		setTimeout(function(){d3.select("."+currentContinentclass).classed("hideInfoContinent",false);},1800);
+			
+		$('#requestPanel').hide();
+			
+		var currentContinentStr = currentContinent.id;
+		if (currentContinentStr === 'america-south') currentContinentStr = 'South America';
+		if (currentContinentStr === 'america-north') currentContinentStr = 'North America';
+	
+		$(".txtCurrentContinent").html(currentContinentStr);
+		$("#currentContinent").val(currentContinentStr).trigger('change');
+		
+		$("#myModal").modal('hide');
+	},
   
   saveScore: function () {
-	var currentsc = parseInt($("#scoreTotalValue").val());
-	if(currentsc > 0){
-	  this.currentScoreGame.set('score', currentsc)
-		.set('fk_gallery', this.model.get('collectionid'))
-		.save();
-	}  
+		var currentsc = parseInt($("#scoreTotalValue").val());
+		if(currentsc > 0){
+			this.currentScoreGame.set('score', currentsc)
+			.set('fk_gallery', this.model.get('collectionid'))
+			.save();
+		}  
   },
   
   updateScore: function(event){
@@ -553,15 +553,12 @@ directory.views.playGameboardView = Backbone.View.extend({
 			
 		// score < seuil (galleryOrdre = x,  seuil = x*100) 
 	    }else{
-			$("#meterScore").css("width",scoreProgressBar+"%");
+				$("#meterScore").css("width",scoreProgressBar+"%");
 		  };
 	  
 	  // nextCollection activate TRUE : bonus, GoodSequence equal last value in DB
 	  }else{
 		  $("#meterScore").fadeIn(1000).css("width","100%");
-		  //$("#nbAnwserGoodSequenceText").html("0");
-		 // $("#bonusValue").val("0");
-		  //$("#nbAnwserGoodSequenceRecordText").html("0"); 
   	};
 
 	//Mise à jour de la table des scores
@@ -587,49 +584,47 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  var bonusFibo = fiboSuite() ;
 	
 	  if(parseInt(currentnbAnswerGoodSequence) > parseInt(currentnbAnswerGoodRecordSequence)){
-	   $("#nbAnwserGoodSequenceRecordText").html($("#nbAnwserGoodSequenceValue").val());
-	   var currentNbAnwserGoodSequenceValue = parseInt($("#nbAnwserGoodSequenceValue").val());
-	   var currentFibo = bonusFibo(currentNbAnwserGoodSequenceValue);
-	   if (currentFibo < 2) {
-		  currentFibo = 0;
-	   }else{
-		  currentFibo *=100;
-		 }
-	  $("#bonusValue").val(currentFibo).trigger('change');
-	  $("#bonus").html($("#bonusValue").val());
-	  //Mise à jour de la table des scores
-	  var currentsc = this.currentScoreGame.get('nbAnswerGoodSequence');
-	  this.currentScoreGame.set('nbAnswerGoodSequence', currentsc+1);
-	 }
+			$("#nbAnwserGoodSequenceRecordText").html($("#nbAnwserGoodSequenceValue").val());
+			var currentNbAnwserGoodSequenceValue = parseInt($("#nbAnwserGoodSequenceValue").val());
+			var currentFibo = bonusFibo(currentNbAnwserGoodSequenceValue);
+			if (currentFibo < 2) {
+				currentFibo = 0;
+			}else{
+				currentFibo *=100;
+			}
+			$("#bonusValue").val(currentFibo).trigger('change');
+			$("#bonus").html($("#bonusValue").val());
+			//Mise à jour de la table des scores
+			var currentsc = this.currentScoreGame.get('nbAnswerGoodSequence');
+			this.currentScoreGame.set('nbAnswerGoodSequence', currentsc+1);
+		}
+
+		var scoreBonus = parseInt($("#bonusValue").val());
+		var score = scoreTaxon + scoreBonus;
+		if(score > 0){
+			$("#scoreTotalValue").val(score).trigger('change');
+			$("#scoreText").html(score);
+		}
+		if(score === 0 || score > parseInt(this.lastScoreByGallery.score) || score > parseInt(this.lastScoreByGallery.get('score'))){
+			var scoreAllGalleries = score + this.ScoreGlobal ;
+			$('#allScore').html(scoreAllGalleries); 
+		}
+		if(parseInt(this.lastScoreByGallery.get('score')) > this.ScoreGlobal){
+			var scoreAllGalleries = score;
+			$('#allScore').html(scoreAllGalleries); 
+		}
+		if(score > this.ScoreGlobal){
+			var scoreAllGalleries = score;
+			$('#allScore').html(scoreAllGalleries); 
+		}
 	
-	 var scoreBonus = parseInt($("#bonusValue").val());
-	 var score = scoreTaxon + scoreBonus;
-	 if(score > 0){
-	  $("#scoreTotalValue").val(score).trigger('change');
-	  $("#scoreText").html(score);
-	 }
-	 if(score === 0 || score > parseInt(this.lastScoreByGallery.score) || score > parseInt(this.lastScoreByGallery.get('score'))){
-	  var scoreAllGalleries = score + this.ScoreGlobal ;
-	  $('#allScore').html(scoreAllGalleries); 
-   }
-	 if(parseInt(this.lastScoreByGallery.get('score')) > this.ScoreGlobal){
-	  var scoreAllGalleries = score;
-	  $('#allScore').html(scoreAllGalleries); 
-   }
-   if(score > this.ScoreGlobal){
-	  var scoreAllGalleries = score;
-	  $('#allScore').html(scoreAllGalleries); 
-   }
-	
-	
-	
-	//Modal Bonus
-	if(scoreBonus > 0){
-	//setTimeout(function(){$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");},400);
-	$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");
-	setTimeout(function(){$("#bonus").fadeIn(2000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},2400);
-	$("#bonusMessageModal").html("+"+scoreBonus+" BONUS  points");
-	}
+		//Modal Bonus
+		if(scoreBonus > 0){
+			//setTimeout(function(){$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");},400);
+			$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");
+			setTimeout(function(){$("#bonus").fadeIn(2000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},2400);
+			$("#bonusMessageModal").html("+"+scoreBonus+" BONUS  points");
+		}
 	
   },
   
@@ -637,34 +632,34 @@ directory.views.playGameboardView = Backbone.View.extend({
   loadTaxonPlay: function(event){        
     var currentscnbQuestionTotal = this.currentScoreGame.get('nbQuestionTotal');
     this.currentScoreGame.set('nbQuestionTotal', currentscnbQuestionTotal+1);
-	var currentContinentStr = $("#currentContinent").val();
+		var currentContinentStr = $("#currentContinent").val();
 	
-	//Recherche jusqu'à 40x si indexId1 est sur le currentContinent
-	var selectedItemsCollection = new directory.models.ItemsCollection();
-    var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
-	var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
-	var capCurrentContinent = capitaliseFirstLetter(currentContinentStr);
-	var countPresence=0;
-	if(typeof(currentContinentStr) !== 'undefined'){
-	  for (var idNat in presence) {
-		if(countPresence > 6 || capCurrentContinent  == presence[idNat] || typeof(presence[idNat]) === 'undefined'){
-		  break;
+		//Recherche jusqu'à 40x si indexId1 est sur le currentContinent
+		var selectedItemsCollection = new directory.models.ItemsCollection();
+		var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
+		var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
+		var capCurrentContinent = capitaliseFirstLetter(currentContinentStr);
+		var countPresence=0;
+		if(typeof(currentContinentStr) !== 'undefined'){
+			for (var idNat in presence) {
+				if(countPresence > 6 || capCurrentContinent  == presence[idNat] || typeof(presence[idNat]) === 'undefined'){
+					break;
+				};
+				if(typeof(presence[idNat]) != 'undefined'){
+					while (capCurrentContinent != presence[idNat]) {
+						if(countPresence > 6){
+							break;
+						};
+						indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
+						var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
+						countPresence +=1;
+					};
+					selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
+				};	
+			};
+			
+			selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
 		};
-		if(typeof(presence[idNat]) != 'undefined'){
-		  while (capCurrentContinent != presence[idNat]) {
-		  if(countPresence > 6){
-			break;
-		  };
-		  indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
-		  var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
-			countPresence +=1;
-		  };
-		  selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
-		};	
-	  };
-		
-	  selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
-	};
     //Selection des 3 taxons de façon aléatoire
    /* var selectedItemsCollection = new directory.models.ItemsCollection();
     var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
@@ -693,15 +688,15 @@ directory.views.playGameboardView = Backbone.View.extend({
     if (typeof(this.listView) !== 'undefined') {
       this.listView.remove();
     }
-	//var currentContinentStr = $("#currentContinent").val();
+		//var currentContinentStr = $("#currentContinent").val();
     this.listView = new directory.views.RandomItemListView({ model: selectedItemsCollection});
     this.listView.gallery = this.model;
     this.listView.render();
     $('#taxonSelectList', this.el).append(this.listView.el);
     //Mise en forme du panel
-	$('#requestPanel').delay(2200).slideDown('slow');
+		$('#requestPanel').delay(2200).slideDown('slow');
     $(".playableTaxonHidden").hide();
-	$(".txtCurrentContinent").html(currentContinentStr);
+		$(".txtCurrentContinent").html(currentContinentStr);
     return this;
   },
 });
@@ -722,7 +717,6 @@ directory.views.RandomItemListView = Backbone.View.extend({
 
   events:{
     'click .playableTaxon img': 'expandItemSticker',
-   /* 'click .playableTaxonClose img' : 'reduceItemSticker',*/
     'click .playableTaxonValidate' : 'validateItem',
     'click .playableTaxonDetail' :  'showGraph',
   },
@@ -743,9 +737,8 @@ directory.views.RandomItemListView = Backbone.View.extend({
     else{
       this.graphView.graph.refreshCurrentNode(this.model.models[arrayId].get('taxonConceptId'));
     }
-
     this.graphView.graph.displayPanel(this.model.models[arrayId].get('taxonConceptId'), this.model.models[arrayId].attributes.filename);
-    },
+  },
    
 
   
@@ -762,12 +755,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
     $("#"+target).parent().children(".playableTaxonHidden").show(5);
   },
        
- /*reduceItemSticker: function(event){
-    $(".playableTaxonHidden").hide(5);
-    $(this).parent().parent(".playableTaxon").removeAttr('style');
-    $(this).parent().parent(".playableTaxon").animate({width:"20%",height:"30%" },500);
-  },*/
-  
+   
   validateItem: function(event){
     $("#scoreMessageModal").empty();
 	$("#bonusMessageModal").empty();
@@ -783,7 +771,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
     
     var currentContinentStr = $("#currentContinent").val();
     var weightTaxonIucn = 0;
-	var weightTaxonContinent = 0;
+		var weightTaxonContinent = 0;
     
     //Selection des items corrects pour ce continent
     var correctItems = new Array();
@@ -810,18 +798,18 @@ directory.views.RandomItemListView = Backbone.View.extend({
 	var newArray = [];
 	for (var i=0;i<correctItems.length;i++){
 	  if(correctItems[i] == true){
-	  newArray.push(i);	  
+			newArray.push(i);	  
 	  }
 	}
 	if(typeof(newArray) !== 'undefined'){
 	  var arrayLength = newArray.length;
 	  //pondération Nb total de bonnes réponses possibles à la question
 	  if (arrayLength > 1){
-		var weightNbPossibilyties = arrayLength*50;
-		$("#reponseMessageModal").before('<h5>Correct answers were...</h5>');
+			var weightNbPossibilyties = arrayLength*50;
+			$("#reponseMessageModal").before('<h5>Correct answers were...</h5>');
 	  }else{
-		var weightNbPossibilyties = 0;
-		$("#reponseMessageModal").before('<h5>The correct answer was...</h5>');
+			var weightNbPossibilyties = 0;
+			$("#reponseMessageModal").before('<h5>The correct answer was...</h5>');
 	  }
 	 
 	};
@@ -833,25 +821,23 @@ directory.views.RandomItemListView = Backbone.View.extend({
       found = true;
     }
     if((currentObjectId == -1 ) && (existTrueResponse == false)){
-	  $("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
-	}
+			$("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
+		}
     if (found == false) {
       if (! existTrueResponse) {
         $("#item--1").removeClass("gradientGrey");
         $("#item--1").addClass("gameTrueSelectedItem");
-		$("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
+				$("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
       }
-	 
-      var currentScore = parseInt($("#scoreTotalValue").val());
-      $("#scoreTotalValue").val(currentScore+0).trigger('change');
-	  //nb NbAnwserGood
-	  var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
-	  $("#nbAnwserGoodValue").val(currentNbAnwserGood+0).trigger('change');
-	  //nb nbAnwserGoodSequence
-	  $("#nbAnwserGoodSequenceValue").val(0).trigger('change');
-      //Message Modal
-      $("#txtMessageModal").html("Sorry!");
-      
+			var currentScore = parseInt($("#scoreTotalValue").val());
+			$("#scoreTotalValue").val(currentScore+0).trigger('change');
+			//nb NbAnwserGood
+			var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
+			$("#nbAnwserGoodValue").val(currentNbAnwserGood+0).trigger('change');
+			//nb nbAnwserGoodSequence
+			$("#nbAnwserGoodSequenceValue").val(0).trigger('change');
+			//Message Modal
+			$("#txtMessageModal").html("Sorry!");
     }
     else {
 		if(weightTaxonContinent > 1){
@@ -908,6 +894,31 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   serialize: function() {
     return {model:this.model,scoreTotal : this.scoreTotal, lastActiveGalleryName :  this.lastActiveGalleryName };
   },
+  
+  events:{
+    'click #pseudo': 'showModalPseudo',
+    'click #profileSubmitModal': 'profileSubmitModal',
+    
+  },
+  
+  showModalPseudo : function(event){
+		$("#profileModal").modal('show');
+	},
+	
+	profileSubmitModal : function(event){
+		var profileTextModal = $("input#profileTextModal").val();
+		console.log(profileTextModal);
+		if(profileTextModal !== ""  || profileTextModal !== "Type something…"){
+			$("#pseudo").html(profileTextModal)
+			this.model.set('Tprofil_PK_Id', parseInt(this.model.get('Tprofil_PK_Id')))
+			.set('pseudo', String(profileTextModal))
+			//.updatePseudoProfile(profileTextModal);
+			.save();
+			
+		}
+		//("#profileModal").modal('hide');
+	},
+
    
 });
 

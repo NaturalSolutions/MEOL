@@ -297,11 +297,9 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
   
    findAllScoreByProfilId : function (id) {
      var c = $.Deferred();
-     
      (new this.dao(directory.db)).findAllScoreByProfilId(id,function(data) {
           c.resolve(data);
-      });
-     
+      }); 
      return c;
   },
   

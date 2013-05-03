@@ -10,10 +10,31 @@
 
 <div id=profilPage>
   <h1 id="pictoProfil">Profile</h1> 
-  <h2><%=model.get('pseudo') %></h2>
-  <%console.log(scoreTotal)%>
-  <p>Current Level : <em><%= lastActiveGalleryName%></em></p>
-  <p>Score Total : <%=scoreTotal%></p>
-  <div id="profileTable"></div> 
-  
+  <h2 id="pseudo"><%=model.get('pseudo') %></h2>
+  <fieldset>
+	<p>Score Total : <b><%=scoreTotal%></b></p>
+	<p>Current Level : <b><em><%= lastActiveGalleryName%></em></b></p>
+	<div id="profileTable"></div> 
+  </fieldset>
+</div>
+
+ 
+<!-- Modal -->
+<div id="profileModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">Change your pseudo</h3>
+	</div>
+	<div class="modal-body">
+		<form>
+			<fieldset>
+				<legend>Legend</legend>
+				<label>Your pseudo</label>
+				<input id="profileTextModal" type="text" placeholder="Type something…">
+				<span class="help-block">Example block-level help text here.</span>
+				<button id="profileSubmitModal" type="submit" class="btn">Submit</button>
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			</fieldset>
+    </form>
+	</div>
 </div>
