@@ -59,11 +59,16 @@ Backbone.sync = function(method, model, options) {
   }
   else if (method === "create") {
     if (model.attributes) {
-      if ( (model.attributes.pseudo)) {
-        dao.updatePseudoProfile(model, function(data) {
-          options.success(data);
-        });
-      } 
+        if ( (model.attributes.pseudo)) {
+           dao.updatePseudoProfile(model, function(data) {
+              options.success(data);
+            });
+        } 
+        else if (model.attributes.fk_gallery) {
+            dao.createScore(model, function(data) {
+              options.success(data);
+            });
+        }
     }
     else {
       dao.createScore(model, function(data) {
