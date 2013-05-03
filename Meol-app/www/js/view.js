@@ -894,17 +894,18 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   
   initialize: function() {
     this.collection = this.options.allScoreById; 
+    this.scoreTotal = this.options.scoreTotal; 
     this.model.bind("reset", this.render, this);
     this.currentGalleryName = directory.data.galleriesList.findWhere( {'collectionid': this.collection.fk_gallery});
   },
   
   
  beforeRender: function() {
-   this.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:this.collection,model:this.model })).render();
+   this.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:this.collection,model:this.model, scoreTotal : this.scoreTotal })).render();
   },
  
   serialize: function() {
-    return {model:this.model};
+    return {model:this.model,scoreTotal : this.scoreTotal};
   },
    
 });
@@ -916,7 +917,7 @@ directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
    this.model.bind("reset", this.render, this);
  },  
  serialize: function() {
-   return {collection:this.collection};
+   return {collection:this.collection,scoreTotal : this.scoreTotal};
  },
 
 });
