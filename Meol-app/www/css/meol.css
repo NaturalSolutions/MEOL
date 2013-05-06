@@ -229,6 +229,7 @@ width:35px;
 .collectionName h1{
   font-size: 1.8em;
   color: #B9DE00;
+  text-shadow: 2px 2px 2px #000;
 }
 
 /***************************
@@ -249,6 +250,12 @@ margin:5% auto;
 #profileTable{
   overflow-y: scroll;
   max-height: 450px;
+}
+
+#profilPage fieldset {
+  margin:20px 5px 10px;
+  text-align: center;
+	color: #E2E9EF;
 }
 
 #listeVignetteCollection h1,#listeVignetteCollectionPlay h1,#profilPage h1, .containerContents h1{
@@ -856,8 +863,14 @@ div.gameTrueSelectedItem{
   background:#B9DE00;
   padding:2px;
 }
+#collectionModal.alert .modal-body{
+	padding-bottom:3px;
+}
 #collectionModal.alert h4{
   color :#4B6377;
+}
+#collectionModal.alert .btn-primary{
+  width:100%;
 }
 /***----------------------Modal---------------------------------***/
 .modal-backdrop {
@@ -871,6 +884,9 @@ div.gameTrueSelectedItem{
 
 .modal h3{
   color:#B9DE00;
+}
+#sorry{
+	color:#DB5252; 
 }
 
 /***------------------------------Score----------------------------***/

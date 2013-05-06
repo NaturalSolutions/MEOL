@@ -430,6 +430,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  'change #nbAnwserGoodValue' : 'updateNbAnwserGood',
 	  'change #nbAnwserGoodSequenceValue' : 'updateNbAnwserGoodSequenceValue',
     'click #returnToGame' : 'returnToGame',
+    'click #navigateNewGallery' : 'navigateNewGallery',
   },
   
   
@@ -455,6 +456,13 @@ directory.views.playGameboardView = Backbone.View.extend({
   },*/
   beforeClose : function(){
    this.saveScore();
+  },
+  
+   navigateNewGallery : function(){
+		var nav = new directory.Router;
+		var nextCollectionOrdre = this.model.get('ordre')+1;
+		var urlNextGallery = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('collectionid');
+		nav.navigate("play/"+urlNextGallery, {trigger: true, replace: true});
   },
   
   returnToGame : function(event){
@@ -494,8 +502,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 		var currentContinent = shuffleRand[2];
 		var currentContinentStr = $("#currentContinent").val();
 		var currentContinentShufStr = currentContinent.id;
-			if (currentContinentShufStr === 'america-south') currentContinentShufStr = 'south america';
-			if (currentContinentShufStr === 'america-north') currentContinentShufStr = 'North America';
+		if (currentContinentShufStr === 'america-south') currentContinentShufStr = 'south america';
+		if (currentContinentShufStr === 'america-north') currentContinentShufStr = 'North America';
 		if(typeof(currentContinentStr) !== 'undefined'){
 			if(currentContinentShufStr.toLowerCase() == currentContinentStr.toLowerCase()){
 			 currentContinent = shuffleRand[2+1];
@@ -531,7 +539,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   updateScore: function(event){
 	  var currentsc = parseInt($("#scoreTotalValue").val());
-	  var scoreProgressBar = currentsc/200;
+	  var scoreProgressBar = currentsc/20;
 	  var scoreProgressTotal= $("#meterScore").css("width");
 	  var currentCollectionOrdre = this.model.get('ordre');
 	  var nextCollectionOrdre = this.model.get('ordre')+1;
@@ -543,7 +551,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 			  var nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
 			  directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
 			  setTimeout(function(){$("#collectionModal").show().alert();},100);
-			  setTimeout(function(){$("#collectionModal").hide().alert();},3000);
+			  //setTimeout(function(){$("#collectionModal").hide().alert();},3000);
+			  this.currentScoreGame.set('score', currentsc);
 		   }
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
 			$("#meterScore").css("width",scoreProgressBar+"%");
@@ -634,7 +643,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.currentScoreGame.set('nbQuestionTotal', currentscnbQuestionTotal+1);
 		var currentContinentStr = $("#currentContinent").val();
 	
-		//Recherche jusqu'à 40x si indexId1 est sur le currentContinent
+		//Recherche jusqu'à 6x si indexId1 est sur le currentContinent
 		var selectedItemsCollection = new directory.models.ItemsCollection();
 		var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
 		var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
@@ -681,7 +690,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     var falseItem = new directory.models.Item();
     falseItem.set('filename',  "unknown_taxon.jpg");
     falseItem.set('Titem_PK_Id',  "-1");
-    falseItem.set('preferredCommonNames',  "None of These Live Here");
+    falseItem.set('preferredCommonNames',  "None of these live here");
     selectedItemsCollection.models[3] = falseItem;
     
     //Création de la vue des éléments du jeux
@@ -758,9 +767,9 @@ directory.views.RandomItemListView = Backbone.View.extend({
    
   validateItem: function(event){
     $("#scoreMessageModal").empty();
-	$("#bonusMessageModal").empty();
+		$("#bonusMessageModal").empty();
     $("#reponseMessageModal").empty();
-	$("#activateCollMessageModal").empty();
+		$("#activateCollMessageModal").empty();
     $("#myModal h5").remove();
     var target = event.currentTarget.id;
     var arrayId = parseInt(target.replace("validate-", ''));
@@ -788,33 +797,34 @@ directory.views.RandomItemListView = Backbone.View.extend({
           $("#item-"+this.model.models[id].attributes.Titem_PK_Id).removeClass("gradientGrey");
           $("#item-"+this.model.models[id].attributes.Titem_PK_Id).addClass("gameTrueSelectedItem");
           $("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
-		  var idTaxon = this.model.models[id];
-		  var weightTaxonIucn = idTaxon.get('weightIucn');
-		  var weightTaxonContinent = idTaxon.attributes.weightContinent;
+					var idTaxon = this.model.models[id];
+					var weightTaxonIucn = idTaxon.get('weightIucn');
+					var weightTaxonContinent = idTaxon.attributes.weightContinent;
         };
       };
     };
-	//Nb total de bonnes réponses possibles à la question
-	var newArray = [];
-	for (var i=0;i<correctItems.length;i++){
-	  if(correctItems[i] == true){
-			newArray.push(i);	  
-	  }
-	}
-	if(typeof(newArray) !== 'undefined'){
-	  var arrayLength = newArray.length;
-	  //pondération Nb total de bonnes réponses possibles à la question
-	  if (arrayLength > 1){
-			var weightNbPossibilyties = arrayLength*50;
-			$("#reponseMessageModal").before('<h5>Correct answers were...</h5>');
-	  }else{
-			var weightNbPossibilyties = 0;
-			$("#reponseMessageModal").before('<h5>The correct answer was...</h5>');
-	  }
-	 
-	};
+	
 	
     var found = false;
+    //Nb total de bonnes réponses possibles à la question
+		var newArray = [];
+		for (var i=0;i<correctItems.length;i++){
+			if(correctItems[i] == true){
+				newArray.push(i);	  
+			}
+		}
+		if(typeof(newArray) !== 'undefined'){
+			var arrayLength = newArray.length;
+			//pondération Nb total de bonnes réponses possibles à la question
+			if (arrayLength > 1){
+				var weightNbPossibilyties = arrayLength*50;
+				$("#reponseMessageModal").before('<h5>Correct answers were...</h5>');
+			}else{
+				var weightNbPossibilyties = 0;
+				$("#reponseMessageModal").before('<h5>The correct answer was...</h5>');
+			}
+		};
+		
     if ((correctItems[arrayId] == true )  || ((currentObjectId == -1 ) && (existTrueResponse == false))  )  {
       $("#item-"+currentObjectId).removeClass("gradientGrey");
       $("#item-"+currentObjectId).addClass("gameTrueSelectedItem");
@@ -837,7 +847,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
 			//nb nbAnwserGoodSequence
 			$("#nbAnwserGoodSequenceValue").val(0).trigger('change');
 			//Message Modal
-			$("#txtMessageModal").html("Sorry!");
+			$("#txtMessageModal").html("<span id ='sorry'>Sorry!</span>");
     }
     else {
 		if(weightTaxonContinent > 1){
@@ -850,18 +860,21 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		}else{
 		  var ponderationIucn = 0;
 		};
-        var currentScore = parseInt($("#scoreTotalValue").val());
+    var currentScore = parseInt($("#scoreTotalValue").val());
 		var currentPonderation = weightNbPossibilyties + ponderationContinent + ponderationIucn;
-        $("#scoreTotalValue").val(currentScore+1000-currentPonderation).trigger('change');
+    $("#scoreTotalValue").val(currentScore+1000-currentPonderation).trigger('change');
 		//nb nbAnwserGood
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
-        $("#nbAnwserGoodValue").val(currentNbAnwserGood+1).trigger('change');
+    $("#nbAnwserGoodValue").val(currentNbAnwserGood+1).trigger('change');
 		//nb nbAnwserGoodSequence
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodSequenceValue").val());
-        $("#nbAnwserGoodSequenceValue").val(currentNbAnwserGood+1).trigger('change');
+    $("#nbAnwserGoodSequenceValue").val(currentNbAnwserGood+1).trigger('change');
 		
 		//Message succes Modal
 		$("#txtMessageModal").html("Well Done!");
+		//Ne pas afficher la ou les bonnes reponses
+		$("#myModal h5").remove();
+		$("#reponseMessageModal").html("");
 		$("#scoreMessageModal").html(1000-currentPonderation+" points");
     };
     
@@ -898,7 +911,6 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   events:{
     'click #pseudo': 'showModalPseudo',
     'click #profileSubmitModal': 'profileSubmitModal',
-    
   },
   
   showModalPseudo : function(event){
@@ -907,16 +919,13 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
 	
 	profileSubmitModal : function(event){
 		var profileTextModal = $("input#profileTextModal").val();
-		console.log(profileTextModal);
 		if(profileTextModal !== ""  || profileTextModal !== "Type something…"){
-			$("#pseudo").html(profileTextModal)
+			$("#pseudo").html(profileTextModal);
 			this.model.set('Tprofil_PK_Id', parseInt(this.model.get('Tprofil_PK_Id')))
 			.set('pseudo', String(profileTextModal))
-			//.updatePseudoProfile(profileTextModal);
 			.save();
 			
 		}
-		//("#profileModal").modal('hide');
 	},
 
    

@@ -4,18 +4,22 @@
       <img src="data/images_taxon/<%= item.filename %>" id="clickImg<%= item.Titem_PK_Id %>" class="img-rounded"/>
       <% if ( item.preferredCommonNames ){ %>
             <h3><%= item.preferredCommonNames %></h3>
+      <% }else{ %>
+        <h3><em><%= item.taxonName %></em></h3> 
       <% } %>
       
       <div class="playableTaxonHidden">
-        <% if ( item.taxonName ){ %>
+        <% if ( item.taxonName && item.preferredCommonNames !== ""){ %>
             <h4><em><%= item.taxonName %></em></h4>
         <% } %>
         
         <% if ( item.taxonConceptId >0 ){ %>
           <button id="detailTaxon-<%= i %>" class="playableTaxonDetail btn">Show Details</button>
         <% } %>
-        <!--<button href="#myModal" id="validate-<%= i %>" role="button" class="btn-primary playableTaxonValidate" data-toggle="modal">I am here!</button>-->
-        <button  id="validate-<%= i %>" role="button" class="btn-primary playableTaxonValidate">I live in <em><span class = "txtCurrentContinent"></span>.</em></button>
+        <button  id="validate-<%= i %>" role="button" class="btn-primary playableTaxonValidate">
+          <% if (item.Titem_PK_Id == -1) {%>None in<%}else{%> I live in<%}%>
+          <em><span class = "txtCurrentContinent"></span>.</em>
+        </button>
       </div>
     </div>
 <% i = i+1; }); %>
