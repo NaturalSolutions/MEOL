@@ -892,20 +892,31 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   template: 'profil-page',
   
   initialize: function() {
-    this.collection = this.options.allScoreById; 
-    this.scoreTotal = this.options.scoreTotal;
-    var ordreMax = this.options.ordreMax;
-    this.model.bind("reset", this.render, this);
-    this.lastActiveGalleryName = directory.data.galleriesList.findWhere({'ordre' : parseInt(ordreMax)}).get('name');
+  
   },
   
   
  beforeRender: function() {
-   this.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:this.collection,model:this.model, scoreTotal : this.scoreTotal })).render();
+		var collection = new directory.models.ScoresCollection();
+		var deferred = collection.findAllScoreByProfilId(this.model.get('Tprofil_PK_Id'));
+		var self = this;
+		deferred.done(function(items) {
+			var score = 0;
+			var ordreMax = 1;
+			_.each(items, function(item) {
+				var ordreCurrent = directory.data.galleriesList.galleryOrdreById(String(item.fk_gallery));
+				if(ordreCurrent > ordreMax){
+					ordreMax = ordreCurrent;
+				};
+				score += item.score_max;	
+			});
+			var lastActiveGalleryName = directory.data.galleriesList.findWhere({'ordre' : parseInt(ordreMax)}).get('name');
+			self.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:items,model:self.model, lastActiveGalleryName :lastActiveGalleryName, scoreTotal : score })).render();
+		});
   },
- 
+	
   serialize: function() {
-    return {model:this.model,scoreTotal : this.scoreTotal, lastActiveGalleryName :  this.lastActiveGalleryName };
+    return {model:this.model};
   },
   
   events:{
@@ -935,10 +946,12 @@ directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
  template: 'profil-table',
  
  initialize: function() { 
+	 this.scoreTotal = this.options.scoreTotal;
+   this.lastActiveGalleryName = this.options.lastActiveGalleryName;
    this.model.bind("reset", this.render, this);
  },  
  serialize: function() {
-   return {collection:this.collection,scoreTotal : this.scoreTotal};
+   return {collection:this.collection,scoreTotal : this.scoreTotal, lastActiveGalleryName :  this.lastActiveGalleryName };
  },
 
 });
