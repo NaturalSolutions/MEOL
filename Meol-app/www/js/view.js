@@ -539,7 +539,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   updateScore: function(event){
 	  var currentsc = parseInt($("#scoreTotalValue").val());
-	  var scoreProgressBar = currentsc/20;
+	  var scoreProgressBar = currentsc/200;
 	  var scoreProgressTotal= $("#meterScore").css("width");
 	  var currentCollectionOrdre = this.model.get('ordre');
 	  var nextCollectionOrdre = this.model.get('ordre')+1;
