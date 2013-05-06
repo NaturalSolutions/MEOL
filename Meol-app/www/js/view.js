@@ -919,12 +919,12 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
 	
 	profileSubmitModal : function(event){
 		var profileTextModal = $("input#profileTextModal").val();
-		if(profileTextModal !== ""  || profileTextModal !== "Type something…"){
+		console.log(typeof(profileTextModal));
+		if(profileTextModal !== ""){
 			$("#pseudo").html(profileTextModal);
 			this.model.set('Tprofil_PK_Id', parseInt(this.model.get('Tprofil_PK_Id')))
 			.set('pseudo', String(profileTextModal))
-			.save();
-			
+			.save();	
 		}
 	},
 

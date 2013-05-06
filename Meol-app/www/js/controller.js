@@ -175,28 +175,33 @@ directory.Router = Backbone.Router.extend({
       var self = this;
       var profil = new directory.models.Profil({Tprofil_PK_Id:id});
       var collection = new directory.models.ScoresCollection();
-      collection.bind("reset", this.render, this);
-       
+        
       profil.fetch({
           success: function(data) {
+						collection.bind("reset", self.render, self);
             var deferred = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
-			// var allScoreById = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
-			deferred.done(function(items) {
-				var score = 0;
-				var ordreMax = 1;
-				_.each(items, function(item) {
-					var ordreCurrent = directory.data.galleriesList.galleryOrdreById(String(item.fk_gallery));
-					if(ordreCurrent > ordreMax){
-						ordreMax = ordreCurrent;
-					};
-					score += item.score_max;	
-				});
-            console.log(items);
-            console.log(ordreMax);
-            var currentView = new directory.views.ProfilDetailView({model: data, allScoreById : items, scoreTotal : score, ordreMax : ordreMax});
-            self.displayView(currentView);
-			});
-			}
+            
+						// var allScoreById = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
+						deferred.done(function(items) {
+			
+							var score = 0;
+							var ordreMax = 1;
+							_.each(items, function(item) {
+								var ordreCurrent = directory.data.galleriesList.galleryOrdreById(String(item.fk_gallery));
+								if(ordreCurrent > ordreMax){
+									ordreMax = ordreCurrent;
+								};
+								score += item.score_max;	
+							});
+							console.log(items);
+							console.log(ordreMax);
+							collection.bind("change", self.render, self);
+							var currentView = new directory.views.ProfilDetailView({model: data, allScoreById : items, scoreTotal : score, ordreMax : ordreMax});
+							collection.bind("reset", self.render, self);
+							self.displayView(currentView);
+							collection.bind("reset", self.render, self);
+						});
+					}
       });
   },
 
