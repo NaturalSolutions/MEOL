@@ -54,6 +54,7 @@ body {
 }
 label{
   color:#B9DE00;
+  cursor: default;
 }
 
 circle.expand-icon-circle {
@@ -642,10 +643,6 @@ div.taxon-list-item {
 
 /*********** page PLAY**************/
 /*****************************/
-
-#play-gameboard {
-	cursor: default;
-}
 
 #map{
   /*margin-left:145px;
