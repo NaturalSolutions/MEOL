@@ -50,6 +50,7 @@ h1, h2 {
 body { 
   background: #0A0F13;
   font-family:helvetica;
+  cursor:default;
 }
 label{
   color:#B9DE00;
@@ -641,6 +642,11 @@ div.taxon-list-item {
 
 /*********** page PLAY**************/
 /*****************************/
+
+#play-gameboard {
+	cursor: default;
+}
+
 #map{
   /*margin-left:145px;
   position:fixed;
