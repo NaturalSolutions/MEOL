@@ -229,7 +229,7 @@ width:35px;
 .collectionName h1{
   font-size: 1.8em;
   color: #B9DE00;
-  text-shadow: 2px 2px 2px #000;
+  text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
 }
 
 /***************************
