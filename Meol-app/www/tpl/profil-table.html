@@ -1,13 +1,9 @@
 <fieldset>
-	<p>Score Total : <b><%=scoreTotal%></b></p>
-	<p>Current Level : <b><em><%= lastActiveGalleryName%></em></b></p>
+	<p>Total score : <b><%=scoreTotal%></b></p>
+	<p>Current collection : <b><em><%= lastActiveGalleryName%></em></b></p>
 
 <div id="profileTableScore">
     <table>
-      <% console.log(collection)%>
-      <% var i=0; 
-      _.each(collection, function(score) { %>
-     
       <tbody>
         <thead>
           <tr class="head gradientDarkBlue">
@@ -15,6 +11,9 @@
             <td>Score</td>
           </tr>
         </thead>
+         <% console.log(collection)%>
+      <% var i=0; 
+      _.each(collection, function(score) { %>
         <tr id="score-<%= collection[i].fk_profil %>">
           <td><%= directory.data.galleriesList.findWhere({'collectionid' : String(collection[i].fk_gallery)}).get('name')%></td>
           <td><%= collection[i].score_max%></td>

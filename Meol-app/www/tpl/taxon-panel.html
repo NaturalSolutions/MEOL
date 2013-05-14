@@ -72,7 +72,7 @@
       <% } %>
           <% if ( pageid ) {%>
           <div>
-            <p class="credits">External link EOL : <a class='ui-link' href="http://eol.org/pages/<%= pageid %>" alt="more details on eol.org" target="_blank"><%= taxonName %></a></p>
+            <p class="credits">External link EOL : <a class='ui-link' href="#"  onClick="window.open('http://eol.org/pages/<%= pageid %>','_blank','location=yes');" alt="more details on eol.org" target="_blank"><%= taxonName %></a></p>          
           </div>
       <%}%>
     </div>

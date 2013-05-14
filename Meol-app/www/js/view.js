@@ -458,7 +458,7 @@ directory.views.playGameboardView = Backbone.View.extend({
    this.saveScore();
   },
   
-   navigateNewGallery : function(){
+  navigateNewGallery : function(){
 		var nav = new directory.Router;
 		var nextCollectionOrdre = this.model.get('ordre')+1;
 		var urlNextGallery = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('collectionid');
@@ -556,7 +556,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 		   }
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
 			$("#meterScore").css("width",scoreProgressBar+"%");
-			$("#activateCollMessageModal").html("<em>New collection!<br/>"+nextCollectionName+"</em>");
+			$("#activateCollMessageModal").html("<em>New unlocked collection :<br/>"+nextCollectionName+"</em>");
 			setTimeout(function(){$("#meterScore").fadeIn(1000).css("width","100%");},3000);
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
 			
@@ -629,10 +629,10 @@ directory.views.playGameboardView = Backbone.View.extend({
 	
 		//Modal Bonus
 		if(scoreBonus > 0){
-			//setTimeout(function(){$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");},400);
-			$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 8px 4px #E2E9EF");
-			setTimeout(function(){$("#bonus").fadeIn(2000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},2400);
-			$("#bonusMessageModal").html("+"+scoreBonus+" BONUS  points");
+			//setTimeout(function(){$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 12px 6px #E2E9EF");},400);
+			$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 12px 6px #E2E9EF");
+			setTimeout(function(){$("#bonus").fadeIn(3000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},2400);
+			$("#bonusMessageModal").html("+"+scoreBonus+" Bonus series points");
 		}
 	
   },
@@ -776,7 +776,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
     var currentObjectId = this.model.models[arrayId].attributes.Titem_PK_Id;
     //Change la classe css de l'item selectionné
     $("#item-"+currentObjectId).removeClass("gradientGrey");
-    $("#item-"+currentObjectId).addClass("gameCurrentSelectedItem");
+    $("#item-"+currentObjectId).addClass("gameFalseSelectedItem");
     
     var currentContinentStr = $("#currentContinent").val();
     var weightTaxonIucn = 0;
@@ -836,7 +836,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
     if (found == false) {
       if (! existTrueResponse) {
         $("#item--1").removeClass("gradientGrey");
-        $("#item--1").addClass("gameTrueSelectedItem");
+        $("#item--1").addClass("gameTrueSelectedItem ");
 				$("#reponseMessageModal").append('<li>'+this.model.models[id].attributes.preferredCommonNames+'</li>');
       }
 			var currentScore = parseInt($("#scoreTotalValue").val());

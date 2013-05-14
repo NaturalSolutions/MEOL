@@ -28,23 +28,11 @@
   <div class="alert alert-block fade in" id="collectionModal" style="display: none;" >
     <div class="modal-body">
       <h4 id='activateCollMessageModal'></h4>
-      <button type="button" data-dismiss="alert" aria-hidden="true" class="btn-primary pull-right" id="navigateNewGallery">Play</button>
+      <button type="button" data-dismiss="alert" aria-hidden="true" class="btn-primary pull-right" id="navigateNewGallery">Play with this collection!</button>
     </div>
   </div>
   
-  
-  <div class="modal hide" id="confirmbox" data-backdrop="false">
-    <div class="modal-header gradientDarkBlue">
-    </div>
-    <div class="modal-body">
-      <p id="confirmMessage">Any confirmation message?</p>
-    </div>
-    <div class="modal-footer gradientDarkBlue">
-      <button type="button" data-dismiss="modal" aria-hidden="true" class="btn" id="confirmTrue">Validate</button>
-      <button type="button" data-dismiss="modal" aria-hidden="false" class="btn" id="confirmFalse">Cancel</button>
-    </div>
-  </div>
-
+ 
 
 
   <div id="map" class=""></div>
@@ -56,20 +44,20 @@
     </div>
     <input id="scoreTotalValue" type="hidden" value ="<% if(typeof(score.score) != 'undefined') { %> <%= score.score %> <% }else{%>0<%};%>"/>
     <input id="scoreValue" type="hidden" value = "<% if(typeof(score.score) != 'undefined') { %> <%= score.score %> <% }else{%>0<%};%>"/>
-    <label>Score</label>
+    <label>Collection score</label>
     <span id ="scoreText" class="scoreSpan"><% if(typeof(score.score) != 'undefined') { %> <%= score.score %> <% }else{%>0<%};%></span>
-    <label>BONUS</label>
+    <label>Bonus</label>
     <input id="bonusValue" type="hidden" value = "0"/>
     <span id ="bonus" class="scoreSpan">0</span>
     <input id="nbAnwserGoodValue" type="hidden" value = "0"/>
-    <label>Sequence</label>
+    <label>Series</label>
     <input id="nbAnwserGoodSequenceValue" type="hidden" value = "<% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %> <%= score.nbAnswerGoodSequence %> <% }else{%>0<%};%>"/>
     <span class="scoreSpan">
       <span id ="nbAnwserGoodSequenceText"><% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %><%=score.nbAnswerGoodSequence%><% }else{%>0<%};%></span>
       <span> / </span>
       <span id ="nbAnwserGoodSequenceRecordText"><% if(typeof(score.nbAnswerGoodSequence) != 'undefined') { %><%=score.nbAnswerGoodSequence%><% }else{%>0<%};%></span>
     </span>
-    <label>Score Total</label>
+    <label>Total score</label>
     <span id ="allScore" class="scoreSpan"><% if(typeof(allScore) != 'undefined') { %> <%=allScore%> <% }else{%>0<%};%></span>
   </div>
   <div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div>
