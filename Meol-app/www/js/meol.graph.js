@@ -135,7 +135,9 @@ MeolGraph.prototype._update = function() {
 
   // Register touchstart event listener for IOS (change this to click for desktop):
   //this.node.on("touchstart", function(clickedNode, i) {
-  this.node.on("click", function(clickedNode, i) {
+  var event='click';
+  if (document.documentElement.hasOwnProperty('ontouchstart'))event = 'touchstart';
+  this.node.on(event, function(clickedNode, i) {
     var taxon;
     if (typeof clickedNode.taxonConceptID !== "undefined") {
       var clickedNodeTaxonConceptId = clickedNode.taxonConceptID;
