@@ -1066,6 +1066,13 @@ span.panel-title {
 	text-align: justify;
 }
 
+#contribute {
+margin-left: 70px;
+}
+#contribute button {
+	width: 50%;
+	margin: 5px 25%;
+}
 /*********** page PROFILE**************/
 /*****************************/
 #profileTextModal {
