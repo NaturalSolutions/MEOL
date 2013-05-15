@@ -1083,6 +1083,7 @@ color: #DB5252;
 text-shadow: 0 1px 0 #000000;
 opacity: 0.8;
 filter: alpha(opacity=80);
+font-size: 35px;
 }
 .close:hover, .close:focus {
 color: #DB5252;
