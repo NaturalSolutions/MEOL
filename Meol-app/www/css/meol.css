@@ -442,7 +442,7 @@ input[type="radio"]{
   background-image:url(images/menu/icon-menu-play.png);
 }
 #lien-contribute a{
-  background-image:url(images/menu/icon-menu-contribute.png);
+  background-image:url(images/menu/icon-menu-feedback.png);
 }
 #lien-profil a{
   background-image:url(images/menu/icon-menu-profil.png);
@@ -466,7 +466,7 @@ input[type="radio"]{
 #lien-contribute a.ui-btn-active {
   border: none;
   background:transparent;
-  background-image:url(images/menu/icon-menu-contribute-hover.png);
+  background-image:url(images/menu/icon-menu-feedback-hover.png);
 }
 
 .container{
@@ -1047,8 +1047,9 @@ span.panel-title {
 /*********** page CONTRIBUTE**************/
 /*****************************/
 #contribute p{
-	text-align: center;
-	font-size: 24px;
+	font-size: 20px;
+	line-height: 30px;
+	text-align: justify;
 }
 
 /*********** page PROFILE**************/

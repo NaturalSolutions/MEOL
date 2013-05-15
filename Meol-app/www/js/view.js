@@ -556,7 +556,6 @@ directory.views.playGameboardView = Backbone.View.extend({
 		   }
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
 			$("#meterScore").css("width",scoreProgressBar+"%");
-			$("#activateCollMessageModal").html("<em>New unlocked collection :<br/>"+nextCollectionName+"</em>");
 			setTimeout(function(){$("#meterScore").fadeIn(1000).css("width","100%");},3000);
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
 			
@@ -572,6 +571,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 
 	//Mise à jour de la table des scores
     this.currentScoreGame.set('score', currentsc);
+    $("#activateCollMessageModal").html("<em>New unlocked collection:<br/>"+nextCollectionName+"</em>");
   },
   
   updateNbAnwserGood: function(event){
