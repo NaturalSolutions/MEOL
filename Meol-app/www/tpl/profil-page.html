@@ -3,15 +3,16 @@
     <a href=''><img src='css/images/menu/logo_M-EOL-menu.png'/></a>
     <li id='lien-discover'><a href='#gallery'></a></li>
     <li id='lien-play'><a href='#play'></a></li>
-    <li id='lien-contribute'><a href='#contribute'></a></li>
     <li id='lien-profil'><a href="#profil/<%= model.get('Tprofil_PK_Id')%>" class='ui-btn-active ui-state-persist'></a></li>
+    <li id='lien-contribute'><a href='#contribute'></a></li>
   </ul>
 </div>
 
-<div id=profilPage>
+<div id="profilPage">
+  <a class="btn btn-small pull-right" href="#"><i class="icon-wrench" ></i> Parameters</a>
   <h1 id="pictoProfil">Profile</h1> 
   <h2 id="pseudo"><%=model.get('pseudo') %></h2>
-  
+    
 	<div id="profileTable"></div> 
   </fieldset>
 </div>
@@ -28,7 +29,7 @@
 			<fieldset>
 				<label>Nickname</label>
 				<input id="profileTextModal" type="text" placeholder="Type your nickname">
-				<button id="profileSubmitModal" data-dismiss="modal" type="submit" class="btn">Submit</button>
+				<button id="profileSubmitModal" data-dismiss="modal" type="submit" class="btn">Ok</button>
 				<!--<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>-->
 			</fieldset>
     </form>
