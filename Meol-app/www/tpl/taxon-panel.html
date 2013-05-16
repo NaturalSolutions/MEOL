@@ -11,14 +11,15 @@
         <% if ( taxonName ){ %>
           <div id="nameContent"><h2><%= taxonName %></h2></div>
         <% } %>
+         <% if ( iucnPicture ){ %>
+          <span id="iucnMini"><img id="taxon" src="css/images/iucn/mini/<%= iucnPicture %>"/></span>
+        <% } %>
         <% if ( pageid ) {%>
           <div>
             <p class="credits">External link EOL : <a class='ui-link' href="#"  onClick="window.open('http://eol.org/pages/<%= pageid %>','_blank','location=yes');" alt="more details on eol.org" target="_blank"><%= taxonName %></a></p>          
           </div>
         <%}%>
-        <% if ( iucnPicture ){ %>
-          <span id="iucnMini"><img id="taxon" src="css/images/iucn/mini/<%= iucnPicture %>"/></span>
-        <% } %>
+       
    
 
       <div id="photoContent" class="clipzone">
