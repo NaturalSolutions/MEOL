@@ -548,7 +548,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 		//if score >= seuil (galleryOrdre = x,  seuil = x*100) => nextCollection activate True
 		  if(parseInt(scoreProgressBar) >= 100){
 		   if(parseInt(nextCollectionOrdre) <= parseInt(directory.data.galleriesList.length)){
-			  var nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
+			  this.nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
 			  directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
 			  setTimeout(function(){$("#collectionModal").show().alert();},100);
 			  //setTimeout(function(){$("#collectionModal").hide().alert();},3000);
@@ -571,7 +571,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 
 	//Mise à jour de la table des scores
     this.currentScoreGame.set('score', currentsc);
-    $("#activateCollMessageModal").html("<em>New unlocked collection:<br/>"+nextCollectionName+"</em>");
+    $("#activateCollMessageModal").html("<em>New unlocked collection:<br/>"+this.nextCollectionName+"</em>");
   },
   
   updateNbAnwserGood: function(event){
