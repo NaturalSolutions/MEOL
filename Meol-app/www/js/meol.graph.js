@@ -49,7 +49,7 @@ MeolGraph.prototype.init = function() {
 
   // Init SVG canvas:
   this.vis = d3.select(this.containerId).append("svg:svg")
-        .call(d3.behavior.zoom()
+       .call(d3.behavior.zoom()
           .on("zoom",  function() {
           self.vis.attr(
             "transform",
@@ -61,7 +61,7 @@ MeolGraph.prototype.init = function() {
         .attr("height", this.canvasHeight)
         .attr("id", this.svgcontainerId)
         .append('svg:g');
-  //d3.behavior.zoom.scaleExtent(0.5, 4);
+
   // Init force-directed layout:
   this.force = d3.layout.force().on("tick", function() {
 
@@ -97,7 +97,7 @@ MeolGraph.prototype._update = function() {
   this.link = this.vis.selectAll("line.link")
       .data(this.links, function(d) { return d.target.id; });
 
-  this.link.enter().insert("svg:line")
+  this.link.enter().insert("svg:line" , ".node")
       .attr("x1", function(d) { return d.source.x; })
       .attr("y1", function(d) { return d.source.y; })
       .attr("x2", function(d) { return d.target.x; })
@@ -131,8 +131,6 @@ MeolGraph.prototype._update = function() {
   this.node.filter(function(d, i) { return (typeof d.image !== "undefined") & 1; })
       .call(this.force.drag);
 
-  
-
   // Register touchstart event listener for IOS (change this to click for desktop):
   //this.node.on("touchstart", function(clickedNode, i) {
   var event='click';
@@ -151,7 +149,8 @@ MeolGraph.prototype._update = function() {
           //Change the css class of the old selected node
           $('#meolGraphContainer svg#'+ self.currentNode+' rect').attr("class","child");
           //Change the css class of the current selected node
-          $('#meolGraphContainer svg#'+clickedNode.taxonConceptID+' rect').attr("class","current-node");
+          $("rect").attr("style","");
+          $('#meolGraphContainer svg#'+clickedNode.taxonConceptID+' rect').attr("style","fill: #B9DE00;");
           self.currentNode =  clickedNode.taxonConceptID;
           //Selectionne la photo de la collection au lieu de celle du taxon
           if (typeof clickedNode.image  !== 'undefined') taxon.set('image_fileName', clickedNode.image ); 
@@ -197,14 +196,12 @@ MeolGraph.prototype._update = function() {
       return self._computeNodeHeight(d);
     })
     .attr("width", this.nodeBoxWidth)
-    .attr("class",  function(d) { 
-      var cssClass;
-      if (self.currentNode == d.taxonConceptID )  cssClass = "current-node";
-      else cssClass = ( (d.depth==0 || d.depth==-1)?"root":"child" );
-      return cssClass
-    })
+    .attr("class",  "child" )
     .attr("rx", this.nodeBoxRx)
     .attr("ry", this.nodeBoxRY)
+    .attr("id",  function(d) { 
+      return (d.depth==0 || d.depth==-1)?"root":"" ;
+    })      
  // Node label:
   var commontext = this.node.append("svg:text")
       .attr("x", self.nodeLabelXOffset)
@@ -353,7 +350,8 @@ MeolGraph.prototype.displayPanel = function(clickedNodeTaxonConceptId, alternate
       //Change the css class of the old selected node
       $('#meolGraphContainer svg#'+ clickedNodeTaxonConceptId+' rect').attr("class","child");
       //Change the css class of the current selected node
-      $('#meolGraphContainer svg#'+clickedNodeTaxonConceptId+' rect').attr("class","current-node");
+      $("rect").attr("style","");
+      $('#meolGraphContainer svg#'+clickedNodeTaxonConceptId+' rect').attr("style","fill: #B9DE00;");
       //Selectionne la photo de la collection au lieu de celle du taxon
       if (typeof alternateFile  !== 'undefined') taxon.set('image_fileName', alternateFile); 
       //Load taxon panel detail
