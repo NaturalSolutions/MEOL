@@ -95,9 +95,11 @@ class Collection {
           }
           //print  $collectionItem['taxonID'];
           if ((isset($collectionItem['taxonID'])) && ($collectionItem['taxonID']>0)) {
-            $collectionItem['taxon'] = new Taxon($collectionItem['taxonID'],$this->_collectionid);
+            //$flathierachy=0, $preferedRef = 'Species 2000 & ITIS Catalogue of Life: April 2013', $terminal=1
+            $collectionItem['taxon'] = new Taxon($collectionItem['taxonID'],$this->_collectionid,0,  constant('DEFAULT_REFERENTIAL'), 1, $item->object_type);
+            if ($item->object_type == 'Image') $collectionItem['taxon']->setImage($collectionItem['Image']);
+            $collectionItem['taxon']->save2BD(1);
             $this->_items[$collectionItem['taxonID']] = $collectionItem;
-            
             //Insertion en base de la collection
             $sql = 'INSERT INTO `Meol-Data`.`Collection_Items` (`fk_collection`, `fk_taxon`, `object_id`, `fk_image`) VALUES (';
             $sql .= $this->_collectionid .' , '.$collectionItem['taxonID'].',';
@@ -309,7 +311,7 @@ class Collection {
           $fdata['vernacularName'] = $commonName->vernacularName;
           $fdata['name'] = $item['taxon']['name'];
         }
-        $fdata['pageID'] = $taxonConceptID;
+        $fdata['id'] = $taxonConceptID;
         $fdata['taxonConceptID'] = $taxonID;
       }
       //Sinon récupération des données suplémentaires

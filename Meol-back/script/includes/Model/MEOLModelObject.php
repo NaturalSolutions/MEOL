@@ -4,6 +4,7 @@
 abstract class ModelObjectData {
   private $_objectId; //(integer)
   private $_identifier; //(String)
+  private $_dataObjectVersionID; //(String)
   private $_title; //(String)
   private $_licence; // (String)
   private $_rights; // (String)
@@ -11,6 +12,7 @@ abstract class ModelObjectData {
   private $_description;// (String)
   private $_pageId; // String ??
   private $_type;// (String)
+  private $_photographer;// (String)
 
 
   public function getFormatedObject() {
@@ -21,10 +23,27 @@ abstract class ModelObjectData {
       'licence'	=>$this->_licence,
       'rights'	=>$this->_rights,
       'credits'	=>$this->_credits,
-      'description'	=>$this->_description,
+      'description'	=>$this->changeLinkIntoModalLink() ,//$this->_description,
     );
     return $object;
   }
+  
+  private function changeLinkIntoModalLink() {
+    $desc= '';
+    //<a class="ui-link" href="#" onclick="window.open('http://eol.org/pages/694','_blank','location=yes');" alt="more details on eol.org" target="_blank">Chordata</a>
+    //Suppression des class et target
+    $pattern = '/<a(.*)([target|class]=[\"\']([^\s\"\'])*[\"\']) (.*)>/';
+    $replacement = "<a $1 $4>";
+    $desc = preg_replace ( $pattern, $replacement , $this->_description);
+     
+    //Chagement de la forme du lien href=> to js function
+    $pattern = '/href=[\"\']([^\s\"\']*)[\"\']/';
+    $replacement = "class='ui-link' href='#' onclick=\"window.open('$1','_blank','location=yes');\" target='_blank'";
+    $desc = preg_replace ( $pattern, $replacement , $desc);
+    return $desc;
+  }
+  
+ 
   
   /******************************************************
    ******************************************************
@@ -61,6 +80,12 @@ abstract class ModelObjectData {
   public function getType() {
 	 return $this->_type;
   }
+  public function getDataObjectVersionID() {
+	 return $this->_dataObjectVersionID;
+  }
+  public function getPhotographer() {
+	 return $this->_photographer;
+  }
     
   public function setObjectId ($val){
     $this->_objectId = $val;
@@ -88,5 +113,11 @@ abstract class ModelObjectData {
   }
   public function setType($val) {
 	 $this->_type=$val;
+  }
+  public function setDataObjectVersionID($val) {
+	 $this->_dataObjectVersionID=$val;
+  }
+  public function setPhotographer($val) {
+	 $this->_photographer = $val;
   }
 }

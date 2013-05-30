@@ -48,6 +48,8 @@ $collecCollection = new Collections($idCol);
 
 $collections =$collecCollection->getCollectionsList();
 
+  
+
 $collectionMetadata = array();
 $taxonDetail = array();
 $items = array();

@@ -62,6 +62,7 @@ foreach ($collections  as $col) {
     $collectionMetadata[$idCol]['logo'] =$row['logo'];
     $collectionMetadata[$idCol]['level'] =$row['level'];
     $collectionMetadata[$idCol]['ordre'] =$row['ordre'];
+    $collectionMetadata[$idCol]['active'] ='false';
   
     //Création du fichier de hiérarchie
     print "\n************************************************************************************\n";
@@ -171,7 +172,7 @@ while ($rowTaxon = mysql_fetch_assoc($result)) {
     while ($row = mysql_fetch_assoc($res)) {
 
       $textDesc = new ModelObjectText($row['objectid'],$row['identifier'],$row['title'],$row['licence'],$row['rights'],$row['credit'],$row['description'],
-        $row['taxonId'],$row['type']);
+        $row['taxonId'],$row['type'],$row['objectVersionID']);
     }
   }
   else $textDesc = null;
@@ -181,9 +182,13 @@ while ($rowTaxon = mysql_fetch_assoc($result)) {
     $sql = "SELECT *  FROM `Object_image` WHERE objectid = '".$fk_image ."'" ;
     $res = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
     while ($row = mysql_fetch_assoc($res)) {
-
-      $image = new ModelObjectImage($row['objectid'],$row['identifier'],$row['title'],$row['licence'],$row['rights'],$row['credit'],$row['description'],
-        $row['taxonId'],$row['type'],$row['mimeType'],$row['filename'],$row['URL']);
+      $credit = '';
+      if ($row['credit'] !== '') {
+        $credit = "&copy; ".$row['credit'];
+      }
+      $credit =$credit . '  <a class="ui-link" href="#" onclick="window.open(\'http://eol.org/data_objects/'.$row['objectVersionID'].'\',\'_blank\',\'location=yes\');" alt="more details on eol.org" target="_blank"><img src ="css/images/icon_external-link.png"/></a>' ;
+      $image = new ModelObjectImage($row['objectid'],$row['identifier'],$row['title'],$row['licence'],$row['rights'],$credit ,$row['description'],
+        $row['taxonId'],$row['type'],$row['mimeType'],$row['filename'],$row['URL'], $row['objectVersionID'], $row['photographer']);
     }
   }
   else $image=null;
@@ -194,7 +199,7 @@ while ($rowTaxon = mysql_fetch_assoc($result)) {
     $res = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
     while ($row = mysql_fetch_assoc($res)) {
       $iucnStatus = new ModelObjectText($row['objectid'],$row['identifier'],$row['title'],$row['licence'],$row['rights'],$row['credit'],$row['description'],
-        $row['taxonId'],$row['type']);
+        $row['taxonId'],$row['type'],$row['objectVersionID']);
     }
   }
   else $iucnStatus = null;

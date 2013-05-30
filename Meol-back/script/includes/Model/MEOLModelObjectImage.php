@@ -9,7 +9,7 @@ class ModelObjectImage extends ModelObjectData {
   private $_fileName; // (String)
   private $_URL; // (String(URL))
     	
-	public function __construct($objectId,$identifier,$title,$licence,$rights,$credits,$description,$pageId,$type='taxon', $mimeType, $fileName, $URL) {
+	public function __construct($objectId,$identifier,$title,$licence,$rights,$credits,$description,$pageId,$type='taxon', $mimeType, $fileName, $URL, $photographer, $dataObjectVersionId) {
     parent::setObjectId($objectId);
     parent::setIdentifier($identifier);
     parent::setTitle($title);
@@ -19,27 +19,11 @@ class ModelObjectImage extends ModelObjectData {
     parent::setDescription($description);
     parent::setPageId($pageId);
     parent::setType($type);
+    parent::setDataObjectVersionID($dataObjectVersionId);
+    parent::setPhotographer($photographer);
     $this->_mimeType =  $mimeType;
     $this->_fileName = $fileName;
     $this->_URL = $URL;
-  }
-  
-   public function save2BD(){
-     
-    $db  = mysql_connect(constant('DB_SERVER'), constant('DB_USER'), constant('DB_PSW'));
-    mysql_select_db( constant('DB_NAME'),$db);
-     // on envoie la requête
-    //Insertion en base de la collection
-    $sql = 'INSERT INTO `Object_image` (`objectid`, `identifier`, `title`, `licence`, `rights`, `credit`, `description`, `mimeType`, `filename`, `URL`, `taxonId`, `type`) VALUES (';
-    $sql .= "'".parent::getObjectId()."',"."'".parent::getIdentifier()."',"."'".mysql_real_escape_string(parent::getTitle(), $db )."',";
-    $sql .= "'".mysql_real_escape_string(parent::getLicence(), $db )."',"."'".mysql_real_escape_string(parent::getRights(), $db )."',";
-    $sql .= "'".mysql_real_escape_string(parent::getCredits(), $db )."',"."'".mysql_real_escape_string(parent::getDescription(), $db )."',";
-    $sql .= "'".mysql_real_escape_string($this->_mimeType, $db )."',"."'".mysql_real_escape_string($this->_fileName, $db )."',";
-    $sql .= "'".mysql_real_escape_string($this->_URL, $db )."',";
-    $sql .= "".parent::getPageId().","."'".parent::getType()."')";
-    //$this->_utils->sendQuery($sql);
-    $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
-    mysql_close();
   }
   
   

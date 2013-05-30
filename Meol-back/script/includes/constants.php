@@ -1,8 +1,10 @@
 <?php
-define("BASEPATH", '/data/nsData/files/users/asahl/git/MEOL/Meol-back/');
+//define("BASEPATH", '/data/nsData/files/users/asahl/git/MEOL/Meol-back/');
+define("BASEPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-back/');
 define("DATAPATH", 'Data/');
 define("ARCHIVEPATH", 'Archives/');
-define("LOGPATH", '/data/nsData/files/users/asahl/git/MEOL/Meol-back/');
+//define("LOGPATH", '/data/nsData/files/users/asahl/git/MEOL/Meol-back/');
+define("LOGPATH", '/home/administrateur/Documents/M-eol/sources/git/MEOL/Meol-back/');
 
 
 //define("DEFAULT_REFERENTIAL", 'Species 2000 & ITIS Catalogue of Life: May 2012');

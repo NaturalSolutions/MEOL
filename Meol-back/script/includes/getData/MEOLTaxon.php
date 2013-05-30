@@ -13,17 +13,20 @@ class Taxon {
 	private $_commonNames = array();
 	private $_image;//ObjectImage
 	private $_iucnStatus;//ObjectText
+  private $_objectType;
 	
 	private $_utils;
 	private $_preferedRef;
 	
-	public function __construct($pageid, $collectionId, $flathierachy=0, $preferedRef = 'Species 2000 & ITIS Catalogue of Life: April 2013', $terminal=1) {
+	public function __construct($pageid, $collectionId, $flathierachy=0, $preferedRef = 'Species 2000 & ITIS Catalogue of Life: April 2013', $terminal=1, $objectType='Taxon') {
     $this->_utils = new Utils();
     $this->_collectionid = $collectionId;
     $this->_preferedRef = $preferedRef;
+    print $objectType."\n";
+    $this->_objectType = $objectType;
     $this->setPageid($pageid);
     $this->loadAndExtractTaxonData($flathierachy);
-    $this->save2BD($terminal);
+    if ($terminal !== 1) $this->save2BD($terminal);
   }
   
   public function save2BD($terminal){
@@ -86,7 +89,7 @@ class Taxon {
         $desc =  new ObjectText($this->_collectionid, $drow->identifier, $this->_pageid) ;
         $this->_textDesc =$desc;
       }
-      elseif ($drow->dataType== 'http://purl.org/dc/dcmitype/StillImage') {
+      elseif (($drow->dataType== 'http://purl.org/dc/dcmitype/StillImage') && ($this->_objectType !== 'Image')){
         $dir = constant('BASEPATH').constant('DATAPATH');
         $image =  new ObjectImage($this->_collectionid, $drow->identifier, $dir, '', $this->_pageid) ;
         $this->_image =$image;

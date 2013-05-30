@@ -62,10 +62,10 @@ class ObjectImage extends ObjectData {
 
      // on envoie la requête
     //Insertion en base de la collection
-    $sql = 'INSERT INTO `Object_image` (`objectid`, `identifier`, `title`, `licence`, `rights`, `credit`, `description`, `mimeType`, `filename`, `URL`, `taxonId`, `type`, fk_collection) VALUES (';
-    $sql .= "'".parent::getObjectId()."',"."'".parent::getIdentifier()."',"."'".mysql_real_escape_string(parent::getTitle(), $db )."',";
+    $sql = 'INSERT INTO `Object_image` (`objectid`, `identifier`, `objectVersionID`, `title`, `licence`, `rights`, `credit`,  `photographer`, `description`, `mimeType`, `filename`, `URL`, `taxonId`, `type`, fk_collection) VALUES (';
+    $sql .= "'".parent::getObjectId()."',"."'".parent::getIdentifier()."',"."'".parent::getDataObjectVersionID()."',"."'".mysql_real_escape_string(parent::getTitle(), $db )."',";
     $sql .= "'".mysql_real_escape_string(parent::getLicence(), $db )."',"."'".mysql_real_escape_string(parent::getRights(), $db )."',";
-    $sql .= "'".mysql_real_escape_string(parent::getCredits(), $db )."',"."'".mysql_real_escape_string(parent::getDescription(), $db )."',";
+    $sql .= "'".mysql_real_escape_string(parent::getCredits(), $db )."',"."'".mysql_real_escape_string(parent::getPhotographer(), $db )."',"."'".mysql_real_escape_string(parent::getDescription(), $db )."',";
     $sql .= "'".mysql_real_escape_string($this->_mimeType, $db )."',"."'".mysql_real_escape_string($this->_fileName, $db )."',";
     $sql .= "'".mysql_real_escape_string($this->_URL, $db )."',";
     $sql .= "".$taxonID.","."'".$type."', ".parent::getCollectionId().")";

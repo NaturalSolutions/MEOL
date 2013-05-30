@@ -3,18 +3,21 @@
 abstract class ObjectData {
   private $_collectionId; //(integer)
   private $_objectId; //(integer)
+  private $_dataObjectVersionID; //(String)
   private $_identifier; //(String)
   private $_title; //(String)
   private $_licence; // (String)
   private $_rights; // (String)
   private $_credits; // String ??
   private $_description;// (String)
+  private $_photographer;// (String)
   private $_utils;
 
   public function extractObjectMetadata($objectData) {
     $this->_identifier = $objectData->identifier;
     if (isset($objectData->title)) $this->_title = $objectData->title;
-    else $this->_title = $this->_identifier;
+    else $this->_title = '';
+    $this->_dataObjectVersionID =  $objectData->dataObjectVersionID;
   }
   
   public function extractObjectDescription($description) {
@@ -27,6 +30,7 @@ abstract class ObjectData {
     //$cleandesc = $this->_utils->addHtmlReturnLine($desc, 91);
     //$jsonDesc = json_encode($cleandesc, JSON_HEX_QUOT);
     $this->_description = $cleandesc; 
+    
   }
   
   public function extractObjectPrivilege($objectData) {
@@ -34,8 +38,15 @@ abstract class ObjectData {
     if (isset($objectData->license))  $this->_licence = $objectData->license;
     if (isset($objectData->rights))  $this->_rights = $objectData->rights;
     $rightsHolder ='';
-    if (isset($objectData->rightsHolder))  $rightsHolder = $objectData->rightsHolder;
+    if (isset($objectData->rightsHolder))  $this->_credits = $objectData->rightsHolder;
     foreach ($objectData->agents as $agent){
+      // get attribution details
+      if ( $agent->role == 'photographer' ) {
+        $this->_photographer = $agent->full_name;
+         //if ( strrpos($agent->homepage , "http") > -1 )  $photographerLink = $agent->homepage;
+      }
+    }
+   /* foreach ($objectData->agents as $agent){
       // get attribution details
       if ( $agent->role == 'photographer' ) {
         $photographer = $agent->full_name;
@@ -51,7 +62,7 @@ abstract class ObjectData {
     if ( isset($photographer) && !isset($rightsHolder)) { $photographer = "&copy; " . $photographer; }
     if ( !isset($photographer)) $photographer='';
     
-    $this->_credits = $photographer.''.$rightsHolder ;
+    $this->_credits = $photographer.''.$rightsHolder ;*/
   }
 
 
@@ -99,7 +110,13 @@ abstract class ObjectData {
   public function getCollectionId() {
 	 return $this->_collectionId;
   }
-  
+  public function getDataObjectVersionID() {
+	 return $this->_dataObjectVersionID;
+  }
+  public function getPhotographer() {
+	 return $this->_photographer;
+  }
+ 
   public function setObjectId ($val){
     $this->_objectId = $val;
   }
@@ -126,6 +143,12 @@ abstract class ObjectData {
   }
   public function setCollectionId($val) {
 	 $this->_collectionId=$val;
+  }
+  public function setDataObjectVersionID($val) {
+	 $this->_dataObjectVersionID=$val;
+  }
+  public function setPhotographer($val) {
+	 $this->_photographer = $val;
   }
   
 }
