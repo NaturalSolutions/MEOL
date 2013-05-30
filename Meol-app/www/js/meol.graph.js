@@ -156,7 +156,9 @@ MeolGraph.prototype._update = function() {
           if (typeof clickedNode.image  !== 'undefined') taxon.set('image_fileName', clickedNode.image ); 
           //Load taxon panel detail
           $("#panel_taxon-detail").empty();
-          $("#panel_taxon-detail").append(new directory.views.TaxonPanel({model: data}).render().el);
+          var taxonPanel = new directory.views.TaxonPanel({model: data});
+          $("#panel_taxon-detail").append(taxonPanel.render().el);
+          taxonPanel.onAddToDom();
         }
       });
     }
@@ -356,7 +358,9 @@ MeolGraph.prototype.displayPanel = function(clickedNodeTaxonConceptId, alternate
       if (typeof alternateFile  !== 'undefined') taxon.set('image_fileName', alternateFile); 
       //Load taxon panel detail
       $("#panel_taxon-detail").empty();
-      $("#panel_taxon-detail").append(new directory.views.TaxonPanel({model: data}).render().el);
+      var taxonPanel = new directory.views.TaxonPanel({model: data});
+      $("#panel_taxon-detail").append(taxonPanel.render().el);
+      taxonPanel.onAddToDom();
     }
   });
 }

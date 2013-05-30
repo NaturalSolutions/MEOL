@@ -152,7 +152,9 @@ directory.views.TaxonListItemView = Backbone.View.extend({
     taxon.fetch({
       success: function(data) {
         $("#panel_taxon-detail").empty();
-        $("#panel_taxon-detail").append(new directory.views.TaxonPanel({model: taxon}).render().el);
+        var taxonPanel = new directory.views.TaxonPanel({model: data});
+        $("#panel_taxon-detail").append(taxonPanel.render().el);
+        taxonPanel.onAddToDom();
       }
     });
   },
@@ -161,7 +163,7 @@ directory.views.TaxonListItemView = Backbone.View.extend({
 directory.views.TaxonPanel = Backbone.View.extend({
 
     initialize: function() {
-        this.template = _.template(directory.utils.templateLoader.get('taxon-panel'));
+      this.template = _.template(directory.utils.templateLoader.get('taxon-panel'));
     },
     
     render: function(eventName) {
@@ -185,6 +187,11 @@ directory.views.TaxonPanel = Backbone.View.extend({
         
     },
     
+    onAddToDom: function() {
+      //Change all href external link (for back function in android at least)
+      //@TO TEST
+      $('a.ui-link').attr('href', '#'+Backbone.history.fragment)
+    }
 });
 
 directory.views.GalleryListView = Backbone.View.extend({
@@ -273,7 +280,9 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
-    $("#panel_taxon-detail", this.el).append(new directory.views.GalleryPanel({model:this.model}).render().el); 
+    var galleryPanel = new directory.views.GalleryPanel({model:this.model})
+    $("#panel_taxon-detail", this.el).append(galleryPanel.render().el); 
+    galleryPanel.onAddToDom();
     return this;
   },
   
@@ -312,7 +321,9 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
     if (typeof(this.graph)!='undefined') {
       this.graph._collapseAllNodes();
       $("#panel_taxon-detail").empty();
-      $("#panel_taxon-detail").append(new directory.views.GalleryPanel({model:this.model}).render().el); 
+      var galleryPanel = new directory.views.GalleryPanel({model:this.model})
+      $("#panel_taxon-detail", this.el).append(galleryPanel.render().el); 
+      galleryPanel.onAddToDom();
     }
   },
   expandAll: function(event) {
@@ -324,7 +335,9 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
   displayPanelCollection : function(event){
     if (typeof(this.graph)!='undefined') {
         $("#panel_taxon-detail").empty();
-        $("#panel_taxon-detail").append(new directory.views.GalleryPanel({model:this.model}).render().el);
+        var galleryPanel = new directory.views.GalleryPanel({model:this.model})
+        $("#panel_taxon-detail", this.el).append(galleryPanel.render().el); 
+        galleryPanel.onAddToDom();
     }
   }
     
@@ -332,15 +345,20 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
 
 directory.views.GalleryPanel = Backbone.View.extend({
 
-    initialize: function() {
-        this.template = _.template(directory.utils.templateLoader.get('gallery-panel'));
-    },
+  initialize: function() {
+    this.template = _.template(directory.utils.templateLoader.get('gallery-panel'));
+  },
 
-    render: function(eventName) {
-      $(this.el).html(this.template(this.model.toJSON()));
-      return this;
-    },
-   
+  render: function(eventName) {
+    $(this.el).html(this.template(this.model.toJSON()));
+    return this;
+  },
+
+  onAddToDom: function() {
+    //Change all href external link (for back function in android at least)
+    //@TO TEST
+    $('a.ui-link').attr('href', '#'+Backbone.history.fragment)
+  }
 });
 
 /*directory.views.RequestPanel = Backbone.View.extend({
