@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Mer 17 Avril 2013 à 15:02
--- Version du serveur: 5.1.62
--- Version de PHP: 5.3.2-1ubuntu4.17
+-- Généré le : Jeu 30 Mai 2013 à 12:25
+-- Version du serveur: 5.1.69
+-- Version de PHP: 5.3.2-1ubuntu4.19
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -69,7 +69,9 @@ CREATE TABLE IF NOT EXISTS `Object_image` (
   `URL` varchar(500) NOT NULL,
   `taxonId` int(11) NOT NULL,
   `type` varchar(50) NOT NULL,
-  `fk_collection` int(11) NOT NULL
+  `fk_collection` int(11) NOT NULL,
+  `objectVersionID` varchar(50) DEFAULT NULL,
+  `photographer` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -88,7 +90,8 @@ CREATE TABLE IF NOT EXISTS `Object_text` (
   `description` text NOT NULL,
   `taxonId` int(11) NOT NULL,
   `type` varchar(250) NOT NULL,
-  `fk_collection` int(11) NOT NULL
+  `fk_collection` int(11) NOT NULL,
+  `objectVersionID` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
