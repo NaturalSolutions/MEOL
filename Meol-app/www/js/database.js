@@ -35,8 +35,7 @@ function initializeDB(db){
  
  
  //************************************** Collections
-function loadTaxaFile(db){
-console.log('loadTaxaFile');		
+function loadTaxaFile(db){	
  var dfd = $.Deferred();
   var arr = [];
   $.getJSON('data/detail_Taxon.json', function(json) {
@@ -47,7 +46,6 @@ console.log('loadTaxaFile');
           arr.push(runQuery(query , param) ); 
       });
       $.when.apply(this, arr).then(function () {
-        console.log('when finished dfd.resolve loadTaxaFile');
         return  dfd.resolve();
         
       });
@@ -56,8 +54,7 @@ console.log('loadTaxaFile');
 }
  
  //************************************** Gallery
-function loadGalleryFile(db){	
-console.log('loadGalleryFile');			
+function loadGalleryFile(db){			
  var dfd = $.Deferred();
   var arr = [];
   $.getJSON('data/collection_metadata.json', function(json) {
@@ -67,7 +64,6 @@ console.log('loadGalleryFile');
         arr.push(runQuery(query , param) ); 
       });
       $.when.apply(this, arr).then(function () {
-        console.log('when finished dfd.resolve loadGalleryFile');
         return  dfd.resolve();
         
       });
@@ -76,8 +72,7 @@ console.log('loadGalleryFile');
 }
  
  //************************************** Items
-function loadItemsFile(db){	
-console.log('loadItemsFile');					
+function loadItemsFile(db){				
   var dfd = $.Deferred();
   var arr = [];
   $.getJSON('data/items.json', function(json) {
@@ -87,7 +82,6 @@ console.log('loadItemsFile');
         arr.push(runQuery(query , param) ); 
       });
       $.when.apply(this, arr).then(function () {
-        console.log('when finished dfd.resolve loadItemsFile');
         return  dfd.resolve();
       });
   });
@@ -108,7 +102,6 @@ function runQuery(query , param) {
 
 function successWrapper(d) {
     return (function (tx, data) {
-        //console.log('wsuccessWrapper');
         d.resolve(data)
     })
 };

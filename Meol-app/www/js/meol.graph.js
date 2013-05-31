@@ -127,14 +127,12 @@ MeolGraph.prototype._update = function() {
       .attr("y", function(d) { return d.y; });
   
   //Terminal node event only : drag
-  //Test (To change??) : If a photo is defined => terminal node
   this.node.filter(function(d, i) { return (typeof d.image !== "undefined") & 1; })
       .call(this.force.drag);
 
   // Register touchstart event listener for IOS (change this to click for desktop):
-  //this.node.on("touchstart", function(clickedNode, i) {
   var event='click';
-  if (document.documentElement.hasOwnProperty('ontouchstart'))event = 'touchstart';
+  if (document.documentElement.hasOwnProperty('ontouchstart')) event = 'touchstart';
   this.node.on(event, function(clickedNode, i) {
     var taxon;
     if (typeof clickedNode.taxonConceptID !== "undefined") {
@@ -156,9 +154,8 @@ MeolGraph.prototype._update = function() {
           if (typeof clickedNode.image  !== 'undefined') taxon.set('image_fileName', clickedNode.image ); 
           //Load taxon panel detail
           $("#panel_taxon-detail").empty();
-          var taxonPanel = new directory.views.TaxonPanel({model: data});
-          $("#panel_taxon-detail").append(taxonPanel.render().el);
-          taxonPanel.onAddToDom();
+          $("#panel_taxon-detail").append( new directory.views.TaxonPanel({model: data}).render().el);
+
         }
       });
     }
@@ -358,9 +355,7 @@ MeolGraph.prototype.displayPanel = function(clickedNodeTaxonConceptId, alternate
       if (typeof alternateFile  !== 'undefined') taxon.set('image_fileName', alternateFile); 
       //Load taxon panel detail
       $("#panel_taxon-detail").empty();
-      var taxonPanel = new directory.views.TaxonPanel({model: data});
-      $("#panel_taxon-detail").append(taxonPanel.render().el);
-      taxonPanel.onAddToDom();
+      $("#panel_taxon-detail").append( new directory.views.TaxonPanel({model: data}).render().el);
     }
   });
 }
@@ -587,7 +582,6 @@ MeolGraph.prototype._collapseAllNodes = function(node) {
   //$('#meol-graph g').attr("transform","translate(0,0) scale(1)");
   
   this.vis.attr("transform","translate(0,0) scale(1)");
-  
   
  // d3.behavior.zoom.scale(1);//.translate([0, 0]);
   //this.vis.attr("scale", 0);

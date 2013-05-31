@@ -33,30 +33,30 @@ Backbone.View.prototype.close = function () {
 * Base view: customize Backbone.Layout for remote template loading
 */
 
-    directory.views.BaseView = Backbone.Layout.extend({
-        prefix: directory.config.root + '/tpl/',
-       // el: false, // LM will use template's root node
+directory.views.BaseView = Backbone.Layout.extend({
+  prefix: directory.config.root + '/tpl/',
+ // el: false, // LM will use template's root node
 
-        fetch: function(path) {
-            path += '.html';
-            directory.templates = directory.templates || {};
+  fetch: function(path) {
+      path += '.html';
+      directory.templates = directory.templates || {};
 
-            if (directory.templates[path]) {
-                return directory.templates[path];
-            }
+      if (directory.templates[path]) {
+          return directory.templates[path];
+      }
 
-            var done = this.async();
-    
-            $.get(path, function(contents) {
-                done(directory.templates[path] = _.template(contents));
-            }, "text");
-        },
+      var done = this.async();
 
-        serialize: function() {
-            if (this.model) return this.model.toJSON();
-			      return true;
-        }
-    });
+      $.get(path, function(contents) {
+          done(directory.templates[path] = _.template(contents));
+      }, "text");
+  },
+
+  serialize: function() {
+      if (this.model) return this.model.toJSON();
+      return true;
+  }
+});
 
 
 directory.views.HomeView = directory.views.BaseView.extend({
@@ -125,7 +125,6 @@ directory.views.TaxonsListView = Backbone.View.extend({
         }, this);
         return this;
     }
-
 });
 
 directory.views.TaxonListItemView = Backbone.View.extend({
@@ -152,9 +151,7 @@ directory.views.TaxonListItemView = Backbone.View.extend({
     taxon.fetch({
       success: function(data) {
         $("#panel_taxon-detail").empty();
-        var taxonPanel = new directory.views.TaxonPanel({model: data});
-        $("#panel_taxon-detail").append(taxonPanel.render().el);
-        taxonPanel.onAddToDom();
+        $("#panel_taxon-detail").append(new directory.views.TaxonPanel({model: data}).render().el);
       }
     });
   },
@@ -186,12 +183,6 @@ directory.views.TaxonPanel = Backbone.View.extend({
       })
         
     },
-    
-    onAddToDom: function() {
-      //Change all href external link (for back function in android at least)
-      //@TO TEST
-      $('a.ui-link').attr('href', '#'+Backbone.history.fragment)
-    }
 });
 
 directory.views.GalleryListView = Backbone.View.extend({
@@ -220,14 +211,10 @@ directory.views.playListGalleryView = Backbone.View.extend({
   id:'play-list-gallery-page',
   templateLoader: directory.utils.templateLoader,
   
-  
   initialize: function() {
-    //this.collection.findAll();
     this.collection.bind("reset", this.render, this);
 	  this.currentProfil = this.options.currentProfil;
     this.template = _.template(this.templateLoader.get('play-gallery'));
-	// Tgallery_PK_Id gallery 1 enabled by default (see template play-gallery)
-	//if(typeof(directory.models.myGlogal.countCollection) =='undefined'){directory.models.myGlogal.countCollection = 1 ;};
   },
 
   render: function(eventName) {
@@ -280,9 +267,7 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
 
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
-    var galleryPanel = new directory.views.GalleryPanel({model:this.model})
-    $("#panel_taxon-detail", this.el).append(galleryPanel.render().el); 
-    galleryPanel.onAddToDom();
+    $("#panel_taxon-detail", this.el).append(new directory.views.GalleryPanel({model:this.model}).render().el); 
     return this;
   },
   
@@ -321,9 +306,7 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
     if (typeof(this.graph)!='undefined') {
       this.graph._collapseAllNodes();
       $("#panel_taxon-detail").empty();
-      var galleryPanel = new directory.views.GalleryPanel({model:this.model})
-      $("#panel_taxon-detail", this.el).append(galleryPanel.render().el); 
-      galleryPanel.onAddToDom();
+      $("#panel_taxon-detail", this.el).append(new directory.views.GalleryPanel({model:this.model}).render().el); 
     }
   },
   expandAll: function(event) {
@@ -335,9 +318,7 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
   displayPanelCollection : function(event){
     if (typeof(this.graph)!='undefined') {
         $("#panel_taxon-detail").empty();
-        var galleryPanel = new directory.views.GalleryPanel({model:this.model})
-        $("#panel_taxon-detail", this.el).append(galleryPanel.render().el); 
-        galleryPanel.onAddToDom();
+        $("#panel_taxon-detail", this.el).append(new directory.views.GalleryPanel({model:this.model}).render().el); 
     }
   }
     
@@ -353,26 +334,8 @@ directory.views.GalleryPanel = Backbone.View.extend({
     $(this.el).html(this.template(this.model.toJSON()));
     return this;
   },
-
-  onAddToDom: function() {
-    //Change all href external link (for back function in android at least)
-    //@TO TEST
-    $('a.ui-link').attr('href', '#'+Backbone.history.fragment)
-  }
 });
 
-/*directory.views.RequestPanel = Backbone.View.extend({
-
-    initialize: function() {
-        this.template = _.template(directory.utils.templateLoader.get('request-panel'));
-    },
-
-    render: function(eventName) {
-      $(this.el).html(this.template(this.model.toJSON()));
-      return this;
-    },
-   
-});*/
 
 directory.views.GalleryTaxonList = Backbone.View.extend({
     el:'div',
@@ -452,26 +415,6 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   
- 
- /* beforeClose : function getConfirm(){
-	var dfd = $.Deferred();
-	var self = this;
-    $('#confirmbox').modal({show:true,
-                            backdrop:false,
-                            keyboard: false,
-    });
-    $('#confirmMessage').html("Do you want to leave the game?");
-    $('#confirmTrue').click(function(){
-		self.saveScore();
-        dfd.resolve(true);
-		$('#confirmbox').modal('hide');
-    });
-    $('#confirmFalse').click(function(){
-        dfd.reject(false);
-		$('#confirmbox').modal('hide');
-    });
-	return dfd.promise();
-  },*/
   beforeClose : function(){
    this.saveScore();
   },
@@ -496,8 +439,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 		$("#firstMessagePlay").css("display","none");
 		$("#continentName").css("display","inherit");
 
-		var A_continents = d3.select("#map svg").selectAll(".continent");
-		var rand = A_continents[Math.floor(Math.random() * A_continents.length)];
+		var arrContinents = d3.select("#map svg").selectAll(".continent");
+		var rand = arrContinents[Math.floor(Math.random() * arrContinents.length)];
 		var shuffleRand = shuffle(rand);
 
 		var countAnime = 0;
@@ -563,13 +506,11 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  var nextCollectionOrdre = this.model.get('ordre')+1;
 	  //if nextCollection false
   	if (directory.data.galleriesList.galleryIsActive(nextCollectionOrdre) !== 'true') {
-		//if score >= seuil (galleryOrdre = x,  seuil = x*100) => nextCollection activate True
 		  if(parseInt(scoreProgressBar) >= 100){
 		   if(parseInt(nextCollectionOrdre) <= parseInt(directory.data.galleriesList.length)){
 			  this.nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
 			  directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
 			  setTimeout(function(){$("#collectionModal").show().alert();},100);
-			  //setTimeout(function(){$("#collectionModal").hide().alert();},3000);
 			  this.currentScoreGame.set('score', currentsc);
 		   }
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
@@ -577,7 +518,6 @@ directory.views.playGameboardView = Backbone.View.extend({
 			setTimeout(function(){$("#meterScore").fadeIn(1000).css("width","100%");},3000);
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
 			
-		// score < seuil (galleryOrdre = x,  seuil = x*100) 
 	    }else{
 				$("#meterScore").css("width",scoreProgressBar+"%");
 		  };
@@ -647,14 +587,12 @@ directory.views.playGameboardView = Backbone.View.extend({
 	
 		//Modal Bonus
 		if(scoreBonus > 0){
-			//setTimeout(function(){$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 12px 6px #E2E9EF");},400);
 			$("#bonus").fadeIn(1000).css("box-shadow","0px 0px 12px 6px #E2E9EF");
 			setTimeout(function(){$("#bonus").fadeIn(3000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},2400);
 			$("#bonusMessageModal").html("+"+scoreBonus+" Bonus series points");
 		}
 	
   },
-  
   
   loadTaxonPlay: function(event){        
     var currentscnbQuestionTotal = this.currentScoreGame.get('nbQuestionTotal');
@@ -687,11 +625,6 @@ directory.views.playGameboardView = Backbone.View.extend({
 			
 			selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
 		};
-    //Selection des 3 taxons de façon aléatoire
-   /* var selectedItemsCollection = new directory.models.ItemsCollection();
-    var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
-    selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];*/
-    
     var indexId2 = Math.floor(Math.random()*this.itemsCollection.models.length)
     while ( indexId2 ==indexId1 )  {
       indexId2 = Math.floor(Math.random()*this.itemsCollection.models.length); 
@@ -715,6 +648,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     if (typeof(this.listView) !== 'undefined') {
       this.listView.remove();
     }
+    
 		//var currentContinentStr = $("#currentContinent").val();
     this.listView = new directory.views.RandomItemListView({ model: selectedItemsCollection});
     this.listView.gallery = this.model;
@@ -774,7 +708,6 @@ directory.views.RandomItemListView = Backbone.View.extend({
     //réduction des autres éléments
     $(".playableTaxonHidden").hide(5);
     $(".playableTaxon").removeAttr('style');
-    //$(".playableTaxon").animate({width:"20%",height:"30%"},500);
     //Mise en avant de l'élément sélectionné
     $("#"+target).parent().animate({width:"30%",height:"45%"},500);
     var cssObj={ 'z-index': '5','position': 'relative','margin': '-10% -10% 20px'}
@@ -913,7 +846,6 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   
   },
   
-  
  beforeRender: function() {
 		var collection = new directory.models.ScoresCollection();
 		var deferred = collection.findAllScoreByProfilId(this.model.get('Tprofil_PK_Id'));
@@ -974,7 +906,6 @@ directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
 
 });
 
-directory.views.contributeView =  directory.views.BaseView.extend({
- template: 'contribute-page',
- 
+directory.views.feedbackView =  directory.views.BaseView.extend({
+  template: 'feedback-page',
 });

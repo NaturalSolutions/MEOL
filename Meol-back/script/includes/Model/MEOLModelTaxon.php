@@ -30,9 +30,6 @@ class ModelTaxon {
     $hierarchy = array_reverse($hierarchy);
     $taxHier = array();
     foreach($hierarchy as $val) {
-      /*print "******************************\n";
-      print_r($val);
-      print "******************************\n";*/
       if (isset($val->taxonID)) {
         if($val->taxonID == $this->_taxonConceptId) {
           break;

@@ -78,13 +78,6 @@ Backbone.sync = function(method, model, options) {
   }
     
   else if (method === "update") {
-   /* if (model.attributes) {
-        if ( (model.attributes.fk_gallery)) {
-          dao.updateScore(model.attributes.fk_gallery, function(data) {
-              options.success(data);
-          });
-        }
-    }else{*/
       dao.updateGalleryActive(model, function(data) {
         options.success(data);  
       });
@@ -121,7 +114,6 @@ directory.dao.TaxonDAO.prototype, {
     findByName: function(key, callback) {
         this.db.transaction(
             function(tx) {
-
                 var sql = "SELECT fk_collectionid , pageid , taxonConceptId, taxonName , flathierarchy, preferredCommonNames , textDesc_objectid , textDesc_title , textDesc_credits , textDesc_description, iucnStatus , image_objectid , image_title, image_credits , image_fileName " +
                     "FROM Ttaxons " +
                     "WHERE preferredCommonNames || taxonName LIKE ?  LIMIT 20";
@@ -138,7 +130,6 @@ directory.dao.TaxonDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -155,7 +146,6 @@ directory.dao.TaxonDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -179,7 +169,6 @@ directory.dao.TaxonDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -202,7 +191,6 @@ directory.dao.TaxonDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -211,11 +199,9 @@ directory.dao.TaxonDAO.prototype, {
     populate: function(callback) {
         directory.db.transaction(
             function(tx) {
-                console.log('Dropping Ttaxons table');
-                console.log('Creating Ttaxons table');
             },
             function(tx, error) {
-                alert('Transaction error ' + error);
+                console.log(tx);
             },
             function(tx) {
                 callback();
@@ -235,7 +221,6 @@ directory.dao.GalleryDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -258,7 +243,6 @@ directory.dao.GalleryDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -275,7 +259,6 @@ directory.dao.GalleryDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -298,7 +281,6 @@ directory.dao.GalleryDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -328,7 +310,6 @@ directory.dao.ItemDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -351,7 +332,6 @@ directory.dao.ItemDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -379,7 +359,6 @@ directory.dao.ProfilDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -401,7 +380,6 @@ directory.dao.ProfilDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -418,7 +396,6 @@ directory.dao.ProfilDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -438,7 +415,6 @@ directory.dao.ProfilDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -469,7 +445,6 @@ directory.dao.ScoreDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -481,7 +456,6 @@ directory.dao.ScoreDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -502,7 +476,6 @@ directory.dao.ScoreDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -522,7 +495,6 @@ directory.dao.ScoreDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -542,7 +514,6 @@ directory.dao.ScoreDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },
@@ -562,7 +533,6 @@ directory.dao.ScoreDAO.prototype, {
             },
             function(tx, error) {
                 console.log(tx);
-                alert("Transaction Error: " + error);
             }
         );
     },

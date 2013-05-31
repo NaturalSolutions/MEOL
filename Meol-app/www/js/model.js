@@ -98,16 +98,6 @@ directory.models.Gallery = Backbone.Model.extend({
   dao:directory.dao.GalleryDAO,
   
 });
-/*
-_.extend(
-  directory.models.Gallery.prototype , {
-    dao: function() {
-        return new directory.dao.GalleryDAO();
-    }, 
-  }
-);
-*/
-
 directory.models.GalleriesCollection = Backbone.Collection.extend({
   model: directory.models.Gallery,
   
@@ -288,13 +278,6 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
   initialize: function() {
   },
   
-  /*findAllScoreByProfilId : function (id) {
-     var self = this;
-     new this.dao(directory.db).findAllScoreByProfilId(id, function(data) {
-          self.reset(data);
-      });
-  },*/
-  
    findAllScoreByProfilId : function (id) {
      var c = $.Deferred();
      (new this.dao(directory.db)).findAllScoreByProfilId(id,function(data) {
@@ -303,7 +286,6 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
      return c;
   },
   
- 
   findScoreMaxByGallery: function() {
      var d = $.Deferred();
      (new this.dao(directory.db)).findScoreMaxByGallery(function(data) {

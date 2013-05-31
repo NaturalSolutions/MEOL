@@ -15,7 +15,7 @@ directory.Router = Backbone.Router.extend({
       "play" : "playListGallery",
       "play/:galleryId" : "playGameboardDisplay",
       "profil/:profilId" : "profilDisplay",
-      "contribute" : "contributeDisplay",
+      "feedback" : "feedbackDisplay",
       //"taxon/:taxonConceptId": "taxonDetails",
   },
 
@@ -54,14 +54,6 @@ directory.Router = Backbone.Router.extend({
       
      this.currentProfil = new directory.models.Profil({Tprofil_PK_Id:1});
      this.currentProfil.fetch();
-     /* TODO catch before roote change event
-       
-     this.bind("route",function(route, router) {
-        console.log("Different Page: " + route);
-        if (self.pageHistory !== 'undefined') {
-          self.navigate(self.pageHistory[0]);
-        }
-    });*/
   },
 
   selectItem: function(event) {
@@ -77,11 +69,10 @@ directory.Router = Backbone.Router.extend({
     this.displayView(this.homePage);
   },
   
-  contributeDisplay : function(){
-    this.contribute = new directory.views.contributeView();
-    this.displayView(this.contribute);
+  feedbackDisplay : function(){
+    this.feedback = new directory.views.feedbackView();
+    this.displayView(this.feedback);
   },
-
   searchtaxon: function() {
     var self = this;
     this.searchResults = new directory.models.TaxonCollection();
@@ -145,7 +136,6 @@ directory.Router = Backbone.Router.extend({
         var lastScoreByGallery = data.findWhere({'fk_gallery': parseInt(id)});
         var deferred = data.findScoreMaxByGallery();
         deferred.done(function(items) {
-          console.log(items)
           var score = 0;
           _.each(items, function(item) {
             score += item.score_max;

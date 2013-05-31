@@ -11,14 +11,10 @@ directory.utils.templateLoader = {
         var self = this;
         $.each(names, function(index, name) {
             deferreds.push($.get('tpl/' + name + '.html', function(data) {
-                console.log('load ' + name);
                 self.templates[name] = data;
             }));
         });
-
-        //$.when.apply(null, deferreds).done(callback);
     },
-
     // Get template by name from hash of preloaded templates
     get: function(name) {
         return this.templates[name];
@@ -30,10 +26,10 @@ directory.utils.templateLoader = {
 var fiboSuite = function(){
    var memo =[0,1] ; // variable cloturée = inaccessible hors de la fonction.
    var fibo = function(n){
-                      if(n<2) return n ;
-                      if(memo[n]) return memo[n];
-                      memo[n]= fibo(n-1) + fibo(n-2) ;
-                      return memo[n] ;
+      if(n<2) return n ;
+      if(memo[n]) return memo[n];
+      memo[n]= fibo(n-1) + fibo(n-2) ;
+      return memo[n] ;
    }
    return fibo ;
 };
@@ -44,8 +40,7 @@ function shuffle(a){
    var valI = '';
    var valJ = valI;
    var l = a.length - 1;
-   while(l > -1)
-   {
+   while(l > -1){
 		j = Math.floor(Math.random() * l);
 		valI = a[l];
 		valJ = a[j];
@@ -54,9 +49,9 @@ function shuffle(a){
 		l = l - 1;
 	}
 	return a;
-  };
+};
+
 // capitaliseFirstLetter
-function capitaliseFirstLetter(string)
-{
+function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }

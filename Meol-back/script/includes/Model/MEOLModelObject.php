@@ -38,7 +38,7 @@ abstract class ModelObjectData {
      
     //Chagement de la forme du lien href=> to js function
     $pattern = '/href=[\"\']([^\s\"\']*)[\"\']/';
-    $replacement = "class='ui-link' href='#' onclick=\"window.open('$1','_blank','location=yes');\" target='_blank'";
+    $replacement = "class='ui-link' onclick=\"window.open('$1','_blank','location=yes');\" target='_blank'";
     $desc = preg_replace ( $pattern, $replacement , $desc);
     return $desc;
   }
