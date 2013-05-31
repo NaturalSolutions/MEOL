@@ -338,7 +338,7 @@ MeolGraph.prototype._computeNodeHeight = function(node) {
 
 MeolGraph.prototype.refreshCurrentNode = function(newNode) {
   var self = this;
-  self.currentNode = newNode;
+  self.currentNode = newNode; 
   self._update();  
 }
 
