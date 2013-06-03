@@ -11,7 +11,7 @@
         <% if ( taxonName ){ %>
           <div id="nameContent"><h2><%= taxonName %></h2></div>
         <% } %>
-         <% if ( iucnPicture ){ %>
+         <% if ( iucnPicture[0] ){ %>
           <span id="iucnMini" class="moreInfo" title="<%= iucnPicture[1] %>"><img id="taxon" src="css/images/iucn/mini/<%= iucnPicture[0] %>"/></span>
         <% } %>
         <% if ( pageid ) {%>
