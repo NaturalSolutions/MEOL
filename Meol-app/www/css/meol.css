@@ -678,19 +678,17 @@ button#selectRandomContinent{
 }
 
 button.playRandom{
-   -webkit-background-size: 128px 86px;
-  -moz-background-size: 128px 86px;
-  -ms-background-size: 128px 86px;
-  -o-background-size: 128px 86px;
-  background-size: 128px 86px;
-  width: 128px;
-  border: none;
-  background-color: 
-  transparent;
-  height: 86px;
-  border-radius: 12px;
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+   -webkit-background-size: 179px 120px;
+  -moz-background-size: 179px 120px;
+  -ms-background-size: 179px 120px;
+  -o-background-size: 179px 120px;
+  background-size: 179px 120px;
+  width: 179px;
+  border: 1px solid #bfbfbf;
+  height: 120px;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
   position: absolute;
   z-index: 4;
   right: 0;
