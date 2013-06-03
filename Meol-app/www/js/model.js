@@ -2,6 +2,7 @@
 
 // -------------------------------------------------- The Models ---------------------------------------------------- //
 // The Taxon Model
+var reponse = "";
 directory.models.Taxon = Backbone.Model.extend({
   defaults: {
     "fk_collectionid":"",
@@ -21,8 +22,8 @@ directory.models.Taxon = Backbone.Model.extend({
     "image_fileName":"",
   },
 
-  dao: directory.dao.TaxonDAO,
-
+  
+  dao: directory.dao.TaxonDAO, 
   parse: function (response) {
     var hier = eval(response.flathierarchy);
     response.flat = hier;
@@ -33,23 +34,43 @@ directory.models.Taxon = Backbone.Model.extend({
   initialize: function() {
    
   },
-  
-  switchIucnStatusDesc : function (IucnStatusDesc) {
+ 
+ switchIucnStatusDesc : function (IucnStatusDesc) {
     if (typeof(IucnStatusDesc)!='undefined'){
       switch (IucnStatusDesc){
-        case "Least Concern (LC)": return "Status_iucn3.1_LC.svg.png";
+        case "Least Concern (LC)":
+          var imgStatus ="Status_iucn3.1_LC.svg.png";
+          var infoStatus ="Least Concern";
+          return [imgStatus , infoStatus] ;
           break;
-        case "Near Threatened (NT)": return "Status_iucn3.1_NT.svg.png";
+        case "Near Threatened (NT)":
+          var imgStatus ="Status_iucn3.1_NT.svg.png";
+          var infoStatus ="Near Threatened";
+          return [imgStatus , infoStatus] ;
           break;
-        case "Vulnerable (VU)": return "Status_iucn3.1_VU.svg.png";
+        case "Vulnerable (VU)":
+          var imgStatus ="Status_iucn3.1_VU.svg.png";
+          var infoStatus ="Vulnerable";
+          return [imgStatus , infoStatus] ;
           break;
-        case "Endangered (EN)": return "Status_iucn3.1_EN.svg.png";
+        case "Endangered (EN)":
+          var imgStatus ="Status_iucn3.1_EN.svg.png";
+          var infoStatus ="Endangered";
+          return [imgStatus , infoStatus] ;
           break;
-        case "Critically Endangered (CR)": return "Status_iucn3.1_CR.svg.png";
+        case "Critically Endangered (CR)":
+          var imgStatus ="Status_iucn3.1_CR.svg.png";
+          var infoStatus ="Critically Endangered";
+          return [imgStatus , infoStatus] ;
+        case "Extinct in the Wild (EW)":
+          var imgStatus ="Status_iucn3.1_EW.svg.png";
+          var infoStatus ="Extinct in the wild";
+          return [imgStatus , infoStatus] ;
           break;
-        case "Extinct in the Wild (EW)": return "Status_iucn3.1_EW.svg.png";
-          break;
-        case "Extinct (EX)": return "Status_iucn3.1_EX.svg.png";
+        case "Extinct (EX)":
+          var imgStatus ="Status_iucn3.1_EX.svg.png";
+          var infoStatus ="Extinct";
+          return [imgStatus , infoStatus] ;
           break;
       }
     }

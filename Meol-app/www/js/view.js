@@ -169,7 +169,8 @@ directory.views.TaxonPanel = Backbone.View.extend({
     },
     
     events: {
-        'click div.accordion-heading': 'changeIcon'
+        'click div.accordion-heading': 'changeIcon',
+				'click .moreInfo':'tooltipIucn'
     },
       
     changeIcon: function(event){
@@ -183,6 +184,16 @@ directory.views.TaxonPanel = Backbone.View.extend({
       })
         
     },
+		tooltipIucn: function(event){
+			if (document.documentElement.hasOwnProperty('ontouchstart')){
+				var $title = $(".moreInfo").find(".title");
+				if (!$title.length) {
+					$(".moreInfo").append('<span class="title">' + $(".moreInfo").attr("title") + '</span>');
+				} else {
+					$title.remove();
+				}
+			}
+		},
 });
 
 directory.views.GalleryListView = Backbone.View.extend({
