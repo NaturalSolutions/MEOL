@@ -121,6 +121,21 @@ line.link {
   margin-bottom:20px;
 }
 /* Panel */
+.moreInfo .title{
+	position: absolute;
+	top: 38px;
+	background: silver;
+	padding: 4px;
+	right: 10px;
+	white-space: nowrap;
+	float: left;
+	border-radius: 3px;
+	box-shadow:2px 2px 3px 1px #344551;
+	color: #344551;
+	border: 1px solid grey;
+	background-image:-webkit-linear-gradient(top, rgb(230,230,230),rgb(255,255,255));
+	font-size:12px;
+}
 #panel_taxon-detail{
   -webkit-box-shadow: rgba(0, 0, 0, 0.14902) -5px 0px 5px 0px;
   background-color: rgba(0, 0, 0, 0.498039);
@@ -173,7 +188,7 @@ font-style:italic;
 #panel_taxon-detail p{
 /*-webkit-margin-before: 0.3em;
 -webkit-margin-after: 0.3em;*/
-font-size:0.9em;
+	font-size:0.9em;
 }
 #panel_taxon-detail p.credits{
   font-size:0.7em;
@@ -183,19 +198,19 @@ font-size:0.9em;
 }
 /* selectCollection */
 #selectCollection{
-position: fixed;
-margin-left: 20%;
+	position: fixed;
+	margin-left: 20%;
 }
 #listeCollection{
-position:fixed;
-margin-top:30px;
-margin-left:20%;
+	position:fixed;
+	margin-top:30px;
+	margin-left:20%;
 }
 
 #action{
-margin-left: 50%;
-margin-top: 0px;
-position: fixed;
+	margin-left: 56%;
+	margin-top: 0px;
+	position: fixed;
 }
 
 #Discover .ui-controlgroup, fieldset.ui-controlgroup{
@@ -655,12 +670,6 @@ div.taxon-list-item {
   width:80%;
 }
 
-#returnToGame{
-  position:fixed;
-  top:50px;
-  margin-left: 145px;
-}
-
 .hideInfoContinent{
  visibility:hidden;
 }
@@ -719,9 +728,13 @@ button.playRandom{
 }
 
 .playableTaxonValidate{
-  margin: 5px 25%;
+  margin: 5px 20%;
   position: relative;
-  width: 50%;
+  width: 60%;
+	box-shadow: 1px 1px 4px #000;
+	border: 2px solid white !important;
+	font-size:19px;
+	padding:15px;
 }
 
 /* Firts Message Play */
@@ -744,9 +757,7 @@ button.playRandom{
   margin-bottom: 20px;
   border:1px solid black;
 }
-/*.bigger{
-  width:300px;
-}*/
+
 .playableTaxonHidden{
   display:none;
 }
@@ -959,9 +970,23 @@ box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 background-clip: padding-box;
 }
 
-.playableTaxonValidate {
-	box-shadow: 1px 1px 4px #000;
-	border: 2px solid;
+/*gameDetailPanel*/
+#gameDetailPanel h3{
+	position:absolute;
+	color:#99ccff;
+	font-size:20px;
+	line-height:20px;
+	margin-left:145px;
+	font-weight:normal;
+	font-style:italic;
+}
+#gameDetailPanel .collectionName h1{
+	top:15px;
+}
+#returnToGame{
+  position:fixed;
+  top:65px;
+  margin-left: 145px;
 }
 
 /***----------------Surcharge des accordeons de bootrap twitter-----------------------*/
