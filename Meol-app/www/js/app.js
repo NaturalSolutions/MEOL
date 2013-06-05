@@ -32,7 +32,7 @@ function init(){
   $("body").append("<img id='dataloader-img' src='css/images/ajax-loader.gif'/>");
   
   initDB();
-  directory.utils.templateLoader.load(['feedback-page','info-page','profil-page','profil-table','d3-graph-panel', 'request-panel','gallery-taxon-list', 'gallery-panel', 'home-page', 'search-page', 'taxon-panel', 'taxon-list-item', 'gallery-detail','gallery-page', 'gallery-list-item','play-list-gallery','play-gallery', 'play-gameboard']);
+  directory.utils.templateLoader.load(['feedback-page','credit-page','profil-page','profil-table','d3-graph-panel', 'request-panel','gallery-taxon-list', 'gallery-panel', 'home-page', 'search-page', 'taxon-panel', 'taxon-list-item', 'gallery-detail','gallery-page', 'gallery-list-item','play-list-gallery','play-gallery', 'play-gameboard']);
 
   $.when.apply(null, deferreds).done(function() {
     directory.data.galleriesList = new directory.models.GalleriesCollection();

@@ -28,7 +28,7 @@
   <div class="alert alert-block fade in" id="collectionModal" style="display: none;" >
     <div class="modal-body">
       <h4 id='activateCollMessageModal'></h4>
-      <button type="button" data-dismiss="alert" aria-hidden="true" class="btn-primary pull-right" id="navigateNewGallery">Play with this collection!</button>
+      <button type="button" data-dismiss="alert" aria-hidden="true" class="btn-primary btn-large" id="navigateNewGallery">Play with this collection!</button>
     </div>
   </div>
   
@@ -37,10 +37,11 @@
 
   <div id="map" class=""></div>
   <div id="scorePanel">
+    <button class="btn pull-right" id="ruleBtn"><i class="icon-info-sign icon-white"></i></button>
     <div id="iconUser" ></div>
     <h2>Player 1</h2>
     <div class="progress progress-striped active">
-      <div class="bar" id="meterScore" style="width:<% if(typeof(score.score) != 'undefined') { %> <%= score.score/200 %>%<% }else{%>0<%};%>"></div>
+      <div class="bar" id="meterScore" style="width:<% if(typeof(score.score) != 'undefined') { %> <%= score.score/20 %>%<% }else{%>0<%};%>"></div>
     </div>
     <input id="scoreTotalValue" type="hidden" value ="<% if(typeof(score.score) != 'undefined') { %> <%= score.score %> <% }else{%>0<%};%>"/>
     <input id="scoreValue" type="hidden" value = "<% if(typeof(score.score) != 'undefined') { %> <%= score.score %> <% }else{%>0<%};%>"/>
@@ -71,13 +72,61 @@
     
 </div>
 
+<!-- Modal Rules of the game -->
+<div class="modal hide" id="rulesModal" data-backdrop="false">
+  <div class="modal-header gradientDarkBlue">
+    <button type="button" class="close btn-large" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3><em>Rules of the game</em></h3>
+  </div>
+  <div class="modal-body">
+          <h3>Scoring</h3>
+          <p> If the aswer is correct the player win <b>1000</b> points weighted by following variables :<p>
+            <ul>
+              <li>number of continents of selected taxon</li>
+              <li>IUCN Status (Conservation status) weight of selected taxon. The weight is based on Fibonacci number, the assumption is : taxa with status are more known.</li>
+              <li>Total number of possible correct answers to the question</li>
+              <li><span class="title">Deck example</span>
+              <pre>
+1000 points
+- 10*number of continents
+- 10*IUCN weight ( 2 = no status; 3 = LC ; 5 = NT; 8 = VU ; 13 = EN ; 21 = [CR; EW; EX])
+- 50*number of possible correct answers
+= Nb of won points
+              </pre>
+              </li>
+            </ul>
+            <h3>Bonus</h3>
+            <p>based on the number of correct aswers following (Fibonacci number).</br>
+            The player win bonus starting from 3 correct answers then each new record series make him win points.</p>             
+            <pre>
+[0;3[ = 0 * x
+3 = 3 * 100
+4 = 5 * 100
+5 = 8 * 100
+6 = 13 * 100
+7 = 21 * 100
+8 = 34 * 100
+         ...</pre>
+            <p><h3>Number of won points during a game</h3>Points + Bonus</p>
+            <p>In real time the progress bar goes to be present (bonus + point by deck) when the user exceeds the unlocking => message indicating that he has released a collection in which it will play once it has finished its part (end of part decided by the user)</p>
+            <span class="title">Game example</span>
+            <pre>
+For each deck
+Good answer : 1000 points
+ + if number of continent >1 then number of continent *-10
+ + if IUCN weight >2 then IUCN weight *-10
+ + if number of possible correct answers >1 then number of possible correct answers *-50
+Bonus (x = 100)
+            </pre>
+
+  </div>
+
+</div>
 
 
 <div id="gameDetailPanel" class="hidden">
-  <h3>Graph Displays Relationsships Among Species</h3>
+  <h2 id="subTitle">Graph Displays Relationsships Among Species</h2>
   <button id="returnToGame" class="btn-primary btn-large">Back to the game</button>
   <div id="graph-panel"></div>
 </div>
-<script>
-     
-</script>
+
