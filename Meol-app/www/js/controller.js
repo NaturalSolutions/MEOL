@@ -8,8 +8,8 @@ directory.Router = Backbone.Router.extend({
   routes: {
       "": "home",
       //"": "searchtaxon",
-      "infoGame": "infoGame",
       "searchtaxon": "searchtaxon",
+      "creditPage": "creditPage",
       "gallery": "discoverGalleryList",
       "gallery/:galleryId": "discoverGalleryTaxonomicTreeView",
       "play" : "playListGallery",
@@ -73,16 +73,20 @@ directory.Router = Backbone.Router.extend({
     this.feedback = new directory.views.feedbackView();
     this.displayView(this.feedback);
   },
+  
+  creditPage : function(){
+    this.creditPage = new directory.views.creditPageView();
+    this.displayView(this.creditPage);
+  },
+  
+  
   searchtaxon: function() {
     var self = this;
     this.searchResults = new directory.models.TaxonCollection();
     var currentView = new directory.views.SearchPage({model: this.searchResults});
     this.displayView(currentView);
   },
-  infoGame :function() {
-    this.infoGame = new directory.views.InfoGameView();
-    this.displayView(this.infoGame);
-  },
+
   displayView : function (view) {
     var self = this;
     var dfda = Array();
@@ -162,15 +166,32 @@ directory.Router = Backbone.Router.extend({
   },
 
   profilDisplay: function(id) {
-      var self = this;
-      var profil = new directory.models.Profil({Tprofil_PK_Id:id});
-        
-      profil.fetch({
-          success: function(data) {
-						var currentView = new directory.views.ProfilDetailView({model: data});
-						self.displayView(currentView);		
-					}
-      });
+    var self = this;
+    var profil = new directory.models.Profil({Tprofil_PK_Id:id});
+    var collection = new directory.models.ScoresCollection();
+      
+    profil.fetch({
+      success: function(data) {
+        collection.bind("reset", self.render, self);
+        var deferred = collection.findAllScoreByProfilId(data.get('Tprofil_PK_Id'));
+        deferred.done(function(items) {
+          var score = 0;
+          var ordreMax = 1;
+          _.each(items, function(item) {
+            var ordreCurrent = directory.data.galleriesList.galleryOrdreById(String(item.fk_gallery));
+            if(ordreCurrent > ordreMax){
+              ordreMax = ordreCurrent;
+            };
+            score += item.score_max;	
+          });
+          collection.bind("change", self.render, self);
+          var currentView = new directory.views.ProfilDetailView({model: data, allScoreById : items, scoreTotal : score, ordreMax : ordreMax});
+          collection.bind("reset", self.render, self);
+          self.displayView(currentView);
+          collection.bind("reset", self.render, self);
+        });
+      }
+    });
   },
 
 });

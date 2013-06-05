@@ -67,23 +67,6 @@ directory.views.HomeView = directory.views.BaseView.extend({
 
 });
 	
-directory.views.InfoGameView = Backbone.View.extend({
-  templateLoader: directory.utils.templateLoader,
-  tagName : 'div',
-  id : 'info-page',
-  
-  initialize : function() {
-    this.template = _.template(this.templateLoader.get('info-page'));
-  },
-
-  render : function() {
-    this.$el.html(this.template());
-    return this;
-  },
-
-});
-	
-	
 directory.views.SearchPage = Backbone.View.extend({
     tagName:'div',
     id : 'searchPage',
@@ -175,12 +158,12 @@ directory.views.TaxonPanel = Backbone.View.extend({
       
     changeIcon: function(event){
       $('.accordion-group').on('hide', function () {
-          $(this).children().children().children().removeClass('ui-icon-minus');
-          $(this).children().children().children().addClass('ui-icon-plus');
+				$(this).children().children().children("i").removeClass('icon-minus');
+				$(this).children().children().children("i").addClass('icon-plus');
       })
       $('.accordion-group').on('show', function () {
-          $(this).children().children().children().removeClass('ui-icon-plus');
-          $(this).children().children().children().addClass('ui-icon-minus');
+				$(this).children().children().children("i").removeClass('icon-plus');
+				$(this).children().children().children("i").addClass('icon-minus');
       })
         
     },
@@ -423,6 +406,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  'change #nbAnwserGoodSequenceValue' : 'updateNbAnwserGoodSequenceValue',
     'click #returnToGame' : 'returnToGame',
     'click #navigateNewGallery' : 'navigateNewGallery',
+		'click #ruleBtn':'showRulesModal',
   },
   
   
@@ -445,6 +429,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   },                                             
   
   selectRandomContinent: function(event){
+		$('#rulesModal').modal('hide');
 		d3.select("#map svg").selectAll(".pion").classed("hideInfoContinent",true);
 		d3.select("#selectRandomContinent").classed("hidden",true);
 		$("#firstMessagePlay").css("display","none");
@@ -511,7 +496,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   updateScore: function(event){
 	  var currentsc = parseInt($("#scoreTotalValue").val());
-	  var scoreProgressBar = currentsc/200;
+	  var scoreProgressBar = currentsc/20;
 	  var scoreProgressTotal= $("#meterScore").css("width");
 	  var currentCollectionOrdre = this.model.get('ordre');
 	  var nextCollectionOrdre = this.model.get('ordre')+1;
@@ -521,10 +506,13 @@ directory.views.playGameboardView = Backbone.View.extend({
 		   if(parseInt(nextCollectionOrdre) <= parseInt(directory.data.galleriesList.length)){
 			  this.nextCollectionName = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('name');
 			  directory.data.galleriesList.changeGalleryActivateState(nextCollectionOrdre);
-			  setTimeout(function(){$("#collectionModal").show().alert();},100);
+			  setTimeout(function(){$("#collectionModal").fadeIn(1000).show(100).alert()},1000);
+				setTimeout(function(){$("#collectionModal").animate({top:"0",left:"+=8%",zIndex:"1",width:"-=100px",height:"-=110px",right:"120px",margin:"0px"},500);},3400);
+				setTimeout(function(){$("#collectionModal.alert h4").animate({fontSize:"16px",lineHeight:"20px"},500);},3400);
+				setTimeout(function(){$("#collectionModal.alert button").animate({fontSize:"14px",padding:"0px"},500);},3400);
 			  this.currentScoreGame.set('score', currentsc);
 		   }
-			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},400);  
+			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 10px 4px #E2E9EF");},3400);  
 			$("#meterScore").css("width",scoreProgressBar+"%");
 			setTimeout(function(){$("#meterScore").fadeIn(1000).css("width","100%");},3000);
 			setTimeout(function(){$(".progress").fadeIn(1000).css("box-shadow","0px 0px 0px 0px #E2E9EF");},3000);  
@@ -671,6 +659,9 @@ directory.views.playGameboardView = Backbone.View.extend({
 		$(".txtCurrentContinent").html(currentContinentStr);
     return this;
   },
+	showRulesModal: function(event){
+		$("#rulesModal").modal('show');
+	},
 });
 
 directory.views.RandomItemListView = Backbone.View.extend({
@@ -728,11 +719,13 @@ directory.views.RandomItemListView = Backbone.View.extend({
        
    
   validateItem: function(event){
+		$('#rulesModal').modal('hide');
     $("#scoreMessageModal").empty();
 		$("#bonusMessageModal").empty();
     $("#reponseMessageModal").empty();
 		$("#activateCollMessageModal").empty();
     $("#myModal h5").remove();
+		
     var target = event.currentTarget.id;
     var arrayId = parseInt(target.replace("validate-", ''));
     var currentObjectId = this.model.models[arrayId].attributes.Titem_PK_Id;
@@ -806,6 +799,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
 			//nb NbAnwserGood
 			var currentNbAnwserGood = parseInt($("#nbAnwserGoodValue").val());
 			$("#nbAnwserGoodValue").val(currentNbAnwserGood+0).trigger('change');
+			$("#myModal").removeAttr('style');
 			//nb nbAnwserGoodSequence
 			$("#nbAnwserGoodSequenceValue").val(0).trigger('change');
 			//Message Modal
@@ -831,6 +825,8 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		//nb nbAnwserGoodSequence
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodSequenceValue").val());
     $("#nbAnwserGoodSequenceValue").val(currentNbAnwserGood+1).trigger('change');
+		
+		$("#myModal").css("box-shadow","0px 0px 18px 8px #B9DE00")
 		
 		//Message succes Modal
 		$("#txtMessageModal").html("Well Done!");
@@ -919,4 +915,7 @@ directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
 
 directory.views.feedbackView =  directory.views.BaseView.extend({
   template: 'feedback-page',
+});
+directory.views.creditPageView =  directory.views.BaseView.extend({
+  template: 'credit-page',
 });

@@ -41,38 +41,32 @@ directory.models.Taxon = Backbone.Model.extend({
         case "Least Concern (LC)":
           var imgStatus ="Status_iucn3.1_LC.svg.png";
           var infoStatus ="Least Concern";
-          return [imgStatus , infoStatus] ;
           break;
         case "Near Threatened (NT)":
           var imgStatus ="Status_iucn3.1_NT.svg.png";
           var infoStatus ="Near Threatened";
-          return [imgStatus , infoStatus] ;
           break;
         case "Vulnerable (VU)":
           var imgStatus ="Status_iucn3.1_VU.svg.png";
           var infoStatus ="Vulnerable";
-          return [imgStatus , infoStatus] ;
           break;
         case "Endangered (EN)":
           var imgStatus ="Status_iucn3.1_EN.svg.png";
           var infoStatus ="Endangered";
-          return [imgStatus , infoStatus] ;
           break;
         case "Critically Endangered (CR)":
           var imgStatus ="Status_iucn3.1_CR.svg.png";
           var infoStatus ="Critically Endangered";
-          return [imgStatus , infoStatus] ;
         case "Extinct in the Wild (EW)":
           var imgStatus ="Status_iucn3.1_EW.svg.png";
           var infoStatus ="Extinct in the wild";
-          return [imgStatus , infoStatus] ;
           break;
         case "Extinct (EX)":
           var imgStatus ="Status_iucn3.1_EX.svg.png";
           var infoStatus ="Extinct";
-          return [imgStatus , infoStatus] ;
           break;
       }
+      return [imgStatus , infoStatus] ;
     }
   }
 });

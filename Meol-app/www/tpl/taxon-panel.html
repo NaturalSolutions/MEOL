@@ -1,6 +1,6 @@
   <div class="accordion-heading"  id="div_toogle_taxonPanel" >
     <a class="accordion-toggle collapse-title" id="toogle_taxonPanel" data-toggle="collapse" data-target="#taxon-panel">
-      <span class= "ui-icon ui-icon-shadow ui-icon-arrow-d"></span>
+      <i class="icon-chevron-down icon-white iconRoundBackground"></i>
       <span class="panel-title"> 
         <% if(preferredCommonNames) { %> <%=preferredCommonNames%><% } else { %><%=taxonName%><% }%>
       </span>
@@ -11,7 +11,7 @@
         <% if ( taxonName ){ %>
           <div id="nameContent"><h2><%= taxonName %></h2></div>
         <% } %>
-         <% if ( iucnPicture ){ %>
+         <% if ( iucnPicture[0] ){ %>
           <span id="iucnMini" class="moreInfo" title="<%= iucnPicture[1] %>"><img id="taxon" src="css/images/iucn/mini/<%= iucnPicture[0] %>"/></span>
         <% } %>
         <% if ( pageid ) {%>
@@ -29,7 +29,7 @@
           <div class="accordion-group">
             <div class="accordion-heading"  id="div_toogle_taxonDetail" >
               <a class="accordion-toggle collapse-title collapsed" id="toogle_taxonPanel" data-toggle="collapse" data-parent="#accordion2" data-target="#collapsibleElementDetail">
-                <span class= "ui-icon ui-icon-shadow ui-icon-plus"></span>
+                <i class="icon-plus icon-white iconRoundBackground"></i>
                 <span class="panel-title">Details</span>
               </a>
             </div>
@@ -44,7 +44,7 @@
       <div class="accordion-group">
        <div class="accordion-heading"  id="div_toogle_taxonClassification" >
           <a class="accordion-toggle collapse-title collapsed" id="toogle_taxonPanel" data-toggle="collapse" data-parent="#accordion2" data-target="#collapsibleElementClassification">
-            <span class= "ui-icon ui-icon-shadow ui-icon-plus"></span>
+            <i class= "icon-plus icon-white iconRoundBackground"></i>
             <span class="panel-title">Classification</span>
           </a>
         </div>
@@ -63,13 +63,13 @@
       <div class="accordion-group">
         <div class="accordion-heading"  id="div_toogle_taxonIUCN" >
           <a class="accordion-toggle collapse-title collapsed" id="toogle_taxonPanel" data-toggle="collapse" data-parent="#accordion2" data-target="#collapsibleElementUICN">
-            <span class= "ui-icon ui-icon-shadow ui-icon-plus"></span> 
+            <i class= "icon-plus icon-white iconRoundBackground"></i> 
             <span class="panel-title">Conservation Status</span>
           </a>
         </div>
         <div class="collapse" id="collapsibleElementUICN">
           <div>
-            <p id="desc-uicn"><p><%= iucnStatus %></p><img id="taxon" src="css/images/iucn/<%= iucnPicture %>"/></p>
+            <p id="desc-uicn"><p><%= iucnStatus %></p><img id="taxon" src="css/images/iucn/<%= iucnPicture[0] %>"/></p>
           </div>
         </div>
       </div>
