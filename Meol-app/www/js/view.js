@@ -496,7 +496,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   
   updateScore: function(event){
 	  var currentsc = parseInt($("#scoreTotalValue").val());
-	  var scoreProgressBar = currentsc/20;
+	  var scoreProgressBar = currentsc/200;
 	  var scoreProgressTotal= $("#meterScore").css("width");
 	  var currentCollectionOrdre = this.model.get('ordre');
 	  var nextCollectionOrdre = this.model.get('ordre')+1;
@@ -826,7 +826,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodSequenceValue").val());
     $("#nbAnwserGoodSequenceValue").val(currentNbAnwserGood+1).trigger('change');
 		
-		$("#myModal").css("box-shadow","0px 0px 18px 8px #B9DE00")
+		$("#myModal").css("box-shadow","0px 0px 25px 10px white")
 		
 		//Message succes Modal
 		$("#txtMessageModal").html("Well Done!");
