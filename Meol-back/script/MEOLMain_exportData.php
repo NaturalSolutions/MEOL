@@ -182,7 +182,7 @@ while ($rowTaxon = mysql_fetch_assoc($result)) {
     $sql = "SELECT *  FROM `Object_image` WHERE objectid = '".$fk_image ."'" ;
     $res = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
     while ($row = mysql_fetch_assoc($res)) {
-      $credit = '';
+      $credit = $row['photographer'];
       if ($row['credit'] !== '') {
         $credit = "&copy; ".$row['credit'];
       }
