@@ -415,6 +415,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   navigateNewGallery : function(){
+		this.saveScore();
 		var nav = new directory.Router;
 		var nextCollectionOrdre = this.model.get('ordre')+1;
 		var urlNextGallery = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('collectionid');
@@ -708,13 +709,13 @@ directory.views.RandomItemListView = Backbone.View.extend({
   expandItemSticker : function(event){
     var target = event.currentTarget.id;
     //réduction des autres éléments
-    $(".playableTaxonHidden").hide(5);
-    $(".playableTaxon").removeAttr('style');
+    /*$(".playableTaxonHidden").hide(5);
+    $(".playableTaxon").removeAttr('style');*/
     //Mise en avant de l'élément sélectionné
-    $("#"+target).parent().animate({width:"30%",height:"45%"},500);
+    /*$("#"+target).parent().animate({width:"30%",height:"45%"},500);
     var cssObj={ 'z-index': '5','position': 'relative','margin': '-10% -10% 20px'}
     $("#"+target).parent().css(cssObj);
-    $("#"+target).parent().children(".playableTaxonHidden").show(5);
+    $("#"+target).parent().children(".playableTaxonHidden").show(5);*/
   },
        
    
@@ -838,11 +839,11 @@ directory.views.RandomItemListView = Backbone.View.extend({
     
     d3.select("#selectRandomContinent").classed("hidden",false);
     $("#myModal").modal('show');
-    $(".playableTaxon").not(".gameTrueSelectedItem").children(".playableTaxonHidden").hide(5);
-    $(".playableTaxon").not(".gameTrueSelectedItem").removeAttr('style');
+    /*$(".playableTaxon").not(".gameTrueSelectedItem").children(".playableTaxonHidden").hide(5);
+    $(".playableTaxon").not(".gameTrueSelectedItem").removeAttr('style');*/
     
     //désactive les événements pour que le joueur ne puisse pas rejouer
-    $(".playableTaxonValidate").remove();
+    $(".playableTaxonValidate").addClass("disabled");
   },
 });
 

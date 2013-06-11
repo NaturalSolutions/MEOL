@@ -1,25 +1,18 @@
 <% var i=0; 
   _.each(obj, function(item) { %> 
     <div class="playableTaxon span3 clearfix gradientGrey" id="item-<%= item.Titem_PK_Id %>">
-      <img src="data/images_taxon/<%= item.filename %>" id="clickImg<%= item.Titem_PK_Id %>" class="img-rounded"/>
+      <img src="data/images_taxon/<%= item.filename %>" id="validate-<%= i %>" class="img-rounded playableTaxonValidate"/>
+      <% if ( item.taxonConceptId >0 ){ %>
+        <button id="detailTaxon-<%= i %>" class="playableTaxonDetail btn pull-right">Show Details</button>
+      <% } %>
       <% if ( item.preferredCommonNames ){ %>
             <h3><%= item.preferredCommonNames %></h3>
       <% }else{ %>
         <h3><em><%= item.taxonName %></em></h3> 
       <% } %>
       
-      <div class="playableTaxonHidden">
-        <% if ( item.taxonName && item.preferredCommonNames !== ""){ %>
-            <h4><em><%= item.taxonName %></em></h4>
-        <% } %>
-        
-        <% if ( item.taxonConceptId >0 ){ %>
-          <button id="detailTaxon-<%= i %>" class="playableTaxonDetail btn">Show Details</button>
-        <% } %>
-        <button  id="validate-<%= i %>" role="button" class="btn-primary playableTaxonValidate">
-          <% if (item.Titem_PK_Id == -1) {%>None in<%}else{%> I live in<%}%>
-          <em><span class = "txtCurrentContinent"></span>.</em>
-        </button>
-      </div>
+      <% if ( item.taxonName && item.preferredCommonNames !== ""){ %>
+          <h4><em><%= item.taxonName %></em></h4>
+      <% } %>
     </div>
 <% i = i+1; }); %>

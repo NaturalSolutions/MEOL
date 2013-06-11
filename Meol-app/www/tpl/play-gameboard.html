@@ -76,49 +76,42 @@
 <div class="modal hide" id="rulesModal" data-backdrop="false">
   <div class="modal-header gradientDarkBlue">
     <button type="button" class="close btn-large" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3><em>Rules of the game</em></h3>
+    <h3><em>M-EOL game</em></h3>
   </div>
   <div class="modal-body">
-          <h3>Scoring</h3>
-          <p> If the aswer is correct the player win <b>1000</b> points weighted by following variables :<p>
-            <ul>
-              <li>number of continents of selected taxon</li>
-              <li>IUCN Status (Conservation status) weight of selected taxon. The weight is based on Fibonacci number, the assumption is : taxa with status are more known.</li>
-              <li>Total number of possible correct answers to the question</li>
-              <li><span class="title">Deck example</span>
-              <pre>
-1000 points
-- 10*number of continents
-- 10*IUCN weight ( 2 = no status; 3 = LC ; 5 = NT; 8 = VU ; 13 = EN ; 21 = [CR; EW; EX])
-- 50*number of possible correct answers
-= Nb of won points
-              </pre>
-              </li>
-            </ul>
-            <h3>Bonus</h3>
-            <p>based on the number of correct aswers following (Fibonacci number).</br>
-            The player win bonus starting from 3 correct answers then each new record series make him win points.</p>             
-            <pre>
-[0;3[ = 0 * x
-3 = 3 * 100
-4 = 5 * 100
-5 = 8 * 100
-6 = 13 * 100
-7 = 21 * 100
-8 = 34 * 100
-         ...</pre>
-            <p><h3>Number of won points during a game</h3>Points + Bonus</p>
-            <p>In real time the progress bar goes to be present (bonus + point by deck) when the user exceeds the unlocking => message indicating that he has released a collection in which it will play once it has finished its part (end of part decided by the user)</p>
-            <span class="title">Game example</span>
-            <pre>
-For each deck
-Good answer : 1000 points
- + if number of continent >1 then number of continent *-10
- + if IUCN weight >2 then IUCN weight *-10
- + if number of possible correct answers >1 then number of possible correct answers *-50
-Bonus (x = 100)
-            </pre>
-
+    <p>M-EOL game depicts the travel of an explorer discovering different species around the world. Become this explorer by answering questions about presence of particular species on each visited continent. Depending on your answers, points are awarded and you advance in the quest.
+During your quest, you will be presented with the species taken from a particular collection. Earning points will unlock new collections. More than 20 000 points are needed to unlock a collection.</p>
+    <hr>
+    <h4>How to earn points</h4>
+    <p> Throughout your expedition, you are asked multiple choice questions. Each correct answer will earn you up to 1000 points.<br/>
+The number of earned points depends on the level of difficulty of the asked question:
+<p>
+  <p><strong>If species has more than a continent, easier it is!</strong><br/>
+1000 – (10*number of continents) <em>[from 2 continents]</em></p>
+  <p><strong>If species is endangered, more it is known, easier it is!</strong><br/>
+1000 – (10 * conservation status weight)</p>
+  <em>Conservation status weighting:<br/>
+LC = 3; NT = 5; VU = 8; [CR, EW, EX] = 21</em>
+  <p><strong>If several answers are corrects, easier it is!</strong><br/>
+1000 – (50*number of correct answers) <em>[from 2 correct answers]</em></p>
+  <p>Unfortunately, the difficulties may be cumulated!</p>
+  <hr>
+  <h4>Bonus</h4>
+  <p>The key to getting a high score and to augment your chances to quickly unlock a new collection is to obtain bonuses.<br/>
+  A bonus occurs when you successfully answer a series of questions in a row.<br/>
+From 3 correct answers, the bonus is calculated according to a Fibonacci sequence:</p>
+  <ul>
+    <li>3 correct answers in a row: 3 * 100</li>
+    <li>4 correct answers in a row: 5 * 100</li>
+    <li>n correct answers in a row: Fn * 100</li>
+  </ul>
+  <p>The 10 first Fibonacci numbers Fn for n = 3, ... , 20 are:</p>
+  <table>
+    <tr><td>F<sub>3</sub></td><td>F<sub>4</sub></td><td>F<sub>5</sub></td><td>F<sub>6</sub></td><td>F<sub>7</sub></td><td>F<sub>8</sub></td><td>F<sub>9</sub></td><td>F<sub>10</sub></td><td>F<sub>11</sub></td><td>F<sub>12</sub></td></tr>
+    <tr><td>3</td><td>5</td><td>8</td><td>13</td><td>21</td><td>34</td><td>55</td><td>89</td><td>144</td><td>233</td></tr>
+  </table>
+  <p>If you have bad answer, you have to beat last record to obtain new bonus.</p>
+  
   </div>
 
 </div>
