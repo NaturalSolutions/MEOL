@@ -37,7 +37,7 @@
               <div class="ui-collapsible-content">
                 <h3><%= textDesc_title %></h3>
                 <p id="desc-Description"><%= textDesc_description %> </p>
-                <p id="desc-credits" class="credits"><%= textDesc_credits %> </p>
+                <a onClick="window.open('http://eol.org/data_objects/<%= textDesc_objectid %>','_blank','location=yes');" id="desc-credits" class="credits" alt="more details on eol.org" target="_blank"><%= textDesc_credits %></a>
               </div>
             </div>
            </div>

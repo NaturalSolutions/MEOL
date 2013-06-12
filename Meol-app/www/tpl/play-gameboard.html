@@ -1,10 +1,10 @@
 <div id='menu-lateral'>
   <ul>
-  <a href=''><img src='css/images/menu/logo_M-EOL-menu.png'/></a>
-  <li id='lien-discover'><a href='#gallery'></a></li>
-  <li id='lien-play'><a href='#play' class='ui-btn-active ui-state-persist'></a></li>
-  <li id='lien-profil'><a href="#profil/<%= profil.Tprofil_PK_Id %>"></a></li>
-  <li id='lien-contribute'><a href='#feedback'></a></li>
+  <a id='home' class="gameQuit"><img src='css/images/menu/logo_M-EOL-menu.png'/></a>
+  <li id='lien-discover'><a id='gallery' class="gameQuit"></a></li>
+  <li id='lien-play'><a id='play' class='ui-btn-active ui-state-persist gameQuit'></a></li>
+  <li id='lien-profil'><a id="profil/<%= profil.Tprofil_PK_Id %>" class="gameQuit"></a></li>
+  <li id='lien-contribute'><a id='feedback' class="gameQuit"></a></li>
   </ul>
 </div>
 
@@ -25,6 +25,16 @@
     </div>
   </div>
   
+  <div class="modal hide" id="gameQuitModal" data-backdrop="false">
+    <div class="modal-body">
+     <p>Are you sure you want to quit?</p>
+    </div>
+    <div class="modal-footer gradientDarkBlue">
+      <button type="button" class="btn btn-danger" id="gameQuitValidate">Quit</button>
+      <button type="button" class="btn" data-dismiss="modal" aria-hidden="true" id="gameQuitCancel">Cancel</button>
+    </div>
+  </div>
+  
   <div class="alert alert-block fade in" id="collectionModal" style="display: none;" >
     <div class="modal-body">
       <h4 id='activateCollMessageModal'></h4>
@@ -37,9 +47,8 @@
 
   <div id="map" class=""></div>
   <div id="scorePanel">
-    <button class="btn pull-right" id="ruleBtn"><i class="icon-info-sign icon-white"></i></button>
     <div id="iconUser" ></div>
-    <h2>Player 1</h2>
+    <h2><%= profil.pseudo %></h2>
     <div class="progress progress-striped active">
       <div class="bar" id="meterScore" style="width:<% if(typeof(score.score) != 'undefined') { %> <%= score.score/200 %>%<% }else{%>0<%};%>"></div>
     </div>
@@ -60,6 +69,7 @@
     </span>
     <label>Total score</label>
     <span id ="allScore" class="scoreSpan"><% if(typeof(allScore) != 'undefined') { %> <%=allScore%> <% }else{%>0<%};%></span>
+    <button class="btn btn-small pull-right infoBtn" id="ruleBtn">Help</button>
   </div>
   <div><button id="selectRandomContinent" class="pull-right playRandom" ></button></div>
   
@@ -118,7 +128,7 @@ From 3 correct answers, the bonus is calculated according to a Fibonacci sequenc
 
 
 <div id="gameDetailPanel" class="hidden">
-  <h2 id="subTitle">Graph displays relations ships among species</h2>
+  <h2 id="subTitle">Graph displays taxonomic relationships among species</h2>
   <button id="returnToGame" class="btn-primary btn-large">Back to the game</button>
   <div id="graph-panel"></div>
 </div>

@@ -197,6 +197,12 @@ directory.views.GalleryListView = Backbone.View.extend({
     }, this);
     return this;
   },
+	events:{
+		'click #descCollBtn':'showdescCollModal',
+  },
+	showdescCollModal: function(event){
+		$("#descCollModal").modal('toggle');
+	},
   
 });
 
@@ -215,6 +221,13 @@ directory.views.playListGalleryView = Backbone.View.extend({
     $(this.el).html(this.template({collection: this.collection}));
     return this;
   },
+	
+	events:{
+		'click #descPlayBtn':'showdescPlayModal',
+  },
+	showdescPlayModal: function(event){
+		$("#descPLayModal").modal('toggle');
+	},
 });
 
 
@@ -406,7 +419,8 @@ directory.views.playGameboardView = Backbone.View.extend({
 	  'change #nbAnwserGoodSequenceValue' : 'updateNbAnwserGoodSequenceValue',
     'click #returnToGame' : 'returnToGame',
     'click #navigateNewGallery' : 'navigateNewGallery',
-		'click #ruleBtn':'showRulesModal',
+		'click #ruleBtn':'toggleRulesModal',
+		'click .gameQuit':'showGameQuitModal',
   },
   
   
@@ -599,7 +613,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     this.currentScoreGame.set('nbQuestionTotal', currentscnbQuestionTotal+1);
 		var currentContinentStr = $("#currentContinent").val();
 	
-		//Recherche jusqu'à 6x si indexId1 est sur le currentContinent
+		//Recherche jusqu'à 16x si indexId1 est sur le currentContinent
 		var selectedItemsCollection = new directory.models.ItemsCollection();
 		var indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
 		var presence = this.itemsCollection.models[indexId1].attributes.iNat.split(",");
@@ -607,12 +621,12 @@ directory.views.playGameboardView = Backbone.View.extend({
 		var countPresence=0;
 		if(typeof(currentContinentStr) !== 'undefined'){
 			for (var idNat in presence) {
-				if(countPresence > 6 || capCurrentContinent  == presence[idNat] || typeof(presence[idNat]) === 'undefined'){
+				if(countPresence > 16 || capCurrentContinent  == presence[idNat] || typeof(presence[idNat]) === 'undefined'){
 					break;
 				};
 				if(typeof(presence[idNat]) != 'undefined'){
 					while (capCurrentContinent != presence[idNat]) {
-						if(countPresence > 6){
+						if(countPresence > 16){
 							break;
 						};
 						indexId1 = Math.floor(Math.random()*this.itemsCollection.models.length);
@@ -660,9 +674,18 @@ directory.views.playGameboardView = Backbone.View.extend({
 		$(".txtCurrentContinent").html(currentContinentStr);
     return this;
   },
-	showRulesModal: function(event){
-		$("#rulesModal").modal('show');
+	toggleRulesModal: function(event){
+		$("#rulesModal").modal('toggle');
 	},
+	showGameQuitModal: function(event){
+		var nav = new directory.Router;
+		var urlClicked = event.currentTarget.id;
+		$("#gameQuitModal").modal('show');
+		$("#gameQuitValidate").click(function(){
+			nav.navigate("#"+urlClicked, {trigger: true, replace: true});
+		});
+	},
+	
 });
 
 directory.views.RandomItemListView = Backbone.View.extend({

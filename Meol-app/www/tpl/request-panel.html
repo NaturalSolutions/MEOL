@@ -3,7 +3,7 @@
     <div class="playableTaxon span3 clearfix gradientGrey" id="item-<%= item.Titem_PK_Id %>">
       <img src="data/images_taxon/<%= item.filename %>" id="validate-<%= i %>" class="img-rounded playableTaxonValidate"/>
       <% if ( item.taxonConceptId >0 ){ %>
-        <button id="detailTaxon-<%= i %>" class="playableTaxonDetail btn pull-right">Show Details</button>
+        <button id="detailTaxon-<%= i %>" class="playableTaxonDetail btn btn-mini btn-primary pull-right">Show Details</button>
       <% } %>
       <% if ( item.preferredCommonNames ){ %>
             <h3><%= item.preferredCommonNames %></h3>

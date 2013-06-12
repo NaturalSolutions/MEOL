@@ -40,7 +40,9 @@ input {
 h1, h2 {
   color:#B9DE00;
 }
-
+p{
+	color:white;
+}
 .disabled{
 	z-index: 1;
 	filter: Alpha(Opacity=30);
@@ -203,6 +205,10 @@ line.link {
 #panel_taxon-detail .ui-collapsible-inset, #panel_taxon-detail .ui-collapsible-inset h3 {
   margin:0;
 }
+.ui-collapsible-content p{
+	padding-right:10px;
+}
+
 #collapsibleCollectionPanel .ui-corner-top{
   border-radius-top:0;
 }
@@ -377,7 +383,7 @@ margin:3%;
  background-repeat:no-repeat;
 }
 /*-----Playable collection-----*/
-#play-list-gallery-content{
+#play-list-gallery-content,#gallery-list-content{
   width:88%;
 }
 
@@ -400,6 +406,18 @@ overflow-y: scroll;
 max-height: 580px;
 max-width: 600px;
 margin: auto;
+}
+#listeVignetteCollection fieldset#radioCollection {
+overflow-y: scroll;
+max-height: 580px;
+max-width: 900px;
+margin: auto;
+}
+#gallery-list-content p.description{
+	max-width:800px;
+	margin:auto;
+	padding:0 50px 10px;
+	font-size:13px;
 }
 /*-----------------BOUTON RADIO-----------------------*/
 
@@ -709,6 +727,16 @@ div.taxon-list-item {
 
 /*********** page PLAY**************/
 /*****************************/
+.gameQuit{
+	cursor:pointer;
+}
+#gameQuitCancel, #gameQuitValidate{
+	width:40%;
+}
+
+#gameQuitValidate{
+	float:left;
+}
 
 #map{
   /*margin-left:145px;
@@ -784,15 +812,6 @@ button.playRandom{
 #item--1 h3{
 	margin-bottom:15.5px;
 }
-.playableTaxonDetail{
-	font-size:11px;
-	padding:0 2px;
-	right:5px;
-	margin-top:2px;
-}
-.playableTaxonValidate{
-  
-}
 
 /* Firts Message Play */
 #firstMessagePlay h2 em {
@@ -818,9 +837,13 @@ button.playRandom{
   display:none;
 }
 .playableTaxon img{
-margin: auto;
-position: relative;
-width: 100%;
+	margin: auto;
+	position: relative;
+	width: 100%;
+}
+
+.playableTaxonDetail{
+	margin: 2px;
 }
 
 .btn-primary {
@@ -987,10 +1010,28 @@ div#iconUser{
   width: 100px;
   height: 100px;
 }
-#ruleBtn{
+.infoBtn{
 	background:#B9DE00;
 	padding:0 4px;
 	border-radius:9px;
+	margin-top:10px;
+}
+
+.infoBtn:hover,.infoBtn:active{
+	background:#93BC00;
+	color:black;
+	text-shadow:0 1px rgba(255,255,255,0.75);
+}
+
+#scorePanel .infoBtn{
+		width:100%;
+}
+#scorePanel h2{
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+	width:100px;
+	font-size:18px;
 }
 
 #scorePanel label{
@@ -1039,15 +1080,17 @@ div#iconUser{
 }
 
 /*gameDetailPanel*/
-#gameDetailPanel #subTitle{
+#gameDetailPanel #subTitle, #collection-detail #subTitle{
 	position:absolute;
+	margin-left:145px;
+	top:35px;
+}
+#subTitle{
 	color:#66869E;
 	font-size:16px;
 	line-height:20px;
-	margin-left:145px;
 	font-weight:normal;
 	font-style:italic;
-	top:35px;
 }
 #returnToGame{
   position:fixed;
@@ -1244,6 +1287,25 @@ width: 450px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	}
+	button#selectRandomContinent{
+		width:140px;
+	}
+	#firstMessagePlay h2 em {
+		font-size: 24px;
+	}
+	#firstMessagePlay h2 {
+		margin-top: 4px;
+		margin-bottom: 0px;
+	}
+	button.playRandom{
+	 -webkit-background-size: 140px 94px;
+  -moz-background-size: 140px 94px;
+  -ms-background-size: 140px 94px;
+  -o-background-size: 140px 94px;
+  background-size: 140px 94px;
+  width: 140px;
+  height: 94px;
 	}
 }
 
