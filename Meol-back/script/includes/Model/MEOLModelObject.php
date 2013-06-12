@@ -17,13 +17,14 @@ abstract class ModelObjectData {
 
   public function getFormatedObject() {
     $object = array(
-      'objectId'	=>$this->_objectId,
+      //'objectId'	=>$this->_objectId,
       'identifier'	=>$this->_identifier,
       'title'	=>$this->_title,
       'licence'	=>$this->_licence,
       'rights'	=>$this->_rights,
       'credits'	=>$this->_credits,
       'description'	=>$this->changeLinkIntoModalLink() ,//$this->_description,
+      'objectId'	=>$this->_dataObjectVersionID,
     );
     return $object;
   }
@@ -40,6 +41,7 @@ abstract class ModelObjectData {
     $pattern = '/href=[\"\']([^\s\"\']*)[\"\']/';
     $replacement = "class='ui-link' onclick=\"window.open('$1','_blank','location=yes');\" target='_blank'";
     $desc = preg_replace ( $pattern, $replacement , $desc);
+
     return $desc;
   }
   

@@ -128,6 +128,10 @@ $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
 $sql = "UPDATE `Object_text` SET description = 'Least Concern (LC)' WHERE title = 'IUCNConservationStatus' AND description = 'Lower Risk/least concern (LR/lc)'";
 $req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
 
+
+$sql = "UPDATE `Object_text` SET description = 'Least Concern (LC)' WHERE title = 'IUCNConservationStatus' AND description = 'Lower Risk/least concern (LR/lc)'";
+$req = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
+
 $sql = "UPDATE Taxon , `Object_text`  SET weightIUCN = 
 CASE description
   WHEN 'Least Concern (LC)' THEN 3

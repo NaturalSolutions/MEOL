@@ -186,7 +186,7 @@ while ($rowTaxon = mysql_fetch_assoc($result)) {
       if ($row['credit'] !== '') {
         $credit = "&copy; ".$row['credit'];
       }
-      $credit =$credit . '  <a class="ui-link" href="#" onclick="window.open(\'http://eol.org/data_objects/'.$row['objectVersionID'].'\',\'_blank\',\'location=yes\');" alt="more details on eol.org" target="_blank"><img src ="css/images/icon_external-link.png"/></a>' ;
+      $credit =$credit . '  <a class="ui-link" onclick="window.open(\'http://eol.org/data_objects/'.$row['objectVersionID'].'\',\'_blank\',\'location=yes\');" alt="more details on eol.org" target="_blank"><img src ="css/images/icon_external-link.png"/></a>' ;
       $image = new ModelObjectImage($row['objectid'],$row['identifier'],$row['title'],$row['licence'],$row['rights'],$credit ,$row['description'],
         $row['taxonId'],$row['type'],$row['mimeType'],$row['filename'],$row['URL'], $row['objectVersionID'], $row['photographer']);
     }
@@ -195,7 +195,7 @@ while ($rowTaxon = mysql_fetch_assoc($result)) {
   //Récupération de l'objet statut uicn
   $fk_iucn = $rowTaxon['fk_iucn'];
   if ($fk_iucn  !== '') {
-    $sql = "SELECT *  FROM `Object_text` WHERE objectid = '".$fk_iucn."'" ;
+    $sql = "SELECT *  FROM `Object_text` WHERE objectid = '".$fk_iucn."' AND title = 'IUCNConservationStatus' AND NOT description LIKE '%(DD)'" ;
     $res = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
     while ($row = mysql_fetch_assoc($res)) {
       $iucnStatus = new ModelObjectText($row['objectid'],$row['identifier'],$row['title'],$row['licence'],$row['rights'],$row['credit'],$row['description'],
