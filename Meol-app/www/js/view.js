@@ -429,7 +429,7 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   navigateNewGallery : function(){
-		this.saveScore();
+		
 		var nav = new directory.Router;
 		var nextCollectionOrdre = this.model.get('ordre')+1;
 		var urlNextGallery = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('collectionid');
@@ -678,11 +678,13 @@ directory.views.playGameboardView = Backbone.View.extend({
 		$("#rulesModal").modal('toggle');
 	},
 	showGameQuitModal: function(event){
+		var self = this;
 		$("#myModal").modal('hide');
 		var nav = new directory.Router;
 		var urlClicked = event.currentTarget.id;
 		$("#gameQuitModal").modal('show');
 		$("#gameQuitValidate").click(function(){
+			self.beforeClose();
 			nav.navigate("#"+urlClicked, {trigger: true, replace: true});
 		});
 	},
