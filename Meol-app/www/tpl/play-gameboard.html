@@ -89,38 +89,42 @@
     <h3><em>M-EOL game</em></h3>
   </div>
   <div class="modal-body">
-    <p>M-EOL game depicts the travel of an explorer discovering different species around the world. Become this explorer by answering questions about presence of particular species on each visited continent. Depending on your answers, points are awarded and you advance in the quest.
-During your quest, you will be presented with the species taken from a particular collection. Earning points will unlock new collections. More than 20 000 points are needed to unlock a collection.</p>
+    <p>In this game, you are an explorer discovering different species by travelling around the world. You can earn points as you journey to different continents by answering questions about which species live on the continents that you visit.
+    You earn points for each correct answer and bonus points for answering several correctly in a row.<br/>
+    During your quest, you will be presented with the species selected from an Encyclopedia of Life Collection. Earning points will unlock new collections. More than 20 000 points are needed to unlock a new collection.</p>
     <hr>
     <h4>How to earn points</h4>
-    <p> Throughout your expedition, you are asked multiple choice questions. Each correct answer will earn you up to 1000 points.<br/>
-The number of earned points depends on the level of difficulty of the asked question:
-<p>
-  <p><strong>If species has more than a continent, easier it is!</strong><br/>
+    <p>Throughout your expedition, you are asked multiple choice questions. Each correct answer will earn you up to 1000 points.<br/>
+    The number of earned points depends on the level of difficulty of the question. Sometimes you might earn less than 1000 points.
+    If you want a detailed explanation about how scoring works, keep reading!<br/>
+    <strong>Why you might earn less than 1000 points for an answer:</strong>
+    <p>
+  <p><strong>1. A species that lives on more than a continent is easier to guess. Points are subtracted as follows:</strong><br/>
 1000 – (10*number of continents) <em>[from 2 continents]</em></p>
-  <p><strong>If species is endangered, more it is known, easier it is!</strong><br/>
-1000 – (10 * conservation status weight)</p>
+  <p><strong>2. If species is endangered, it is usually better known, and so not as difficult as lesser known species. Points are reduced as follows:</strong><br/>
+1000 – (10 * conservation status weight)
   <em>Conservation status weighting:<br/>
-LC = 3; NT = 5; VU = 8; [CR, EW, EX] = 21</em>
-  <p><strong>If several answers are corrects, easier it is!</strong><br/>
+LC = 3; NT = 5; VU = 8; [CR, EW, EX] = 21</em></p>
+  <p><strong>3. If more than one of the species listed are correct, points are also subtracted:</strong><br/>
 1000 – (50*number of correct answers) <em>[from 2 correct answers]</em></p>
-  <p>Unfortunately, the difficulties may be cumulated!</p>
+  <p style="font-size:12px;">Note that if more than one of the 3 situations above occurs in a question, the number of points subtracted will be combined.</p>
+  <img src="css/images/rulesModal/2answers.png"/>
   <hr>
-  <h4>Bonus</h4>
-  <p>The key to getting a high score and to augment your chances to quickly unlock a new collection is to obtain bonuses.<br/>
+  <h4>Bonus Points</h4>
+  <p>The key to getting a high score and improving your chances of quickly unlocking a new collection is to earn bonuses.<br/>
   A bonus occurs when you successfully answer a series of questions in a row.<br/>
-From 3 correct answers, the bonus is calculated according to a Fibonacci sequence:</p>
+For 3 or more correct answers, the bonus is calculated according to a Fibonacci sequence:</p>
   <ul>
     <li>3 correct answers in a row: 3 * 100</li>
     <li>4 correct answers in a row: 5 * 100</li>
     <li>n correct answers in a row: Fn * 100</li>
   </ul>
-  <p>The 10 first Fibonacci numbers Fn for n = 3, ... , 20 are:</p>
+  <p><em>The 10 first Fibonacci numbers Fn for n = 3, ... , 20 are:</em></p>
   <table>
     <tr><td>F<sub>3</sub></td><td>F<sub>4</sub></td><td>F<sub>5</sub></td><td>F<sub>6</sub></td><td>F<sub>7</sub></td><td>F<sub>8</sub></td><td>F<sub>9</sub></td><td>F<sub>10</sub></td><td>F<sub>11</sub></td><td>F<sub>12</sub></td></tr>
     <tr><td>3</td><td>5</td><td>8</td><td>13</td><td>21</td><td>34</td><td>55</td><td>89</td><td>144</td><td>233</td></tr>
   </table>
-  <p>If you have bad answer, you have to beat last record to obtain new bonus.</p>
+  <p>Once you answer incorrectly, you have to beat the last record to obtain new bonus.</p>
   
   </div>
 
