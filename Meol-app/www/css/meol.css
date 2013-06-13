@@ -1260,8 +1260,9 @@ width: 450px;
   color:white;
 }
 .galleryList a{
-  height: 160px;
+  height: 175px;
   width: 139px;
+	line-height:16px;
 }
 #play-list-gallery a{
   height: 135px;
