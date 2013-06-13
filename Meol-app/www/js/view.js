@@ -678,6 +678,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 		$("#rulesModal").modal('toggle');
 	},
 	showGameQuitModal: function(event){
+		$("#myModal").modal('hide');
 		var nav = new directory.Router;
 		var urlClicked = event.currentTarget.id;
 		$("#gameQuitModal").modal('show');
