@@ -651,7 +651,9 @@ directory.views.playGameboardView = Backbone.View.extend({
       indexId3 = Math.floor(Math.random()*this.itemsCollection.models.length); 
     }
     selectedItemsCollection.models[2] = this.itemsCollection.models[indexId3];
-    
+		//Mix selected item where presence is true
+		selectedItemsCollection.models = shuffle(selectedItemsCollection.models);
+		
     //Ajout d'un faux item
     var falseItem = new directory.models.Item();
     falseItem.set('filename',  "unknown_taxon.jpg");

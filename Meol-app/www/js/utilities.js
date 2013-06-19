@@ -35,20 +35,16 @@ var fiboSuite = function(){
 };
 
 //Shuffle
-function shuffle(a){
-   var j = 0;
-   var valI = '';
-   var valJ = valI;
-   var l = a.length - 1;
-   while(l > -1){
-		j = Math.floor(Math.random() * l);
-		valI = a[l];
-		valJ = a[j];
-		a[l] = valJ;
-		a[j] = valI;
-		l = l - 1;
-	}
-	return a;
+function shuffle(myArray){
+  var i = myArray.length, j, temp;
+  if ( i === 0 ) return false;
+  while ( --i ) {
+     j = Math.floor( Math.random() * ( i + 1 ) );
+     temp = myArray[i];
+     myArray[i] = myArray[j]; 
+     myArray[j] = temp;
+   }
+   return myArray;
 };
 
 // capitaliseFirstLetter
