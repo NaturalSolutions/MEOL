@@ -429,7 +429,8 @@ directory.views.playGameboardView = Backbone.View.extend({
   },
   
   navigateNewGallery : function(){
-		
+		var self = this;
+		self.beforeClose();
 		var nav = new directory.Router;
 		var nextCollectionOrdre = this.model.get('ordre')+1;
 		var urlNextGallery = directory.data.galleriesList.findWhere( {'ordre': nextCollectionOrdre}).get('collectionid');
