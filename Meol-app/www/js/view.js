@@ -160,12 +160,11 @@ directory.views.TaxonPanel = Backbone.View.extend({
       $('.accordion-group').on('hide', function () {
 				$(this).children().children().children("i").removeClass('icon-minus');
 				$(this).children().children().children("i").addClass('icon-plus');
-      })
+      });
       $('.accordion-group').on('show', function () {
 				$(this).children().children().children("i").removeClass('icon-plus');
 				$(this).children().children().children("i").addClass('icon-minus');
-      })
-        
+      });
     },
 		tooltipIucn: function(event){
 			if (document.documentElement.hasOwnProperty('ontouchstart')){
@@ -640,13 +639,13 @@ directory.views.playGameboardView = Backbone.View.extend({
 			
 			selectedItemsCollection.models[0] = this.itemsCollection.models[indexId1];
 		};
-    var indexId2 = Math.floor(Math.random()*this.itemsCollection.models.length)
+    var indexId2 = Math.floor(Math.random()*this.itemsCollection.models.length);
     while ( indexId2 ==indexId1 )  {
       indexId2 = Math.floor(Math.random()*this.itemsCollection.models.length); 
     }
     selectedItemsCollection.models[1] = this.itemsCollection.models[indexId2];
     
-    var indexId3 = Math.floor(Math.random()*this.itemsCollection.models.length)
+    var indexId3 = Math.floor(Math.random()*this.itemsCollection.models.length);
     while ( (indexId3 ==indexId1 ) || (indexId3 ==indexId2 ) )  {
       indexId3 = Math.floor(Math.random()*this.itemsCollection.models.length); 
     }
@@ -856,7 +855,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
 		var currentNbAnwserGood = parseInt($("#nbAnwserGoodSequenceValue").val());
     $("#nbAnwserGoodSequenceValue").val(currentNbAnwserGood+1).trigger('change');
 		
-		$("#myModal").css("box-shadow","0px 0px 25px 10px white")
+		$("#myModal").css("box-shadow","0px 0px 25px 10px white");
 		
 		//Message succes Modal
 		$("#txtMessageModal").html("Well Done!");

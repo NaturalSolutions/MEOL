@@ -317,8 +317,7 @@ directory.dao.ItemDAO.prototype, {
     findAll: function(callback) {
         this.db.transaction(
             function(tx) {
-                var sql = "SELECT * "+
-                    "FROM Titems LIMIT 50" 
+                var sql = "SELECT * FROM Titems LIMIT 50";
                     
                 tx.executeSql(sql,[], function(tx, results) {
                     var len = results.rows.length,

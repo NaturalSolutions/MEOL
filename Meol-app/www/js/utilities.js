@@ -30,7 +30,7 @@ var fiboSuite = function(){
       if(memo[n]) return memo[n];
       memo[n]= fibo(n-1) + fibo(n-2) ;
       return memo[n] ;
-   }
+   };
    return fibo ;
 };
 
