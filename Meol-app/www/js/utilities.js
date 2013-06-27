@@ -30,11 +30,27 @@ var fiboSuite = function(){
       if(memo[n]) return memo[n];
       memo[n]= fibo(n-1) + fibo(n-2) ;
       return memo[n] ;
-   }
+   };
    return fibo ;
 };
 
-//Shuffle
+//Shuffles
+function shuffleContinent(a){
+   var j = 0;
+   var valI = '';
+   var valJ = valI;
+   var l = a.length - 1;
+   while(l > -1){
+    j = Math.floor(Math.random() * l);
+    valI = a[l];
+    valJ = a[j];
+    a[l] = valJ;
+    a[j] = valI;
+    l = l - 1;
+  }
+ return a;
+};
+
 function shuffle(myArray){
   var i = myArray.length, j, temp;
   if ( i === 0 ) return false;
