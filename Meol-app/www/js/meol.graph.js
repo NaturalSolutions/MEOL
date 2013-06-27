@@ -37,7 +37,7 @@ var MeolGraph = function(containerId, options) {
   this.charaterSplitNb         = options.charaterSplitNb || 18;
   this.currentNode             = options.currentNode || null;
   this.init();  
-}//end constructor
+};//end constructor
 
 
 /** 
@@ -85,7 +85,7 @@ MeolGraph.prototype.init = function() {
     self._update();
   });
 
-}//end function init()
+};//end function init()
 
 MeolGraph.prototype._update = function() {
 
@@ -178,7 +178,7 @@ MeolGraph.prototype._update = function() {
 
       // Adjust the expand icon label ("+", "-" or "") according to the node status (expanded, penultimate):
       self.graphNodes.selectAll("text.expand-icon").text(function(d) { 
-        var isPenultimate = self._isPenultimate(d)
+        var isPenultimate = self._isPenultimate(d);
         if (!d.expanded && !isPenultimate) {
           return "+";
         }
@@ -200,17 +200,17 @@ MeolGraph.prototype._update = function() {
     .attr("ry", this.nodeBoxRY)
     .attr("id",  function(d) { 
       return (d.depth==0 || d.depth==-1)?"root":"" ;
-    })      
+    }) ;    
  // Node label:
   var commontext = this.node.append("svg:text")
       .attr("x", self.nodeLabelXOffset)
       .attr("y", function(d) { return self.nodeLabelYLeafOffset; })
-      .attr("class",  function(d) { return (typeof d.terminal === "undefined")?"common-name intermediary":"common-name terminal" })
+      .attr("class",  function(d) { return (typeof d.terminal === "undefined")?"common-name intermediary":"common-name terminal" });
       
   commontext.append("svg:tspan")
       .attr("x", self.nodeLabelXOffset)
       .attr("dy", 0)
-      .text(function(d) { return (typeof d.splitVernacularName === "undefined")?"":d.splitVernacularName[0]; })
+      .text(function(d) { return (typeof d.splitVernacularName === "undefined")?"":d.splitVernacularName[0]; });
 
   commontext.append("svg:tspan")
       .attr("x", self.nodeLabelXOffset)
@@ -218,7 +218,7 @@ MeolGraph.prototype._update = function() {
       .text(function(d) {  
         if (typeof d.splitVernacularName === "undefined") return "";
         else    return  (typeof d.splitVernacularName[1] === "undefined")?"":d.splitVernacularName[1]; 
-      })
+      });
       
   commontext.append("svg:tspan")
       .attr("x", self.nodeLabelXOffset)
@@ -239,17 +239,17 @@ MeolGraph.prototype._update = function() {
            return (self.nodeLabelYLeafOffset + (d.vernacularLineNb)*10);
         }; 
       })
-      .attr("class",  "scientific-name")
+      .attr("class",  "scientific-name");
       
     scitext.append("svg:tspan")
       .attr("x", self.nodeLabelXOffset)
       .attr("dy", 0)
-      .text(function(d) {  return (d.splitName[0]); })
+      .text(function(d) {  return (d.splitName[0]); });
     
     scitext.append("svg:tspan")
       .attr("x", self.nodeLabelXOffset)
       .attr("dy", self.nodeTextHeight)
-      .text(function(d) {  return  (typeof d.splitName[1] === "undefined")?"":d.splitName[1]; })
+      .text(function(d) {  return  (typeof d.splitName[1] === "undefined")?"":d.splitName[1]; });
     
     scitext.append("svg:tspan")
           .attr("x", self.nodeLabelXOffset)
@@ -290,7 +290,7 @@ MeolGraph.prototype._update = function() {
   
  
 
-}//end function _update()
+};//end function _update()
 
 /**
  * Helper method - Return the correct height for a given node depending on its properties.
@@ -330,14 +330,14 @@ MeolGraph.prototype._computeNodeHeight = function(node) {
   return (typeof node.name==="undefined") ? baseHeight:baseHeight + nodeLabel2Y;
 
 
-}//end function _computeNodeHeight(node) 
+};//end function _computeNodeHeight(node) 
 
 
 MeolGraph.prototype.refreshCurrentNode = function(newNode) {
   var self = this;
   self.currentNode = newNode; 
   self._update();  
-}
+};
 
 MeolGraph.prototype.displayPanel = function(clickedNodeTaxonConceptId, alternateFile ) {
  //taxon = taxonDetailData[taxonConceptID];
@@ -358,7 +358,7 @@ MeolGraph.prototype.displayPanel = function(clickedNodeTaxonConceptId, alternate
       $("#panel_taxon-detail").append( new directory.views.TaxonPanel({model: data}).render().el);
     }
   });
-}
+};
 
 d3.selection.prototype.moveToFront = function() { 
   return this.each(function() { 
@@ -369,7 +369,7 @@ d3.selection.prototype.moveToFront = function() {
 MeolGraph.prototype.changeCurrentNode = function(nodeId) {
   this.currentNode = nodeId;
   this._update();
-}
+};
 /** 
  * Return a list of all descendant nodes under the root.
  *
@@ -390,7 +390,7 @@ MeolGraph.prototype._flatten = function(root) {
 
   return nodes;
 
-}//end function _flatten(root)
+};//end function _flatten(root)
 
 /** 
  * Mark all descendant nodes as not expanded (i.e. set expanded property to false).
@@ -407,7 +407,7 @@ MeolGraph.prototype._markChildrenAsNotExpanded = function(root) {
 
   recurse(root);
 
-}//end function _markChildrenAsNotExpanded(root)
+};//end function _markChildrenAsNotExpanded(root)
 
 /** 
  * Return a list of all leaf nodes under the root.
@@ -433,7 +433,7 @@ MeolGraph.prototype._getLeaves = function(node) {
 
   return nodes;
 
-}//end function _getLeaves(node)
+};//end function _getLeaves(node)
 
 /** 
  * Return true if the node is penultimate. Else return false.
@@ -455,7 +455,7 @@ MeolGraph.prototype._isPenultimate = function(node) {
 
   return isPenultimate;
 
-}//end function _isPenultimate(node)
+};//end function _isPenultimate(node)
 
 MeolGraph.prototype._updateAllExpandCollapseIcone = function() {
   var self = this;
@@ -469,7 +469,7 @@ MeolGraph.prototype._updateAllExpandCollapseIcone = function() {
       return isPenultimate?"":"-"; 
     }
   });
-}
+};
 
 /** 
  * Collapse given node.
@@ -484,7 +484,7 @@ MeolGraph.prototype._collapseNode = function(node) {
    this._update();
   }
 
-}//end function _collapseNode(node)
+};//end function _collapseNode(node)
 
 /** 
  * Expand given node.
@@ -513,7 +513,7 @@ MeolGraph.prototype._expandNode = function(node) {
    this._update();
   }//end if (!node.terminal)
 
-}//end function _expandNode(node)
+};//end function _expandNode(node)
 
 /**
  * Expand all nodes of the graph
@@ -521,7 +521,7 @@ MeolGraph.prototype._expandNode = function(node) {
  * @param node The root to be expanded.
  */
 MeolGraph.prototype._expandAllNodes = function(node) {
-  if (! node) node = this.root
+  if (! node) node = this.root;
     var self = this;
   function recurse(node) {
     if (!node.terminal) {
@@ -552,7 +552,7 @@ MeolGraph.prototype._expandAllNodes = function(node) {
   self.currentNode = null;
   this._update();
   this._updateAllExpandCollapseIcone();
-}
+};
 
 /**
  * Collapse all nodes of the graph
@@ -560,7 +560,7 @@ MeolGraph.prototype._expandAllNodes = function(node) {
  * @param node The root to be collapsed.
  */
 MeolGraph.prototype._collapseAllNodes = function(node) {
-  if (! node) node = this.root
+  if (! node) node = this.root;
   var self = this;
   
   function recurse(node) {
@@ -585,7 +585,7 @@ MeolGraph.prototype._collapseAllNodes = function(node) {
   
  // d3.behavior.zoom.scale(1);//.translate([0, 0]);
   //this.vis.attr("scale", 0);
-}//end function _collapseNode(node)
+};//end function _collapseNode(node)
 
 /**
  * Découpe une chaine de caractère tout les 25 caractères
@@ -612,8 +612,8 @@ MeolGraph.prototype._splitText2Tspan = function (name, len) {
   }
   splitname[segNb] = middleString;
  return splitname;
-}
+};
 
 function trim (myString) {
   return myString.replace(/^\s+/g,'').replace(/\s+$/g,'')
-} 
+} ;
