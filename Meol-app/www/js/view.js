@@ -452,7 +452,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 
 		var arrContinents = d3.select("#map svg").selectAll(".continent");
 		var rand = arrContinents[Math.floor(Math.random() * arrContinents.length)];
-		var shuffleRand = shuffle(rand);
+		var shuffleRand = shuffleContinent(rand);
 
 		var countAnime = 0;
 		while( countAnime < 1){
