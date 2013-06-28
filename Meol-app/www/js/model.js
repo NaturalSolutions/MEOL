@@ -19,7 +19,7 @@ directory.models.Taxon = Backbone.Model.extend({
     "image_objectid":null,
     "image_title":"",
     "image_credits":"",
-    "image_fileName":"",
+    "image_fileName":""
   },
 
   
@@ -110,7 +110,7 @@ directory.models.Gallery = Backbone.Model.extend({
     "active": false
   },
   
-  dao:directory.dao.GalleryDAO,
+  dao:directory.dao.GalleryDAO
   
 });
 directory.models.GalleriesCollection = Backbone.Collection.extend({
@@ -154,7 +154,7 @@ directory.models.GalleriesCollection = Backbone.Collection.extend({
         .set('active', newStatus)
         .save();  
     }
-  },
+  }
 });
 
 // The Items Model
@@ -182,8 +182,8 @@ directory.models.Item = Backbone.Model.extend({
   },
   
   initialize: function() {
-  },
-  
+  }
+
 });
 
 // The TaxonCollection Model
@@ -220,7 +220,7 @@ directory.models.Profil = Backbone.Model.extend({
   dao: directory.dao.ProfilDAO,
   
   initialize: function() {
-  },
+  }
   
 });
 
@@ -247,7 +247,7 @@ directory.models.ProfilsCollection = Backbone.Collection.extend({
      new this.dao(directory.db).findAllByCollectionid(key, function(data) {
           self.reset(data);
       });
-  },
+  }
     
 });
 
@@ -281,7 +281,7 @@ directory.models.Score = Backbone.Model.extend({
   dao: directory.dao.ScoreDAO,
   
   initialize: function() {
-  },
+  }
 });
 
 // The ScoresCollection Model
@@ -307,6 +307,6 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
           d.resolve(data);
       });
      return d;
-  },
+  }
   
 });

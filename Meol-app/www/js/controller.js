@@ -6,17 +6,16 @@ directory.Router = Backbone.Router.extend({
   //currentProfil : directory.models.ProfilsCollection,
   
   routes: {
-      "": "home",
-      //"": "searchtaxon",
-      "searchtaxon": "searchtaxon",
-      "creditPage": "creditPage",
-      "gallery": "discoverGalleryList",
-      "gallery/:galleryId": "discoverGalleryTaxonomicTreeView",
+      "":"home",
+      //"":"searchtaxon",
+      "searchtaxon":"searchtaxon",
+      "creditPage":"creditPage",
+      "gallery":"discoverGalleryList",
+      "gallery/:galleryId":"discoverGalleryTaxonomicTreeView",
       "play" : "playListGallery",
       "play/:galleryId" : "playGameboardDisplay",
       "profil/:profilId" : "profilDisplay",
-      "feedback" : "feedbackDisplay",
-      //"taxon/:taxonConceptId": "taxonDetails",
+      "feedback" : "feedbackDisplay"
   },
 
   initialize: function() {
@@ -192,6 +191,6 @@ directory.Router = Backbone.Router.extend({
         });
       }
     });
-  },
+  }
 
 });

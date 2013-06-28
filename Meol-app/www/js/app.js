@@ -10,7 +10,7 @@ var directory = {
     data: {},
     models: {},
     views: {},
-    utils: {},
+    utils: {}
 };
 
 // ----------------------------------------------- The Application initialisation ------------------------------------------ //
@@ -24,8 +24,6 @@ function init(){
   // document.addEventListener("deviceready", phoneReady, false);
   window.heightScreen = $(window).height();
   window.widthScreen = $(window).width();
-  window.graph;
-  window.allTaxonNb;
   window.deferreds = [];
   
   $("body").addClass("ui-disabled");

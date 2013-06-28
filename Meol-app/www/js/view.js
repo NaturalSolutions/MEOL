@@ -63,7 +63,7 @@ directory.views.HomeView = directory.views.BaseView.extend({
   template:'home-page',
  
   initialize : function() {
-  },
+  }
 
 });
 	
@@ -86,7 +86,7 @@ directory.views.SearchPage = Backbone.View.extend({
     },
 
     events: {
-        "keyup .search-key": "search"
+        "keyup .search-key":"search"
     },
 
     search: function(event) {
@@ -137,7 +137,7 @@ directory.views.TaxonListItemView = Backbone.View.extend({
         $("#panel_taxon-detail").append(new directory.views.TaxonPanel({model: data}).render().el);
       }
     });
-  },
+  }
 });
 
 directory.views.TaxonPanel = Backbone.View.extend({
@@ -175,7 +175,7 @@ directory.views.TaxonPanel = Backbone.View.extend({
 					$title.remove();
 				}
 			}
-		},
+		}
 });
 
 directory.views.GalleryListView = Backbone.View.extend({
@@ -197,11 +197,11 @@ directory.views.GalleryListView = Backbone.View.extend({
     return this;
   },
 	events:{
-		'click #descCollBtn':'showdescCollModal',
+		'click #descCollBtn':'showdescCollModal'
   },
 	showdescCollModal: function(event){
 		$("#descCollModal").modal('toggle');
-	},
+	}
   
 });
 
@@ -222,11 +222,11 @@ directory.views.playListGalleryView = Backbone.View.extend({
   },
 	
 	events:{
-		'click #descPlayBtn':'showdescPlayModal',
+		'click #descPlayBtn':'showdescPlayModal'
   },
 	showdescPlayModal: function(event){
 		$("#descPLayModal").modal('toggle');
-	},
+	}
 });
 
 
@@ -240,7 +240,7 @@ directory.views.GalleryListItemView = Backbone.View.extend({
   render: function(eventName) {
     $(this.el).html(this.template(this.model.toJSON()));
     return this;
-  },
+  }
 });
 
 directory.views.GalleryDetailView  = Backbone.View.extend({    
@@ -305,7 +305,7 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
   events: {
    'click #collapseAll': 'collapseAll',
    'click #expandAll': 'expandAll',
-   'click .collectionName': 'displayPanelCollection',
+   'click .collectionName': 'displayPanelCollection'
   },
   
   collapseAll: function(event) {
@@ -339,7 +339,7 @@ directory.views.GalleryPanel = Backbone.View.extend({
   render: function(eventName) {
     $(this.el).html(this.template(this.model.toJSON()));
     return this;
-  },
+  }
 });
 
 
@@ -358,7 +358,7 @@ directory.views.GalleryTaxonList = Backbone.View.extend({
         this.listView = new directory.views.GalleryItemListView({el: $('div', this.el), model: this.model});
         this.listView.render();
         return this;
-    },
+    }
 });
 
 
@@ -419,7 +419,7 @@ directory.views.playGameboardView = Backbone.View.extend({
     'click #returnToGame' : 'returnToGame',
     'click #navigateNewGallery' : 'navigateNewGallery',
 		'click #ruleBtn':'toggleRulesModal',
-		'click .gameQuit':'showGameQuitModal',
+		'click .gameQuit':'showGameQuitModal'
   },
   
   
@@ -689,7 +689,7 @@ directory.views.playGameboardView = Backbone.View.extend({
 			self.beforeClose();
 			nav.navigate("#"+urlClicked, {trigger: true, replace: true});
 		});
-	},
+	}
 	
 });
 
@@ -710,7 +710,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
   events:{
     'click .playableTaxon img': 'expandItemSticker',
     'click .playableTaxonValidate' : 'validateItem',
-    'click .playableTaxonDetail' :  'showGraph',
+    'click .playableTaxonDetail' :  'showGraph'
   },
    
   showGraph : function(event){
@@ -872,7 +872,7 @@ directory.views.RandomItemListView = Backbone.View.extend({
     
     //désactive les événements pour que le joueur ne puisse pas rejouer
     $(".playableTaxonValidate").addClass("disabled");
-  },
+  }
 });
 
 directory.views.ProfilDetailView =  directory.views.BaseView.extend({
@@ -907,7 +907,7 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   
   events:{
     'click #pseudo': 'showModalPseudo',
-    'click #profileSubmitModal': 'profileSubmitModal',
+    'click #profileSubmitModal': 'profileSubmitModal'
   },
   
   showModalPseudo : function(event){
@@ -923,8 +923,7 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
 			.set('pseudo', String(profileTextModal))
 			.save();	
 		}
-	},
-
+	}
    
 });
 
@@ -938,13 +937,13 @@ directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
  },  
  serialize: function() {
    return {collection:this.collection,scoreTotal : this.scoreTotal, lastActiveGalleryName :  this.lastActiveGalleryName };
- },
+ }
 
 });
 
 directory.views.feedbackView =  directory.views.BaseView.extend({
-  template: 'feedback-page',
+  template: 'feedback-page'
 });
 directory.views.creditPageView =  directory.views.BaseView.extend({
-  template: 'credit-page',
+  template: 'credit-page'
 });

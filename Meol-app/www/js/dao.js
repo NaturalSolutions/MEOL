@@ -285,7 +285,7 @@ directory.dao.GalleryDAO.prototype, {
         );
     },
    
-    populate: function(callback) {},
+    populate: function(callback) {}
 }
 );
 
@@ -335,7 +335,7 @@ directory.dao.ItemDAO.prototype, {
         );
     },
    
-    populate: function(callback) {},
+    populate: function(callback) {}
 }
 );
 
