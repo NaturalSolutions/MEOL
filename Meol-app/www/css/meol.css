@@ -1,3 +1,6 @@
+a{color: #B9DE00;}
+a:active,a:hover,a:focus{color: #B9DE00;}
+
 /***************************
   Icon Bootstrap override
 *****************************/
@@ -295,6 +298,9 @@ width:35px;
   font-size: 1.8em;
   color: #B9DE00;
   text-shadow: -1.5px 0 black, 0 1.5px black, 1.5px 0 black, 0 -1.5px black;
+  white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
 }
 
 /***************************
@@ -803,7 +809,7 @@ button.playRandom{
 
 #requestPanel h4{
   font-size:12px;
-	margin:2px 0px 0px 0px;
+	margin:3px 0px 0px 0px;
 	line-height:14px;
 	text-overflow:ellipsis;
 	overflow:hidden;
@@ -983,6 +989,9 @@ div.gameTrueSelectedItem{
   color :#4B6377;
 	font-size:24px;
 	line-height:30px;
+    text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
 }
 #collectionModal.alert .btn-primary{
   width:100%;
@@ -1147,7 +1156,9 @@ div#iconUser{
   text-align: left;
   text-decoration: none;
   text-shadow: rgb(17, 17, 17) 0px 1px 1px;
-  
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
 }
 
 span.panel-title {
@@ -1269,8 +1280,9 @@ width: 450px;
   width: 105px;
 }
 .galleryList a:hover, .galleryList a:active, .action button:hover {
-  color:#B9DE00;
+  text-decoration:none;
 }
+.galleryList a:hover p,.galleryList a:active p,.galleryList a:focus p {color: #B9DE00;}
 .galleryList a p{
   padding-left:5px;
 }
@@ -1308,8 +1320,16 @@ width: 450px;
   width: 140px;
   height: 94px;
 	}
-}
+  }
 
+@media (max-width: 1025px){
+    .row-fluid [class*="span"].playableTaxon{
+        min-height:232px;
+    }
+    .collectionName h1,.collectionName span{
+  width:360px;
+  }
+}
 
 
 
