@@ -43,6 +43,9 @@ class ModelTaxon {
     
     $prefered  = array();
     if ($preferedCommonNames !== 'False') $prefered =  (array) json_decode ($preferedCommonNames);
+        if (isset($this->_preferedCommonName['vernacularName'])) {
+      $common = $this->_preferedCommonName['vernacularName'];
+    }
     $this->_preferedCommonName=$prefered;
     
     $this->_image=$image;

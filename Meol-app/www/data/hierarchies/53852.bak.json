@@ -1,3 +1,4 @@
+
 {"name":"Animalia","depth":0,"vernacularName":"animals","id":1,"taxonConceptID":51521761,"children":[
 {"name":"Chordata","depth":1,"vernacularName":"Chordates","id":694,"taxonConceptID":52569917,"children":[
 {"name":"Amphibia","depth":2,"vernacularName":"amphibians","id":1552,"taxonConceptID":52658045,"children":[
@@ -7,7 +8,7 @@
 {"name":"Ceratophrys cranwelli Barrio, 1980","depth":6,"terminal":true,"image":"4b045a06672348810e537da4a6738cc3.jpg","vernacularName":"Cranwell's horned frog","id":337390,"taxonConceptID":52663673}]}]},
 {"name":"Bufonidae","depth":4,"vernacularName":"True Toads","id":1556,"taxonConceptID":52664001,"children":[
 {"name":"Anaxyrus","depth":5,"vernacularName":"North American Toads","id":7210286,"taxonConceptID":52664310,"children":[
-{"name":"Anaxyrus boreas (Baird and Girard, 1852)","depth":6,"terminal":true,"image":"c8375b7b29165332362fd7aa0dc9b840.jpg","vernacularName":"California Toad (<i>B. b. halophilus<\/i>)","id":1039204,"taxonConceptID":52664315}]},
+{"name":"Anaxyrus boreas (Baird and Girard, 1852)","depth":6,"terminal":true,"image":"c8375b7b29165332362fd7aa0dc9b840.jpg","vernacularName":"California Toad (B. b. halophilus)","id":1039204,"taxonConceptID":52664315}]},
 {"name":"Incilius","depth":5,"id":7232875,"taxonConceptID":52664483,"children":[
 {"name":"Incilius periglenes (Savage, 1967)","depth":6,"terminal":true,"image":"97cb22e3c4b9894e26f9b7487d887f58.jpg","vernacularName":"golden toad","id":1025163,"taxonConceptID":52664507}]}]},
 {"name":"Hylidae","depth":4,"vernacularName":"new world tree frogs","id":1562,"taxonConceptID":52661808,"children":[
@@ -29,7 +30,7 @@
 {"name":"Leptobrachium nigrops Berry and Hendrickson, 1963","depth":6,"terminal":true,"image":"1225b29947291dd8484d5d544cf30c17.jpg","vernacularName":"black-eyed litter frog","id":332854,"taxonConceptID":52661050}]}]},
 {"name":"Leiuperidae","depth":4,"id":2918982,"taxonConceptID":52661443,"children":[
 {"name":"Physalaemus","depth":5,"id":15779,"taxonConceptID":52661444,"children":[
-{"name":"Physalaemus centralis Bokermann, 1962","depth":6,"terminal":true,"image":"ddbbe415ebaf2012f1fbe88ee08aa929.jpg","vernacularName":"Central Dwarf Frog; r\u00e3zinha","id":1039173,"taxonConceptID":52661450}]}]},
+{"name":"Physalaemus centralis Bokermann, 1962","depth":6,"terminal":true,"image":"ddbbe415ebaf2012f1fbe88ee08aa929.jpg","vernacularName":"Central Dwarf Frog","id":1039173,"taxonConceptID":52661450}]}]},
 {"name":"Pelobatidae","depth":4,"vernacularName":"spadefoot toads","id":7507,"taxonConceptID":52660308,"children":[
 {"name":"Pelobates","depth":5,"vernacularName":"european spadefoot toads","id":42677,"taxonConceptID":52660309,"children":[
 {"name":"Pelobates fuscus (Laurenti, 1768)","depth":6,"terminal":true,"image":"a7638029d55fcdccacf59adb15c49324.jpg","vernacularName":"Common Spadefoot","id":330757,"taxonConceptID":52660311}]}]},

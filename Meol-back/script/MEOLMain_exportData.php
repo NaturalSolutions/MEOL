@@ -68,6 +68,12 @@ foreach ($collections  as $col) {
     print "\n************************************************************************************\n";
     print "buildUnifiedHierarchy: $idCol \n";
     $d3jstree = $row['full_hierarchy'];
+    //Nettoyage du fichier hierachy : suppression des balises HTML
+    //Chagement de la forme du lien href=> to js function
+    $pattern = '/\<[^<]+\>/';
+    $replacement = '';
+    $d3jstree = preg_replace( $pattern, $replacement , $d3jstree);
+
     $fp = fopen(constant('BASEPATH').constant('DATAPATH').'/hierarchies/'.$idCol.'.json', 'w');
     fwrite($fp, print_r($d3jstree, true));
     fclose($fp);
@@ -83,14 +89,15 @@ foreach ($collections  as $col) {
   mysql_select_db( constant('DB_NAME'),$db);
   $sql = "SELECT * 
           FROM (
-            SELECT `Collection_Items`.fk_collection, `Collection_Items`.object_id, `Taxon`.pageid, 'taxon' AS type, `Taxon`.taxonConceptId,  `Taxon`.taxonName, common_name, iNat, title, filename, weightIUCN,weightContinent
+            SELECT `Collection_Items`.fk_collection, `Collection_Items`.object_id, `Taxon`.pageid, 'taxon' AS type, `Taxon`.taxonConceptId, 
+             `Taxon`.taxonName, common_name_prefered AS common_name,  iNat, title, filename, weightIUCN,weightContinent
             FROM `Collection_Items`
             JOIN Taxon 
             ON pageid = `fk_taxon`
             JOIN Object_image ON Taxon.fk_image = objectid
             WHERE `fk_taxon` = `Collection_Items`.`fk_image`
             UNION
-            SELECT `Collection_Items`.fk_collection,  `Collection_Items`.object_id,`Taxon`.pageid, 'Image' AS type,  `Taxon`.taxonConceptId, `Taxon`.taxonName, common_name, iNat, title, filename, weightIUCN, weightContinent
+            SELECT `Collection_Items`.fk_collection,  `Collection_Items`.object_id,`Taxon`.pageid, 'Image' AS type,  `Taxon`.taxonConceptId, `Taxon`.taxonName, common_name_prefered AS common_name, iNat, title, filename, weightIUCN, weightContinent
             FROM `Collection_Items`
             JOIN Taxon 
             ON pageid = `fk_taxon` AND `Collection_Items`.fk_collection = Taxon.fk_collection
@@ -100,7 +107,12 @@ foreach ($collections  as $col) {
           WHERE fk_collection = ". $idCol;
   $result = mysql_query($sql) or die('Erreur SQL !<br>'.$sql.'<br>'.mysql_error());
 
-  while ($row = mysql_fetch_assoc($result)) {
+    while ($row = mysql_fetch_assoc($result)) {
+      if ($row['common_name'] !== 'False') $prefered =  (array) json_decode ($row['common_name']);
+      if (isset( $prefered['vernacularName'])) {
+      $row['common_name'] = $prefered['vernacularName'];
+    }
+    
     $id = $idCol.'-'.$row['object_id'];
     $items[$id] = $row;
     
@@ -119,6 +131,7 @@ $tcolId = substr($tcolId, 0, -1);
 print "\n************************************************************************************\n";
 print "formatItems: $idCol \n";
 $items= (Object) $items;
+//json_encode ($taxonDetailPanel,JSON_HEX_QUOT);
 $items = json_encode ($items, JSON_HEX_QUOT);
 $fp = fopen(constant('BASEPATH').constant('DATAPATH').'/items.json', 'w');
 fwrite($fp, print_r($items, true));
