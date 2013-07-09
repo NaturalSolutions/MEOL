@@ -25,6 +25,7 @@ function init(){
   window.heightScreen = $(window).height();
   window.widthScreen = $(window).width();
   window.deferreds = [];
+  window.dontShowModal = '';
   
   $("body").addClass("ui-disabled");
   $("body").append("<img id='dataloader-img' src='css/images/ajax-loader.gif'/>");

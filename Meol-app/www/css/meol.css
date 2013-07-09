@@ -40,7 +40,7 @@ input {
 -webkit-user-select: auto;
 }
 
-h1, h2 {
+h1, h2, h4 {
   color:#B9DE00;
 }
 p{
@@ -400,7 +400,13 @@ margin:3%;
 #play-list-gallery-content,#gallery-list-content{
   width:88%;
 }
-
+.msgGood {
+text-align: center;
+font-style: italic;
+}
+.modal-footer .checkbox{
+			float:left;	
+}
 .head{
   clear:left;
   margin-left:0px;
@@ -1010,22 +1016,6 @@ white-space: nowrap;
 	top: 17%;
   font-size:18px;
   line-height:24px;
-	/*left: 60%;
-	z-index: 1050;
-	width: 360px;
-	margin-left: -280px;
-	border: 1px solid #999;
-	border: 1px solid rgba(0, 0, 0, 0.3);
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-	outline: none;
-	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-	-webkit-background-clip: padding-box;
-	-moz-background-clip: padding-box;
-	background-clip: padding-box;*/
 }
 .modal-backdrop {
   background-color: transparent;

@@ -222,11 +222,23 @@ directory.views.playListGalleryView = Backbone.View.extend({
   },
 	
 	events:{
-		'click #descPlayBtn':'showdescPlayModal'
+		'click #descPlayBtn':'showdescPlayModal',
+		'click .close':'hide',
+		'click .closeButton':'hide',
+		'click #dontShowMsg':'dontShowDescPlayModalAgain'
   },
 	showdescPlayModal: function(event){
 		$("#descPLayModal").modal('toggle');
+	},
+	dontShowDescPlayModalAgain: function(event){
+		//$("#descPLayModal").modal('show').hide();
+		dontShowModal = 'hide';
+		//$(".checkbox").css("display", "none");
+	},
+	hide: function(event){
+		$("#descPLayModal").modal('show').hide();
 	}
+
 });
 
 

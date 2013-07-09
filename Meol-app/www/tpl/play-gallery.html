@@ -52,7 +52,7 @@
   </div>
 </div>
 
-<div class="modal hide" id="descPLayModal" data-backdrop="false">
+<div class="modal <%= dontShowModal %>" id="descPLayModal" data-backdrop="true" >
   <div class="modal-header gradientDarkBlue">
     <button type="button" class="close btn-large" data-dismiss="modal" aria-hidden="true">×</button>
     <h3>Information</h3>
@@ -60,7 +60,17 @@
   <div class="modal-body">
     <p class='description'>In this game, you are an explorer discovering different species by travelling around the world. You can earn points as you journey to different continents by answering questions about which species live on the continents that you visit.
     You earn points for each correct answer and bonus points for answering several correctly in a row.<p/>
-   <p>During your quest, you will be presented with the species selected from an Encyclopedia of Life Collection. Earning points will unlock new collections. More than 20 000 points are needed to unlock a new collection.</p>
-    <h2>To begin your quest, close this window and click on an unlocked collection. Have a good journey !</h2>
+    <p>During your quest, you will be presented with the species selected from an Encyclopedia of Life Collection. Earning points will unlock new collections. More than 20 000 points are needed to unlock a new collection.</p>
+    <h4>To begin your quest, close this window and click on an unlocked collection.</h4>
+    <h4 class="msgGood"> Have a good journey !</h4>
+  
   </div>
+   <div class="modal-footer gradientDarkBlue">
+    <button class="btn btn-small pull-right closeButton" >Close </button>
+    <% if(dontShowModal !== 'hide'){%>
+    <label class="checkbox">
+     <input type="checkbox" name="dontShowMsg" id="dontShowMsg">Do not show this message again</label>
+    <% }%>
+      
+    </div>
 </div>
