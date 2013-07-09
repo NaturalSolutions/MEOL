@@ -305,7 +305,7 @@ directory.views.D3GraphPanelView  = Backbone.View.extend({
   events: {
    'click #collapseAll': 'collapseAll',
    'click #expandAll': 'expandAll',
-   'click .collectionName': 'displayPanelCollection'
+   'click .collectionName h1': 'displayPanelCollection'
   },
   
   collapseAll: function(event) {

@@ -269,8 +269,8 @@ MeolGraph.prototype._update = function() {
   // Expand/collapse icon label (can be "+", "-" or ""):
   this.node.filter(function(d, i) { return (d.terminal != true) & 1; })
       .append("svg:text")
-      .attr("x", self.nodeExpandCircleXOffset - 2)
-      .attr("y", self.nodeLabelYNonLeafOffset)
+      .attr("x", self.nodeExpandCircleXOffset - 4)
+      .attr("y", self.nodeLabelYNonLeafOffset + 1)
       .attr("class",  "expand-icon" )
       .attr("fill",  "white" )
       // The root node gets a "+" label:
