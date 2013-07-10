@@ -40,7 +40,7 @@ input {
 -webkit-user-select: auto;
 }
 
-h1, h2, h4 {
+h1, h2{
   color:#B9DE00;
 }
 p{
@@ -399,6 +399,9 @@ margin:3%;
 /*-----Playable collection-----*/
 #play-list-gallery-content,#gallery-list-content{
   width:88%;
+}
+#descPLayModal h4 {
+				color: #B9DE00;		
 }
 .msgGood {
 text-align: center;
