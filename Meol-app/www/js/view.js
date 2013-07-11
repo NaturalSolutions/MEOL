@@ -196,12 +196,12 @@ directory.views.GalleryListView = Backbone.View.extend({
     }, this);
     return this;
   },
-	events:{
-		'click #descCollBtn':'showdescCollModal'
+    events:{
+      'click #descCollBtn':'showdescCollModal'
   },
-	showdescCollModal: function(event){
-		$("#descCollModal").modal('toggle');
-	}
+    showdescCollModal: function(event){
+      $("#descCollModal").modal('toggle');
+  }
   
 });
 
@@ -924,20 +924,20 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   },
   
   
-	showModalPseudo : function(event){
-		$("#profileModal").modal('show');
-	},
-	
-	profileSubmitModal : function(event){
-		var profileTextModal = $("input#profileTextModal").val();
-		console.log(typeof(profileTextModal));
-		if(profileTextModal !== ""){
-			$("#pseudo").html(profileTextModal);
-			this.model.set('Tprofil_PK_Id', parseInt(this.model.get('Tprofil_PK_Id')))
-			.set('pseudo', String(profileTextModal))
-			.save();	
-		}
-	}
+  showModalPseudo : function(event){
+	  $("#profileModal").modal('show');
+  },
+  
+  profileSubmitModal : function(event){
+	  var profileTextModal = $("input#profileTextModal").val();
+	  console.log(typeof(profileTextModal));
+	  if(profileTextModal !== ""){
+		  $("#pseudo").html(profileTextModal);
+		  this.model.set('Tprofil_PK_Id', parseInt(this.model.get('Tprofil_PK_Id')))
+		  .set('pseudo', String(profileTextModal))
+		  .save();	
+	  }
+  }
    
 });
 
@@ -949,16 +949,25 @@ directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
   this.lastActiveGalleryName = this.options.lastActiveGalleryName;
   this.model.bind("reset", this.render, this);
   this.collection.bind('reset', this.render, this);
+  this.collection.bind('reset', this.msgReset, this);
  },
  events:{
-  'click #btnResetScore':'destroyTScore'
+  'click #btnModalReset':'showModalReset',
+  'click #btnResetScore':'destroyTScore',
+  'click .closeButton':'msgReset'
  },
  
  serialize: function() {
    return {collection:this.collection,scoreTotal : this.scoreTotal, lastActiveGalleryName :  this.lastActiveGalleryName };
  },
- destroyTScore : function(event){
+ destroyTScore: function(event){
     this.collection.destroy();
+ },
+ showModalReset: function(event){
+  $("#resetModal").modal('show');
+ },
+ msgReset: function(){
+  $("#resetModal").modal('hide');
  }
  
 });

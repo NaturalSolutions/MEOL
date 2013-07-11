@@ -401,7 +401,10 @@ margin:3%;
   width:88%;
 }
 #descPLayModal h4 {
-				color: #B9DE00;		
+color: #B9DE00;		
+}
+input[type="checkbox"] {
+color: black;
 }
 .msgGood {
 text-align: center;
@@ -757,7 +760,7 @@ div.taxon-list-item {
 	width:40%;
 }
 
-#gameQuitValidate{
+#gameQuitValidate, #btnResetScore{
 	float:left;
 }
 
@@ -1031,6 +1034,7 @@ white-space: nowrap;
 
 .modal h3{
   color:#B9DE00;
+  text-align: left;
 }
 #sorry{
 	color:#DB5252; 

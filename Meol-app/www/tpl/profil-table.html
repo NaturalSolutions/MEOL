@@ -21,4 +21,19 @@
       </tbody>
     </table>
 </div>
-<a class='btn btn-mini pull-right btn-primary' id='btnResetScore'>Reset the scores</a> 
+<a class='btn btn-mini pull-right btn-primary' id='btnModalReset'>Reset the scores</a> 
+
+
+<div class="modal hide" id="resetModal" data-backdrop="true" >
+  <div class="modal-header gradientDarkBlue">
+    <button type="button" class="close btn-large" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3>Reset the scores</h3>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to reset your scores?</p>
+  </div>
+  <div class="modal-footer gradientDarkBlue">
+    <a class='btn btn-danger' id='btnResetScore'>Reset the scores</a>
+    <a class="btn pull-right closeButton" >Cancel </a>
+  </div>
+</div>
