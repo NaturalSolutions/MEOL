@@ -11,15 +11,14 @@
             <td>Score</td>
           </tr>
         </thead>
-         <% console.log(collection)%>
       <% var i=0; 
-      _.each(collection, function(score) { %>
-        <tr id="score-<%= collection[i].fk_profil %>">
-          <td><%= directory.data.galleriesList.findWhere({'collectionid' : String(collection[i].fk_gallery)}).get('name')%></td>
-          <td><%= collection[i].score_max%></td>
+      collection.each(function(score) { %>
+        <tr id="score-<%= score.get('fk_profil') %>">
+          <td><%= directory.data.galleriesList.findWhere({'collectionid' : String(score.get('fk_gallery'))}).get('name')%></td>
+          <td><%= score.get('score_max')%></td>
         </tr>
       <% i = i+1; }); %>
       </tbody>
     </table>
 </div>
-
+<a class='btn btn-mini pull-right btn-primary' id='btnResetScore'>Reset the scores</a> 

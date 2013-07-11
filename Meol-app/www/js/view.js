@@ -908,8 +908,9 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
 				};
 				score += item.score_max;	
 			});
+			collection.reset(items);
 			var lastActiveGalleryName = directory.data.galleriesList.findWhere({'ordre' : parseInt(ordreMax)}).get('name');
-			self.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:items,model:self.model, lastActiveGalleryName :lastActiveGalleryName, scoreTotal : score })).render();
+			self.insertView("#profileTable", new directory.views.TableProfilDetailView({collection:collection,model:self.model, lastActiveGalleryName :lastActiveGalleryName, scoreTotal : score })).render();
 		});
   },
 	
@@ -919,10 +920,11 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   
   events:{
     'click #pseudo': 'showModalPseudo',
-    'click #profileSubmitModal': 'profileSubmitModal'
+    'click #profileSubmitModal': 'profileSubmitModal',
   },
   
-  showModalPseudo : function(event){
+  
+	showModalPseudo : function(event){
 		$("#profileModal").modal('show');
 	},
 	
@@ -942,16 +944,25 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
 directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
  template: 'profil-table',
  
- initialize: function() { 
-	 this.scoreTotal = this.options.scoreTotal;
-   this.lastActiveGalleryName = this.options.lastActiveGalleryName;
-   this.model.bind("reset", this.render, this);
- },  
+ initialize: function() {
+  this.scoreTotal = this.options.scoreTotal;
+  this.lastActiveGalleryName = this.options.lastActiveGalleryName;
+  this.model.bind("reset", this.render, this);
+  this.collection.bind('reset', this.render, this);
+ },
+ events:{
+  'click #btnResetScore':'destroyTScore'
+ },
+ 
  serialize: function() {
    return {collection:this.collection,scoreTotal : this.scoreTotal, lastActiveGalleryName :  this.lastActiveGalleryName };
+ },
+ destroyTScore : function(event){
+    this.collection.destroy();
  }
-
+ 
 });
+
 
 directory.views.feedbackView =  directory.views.BaseView.extend({
   template: 'feedback-page'

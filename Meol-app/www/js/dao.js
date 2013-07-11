@@ -82,6 +82,11 @@ Backbone.sync = function(method, model, options) {
         options.success(data);  
       });
    }
+   else if (method === "delete") {
+      dao.destroy(model, function(data) {
+        options.success(data);  
+      });
+   }
  };
 
 
@@ -529,6 +534,19 @@ directory.dao.ScoreDAO.prototype, {
                     }
                     callback(profils);
                 });
+            },
+            function(tx, error) {
+                console.log(tx);
+            }
+        );
+    },
+    destroy: function(callback) {
+        this.db.transaction(
+            function(tx) {
+                var sql = "delete from Tscore" ;
+              tx.executeSql(sql, [], function(tx, results) {
+                callback();
+              });
             },
             function(tx, error) {
                 console.log(tx);

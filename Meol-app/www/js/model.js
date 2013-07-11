@@ -307,6 +307,15 @@ directory.models.ScoresCollection = Backbone.Collection.extend({
           d.resolve(data);
       });
      return d;
+  },
+  destroy: function() {
+     var d = $.Deferred();
+     var self = this;
+     (new this.dao(directory.db)).destroy(function(data) {
+          d.resolve(data);
+          self.reset();
+      });
+     return d;
   }
   
 });
