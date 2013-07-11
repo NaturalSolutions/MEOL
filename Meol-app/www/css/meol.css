@@ -1218,7 +1218,9 @@ margin-left: 70px;
 #profileTextModal {
 	display: block;
 }
-
+#btnModalReset{
+	margin-right:5%;
+}
 .modal#rulesModal{
 	left:50%;
 	width:560px;
