@@ -41,6 +41,7 @@
               </div>
             </div>
            </div>
+      <% if ( flat.length != 0 ){ %>
       <div class="accordion-group">
        <div class="accordion-heading"  id="div_toogle_taxonClassification" >
           <a class="accordion-toggle collapse-title collapsed" id="toogle_taxonPanel" data-toggle="collapse" data-parent="#accordion2" data-target="#collapsibleElementClassification">
@@ -51,14 +52,15 @@
         <div class="collapse" id="collapsibleElementClassification">
           <div id="desc-Classification">
           <ul>
-          <% var i=0; 
+          <% var i=0;
             _.each(flat, function(level) { %> 
-            <li style="margin-left: <%= i %>%;"><%= level.scientificName %><% i = i+1; %></li>
+            <li style="margin-left: <%= i %>;"><%= level.scientificName %><% i = i+1; %></li>
           <% }); %>
           </ul>
           </div>
         </div>
     </div>
+      <% }%>
       <% if ( iucnStatus ){ %>
       <div class="accordion-group">
         <div class="accordion-heading"  id="div_toogle_taxonIUCN" >

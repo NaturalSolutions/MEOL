@@ -920,7 +920,7 @@ directory.views.ProfilDetailView =  directory.views.BaseView.extend({
   
   events:{
     'click #pseudo': 'showModalPseudo',
-    'click #profileSubmitModal': 'profileSubmitModal',
+    'click #profileSubmitModal': 'profileSubmitModal'
   },
   
   

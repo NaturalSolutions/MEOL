@@ -36,6 +36,7 @@ background-position: -430px -93px;
   -webkit-user-select:none;
 	-webkit-tap-highlight-color:rgba(255,255,255,0);
 }
+
 input {
 -webkit-user-select: auto;
 }
@@ -74,7 +75,7 @@ p{
   background-repeat:no-repeat;
   background-size:100% auto;
 }
-div#home-page-container:#content{ 
+div#home-page-container#content{ 
 	background-image:url(./images/background/background-MEOL.png);
   background-position:center bottom;
   background-repeat:no-repeat;
@@ -95,7 +96,9 @@ label{
   color:#B9DE00;
   cursor: default;
 }
-
+modal#descPLayModal label{
+	color:black;
+} 
 circle.expand-icon-circle {
   fill:#344551;
 }
@@ -207,6 +210,7 @@ line.link {
 }
 #collapsibleElement1 .ui-collapsible-content,#collapsibleElementDetail .ui-collapsible-content,#collapsibleElementUICN .ui-collapsible-content{
   overflow-y:scroll;
+  overflow-y:auto;
   overflow-x:hidden;
   max-height:200px;
   min-height:1px;
@@ -411,8 +415,9 @@ text-align: center;
 font-style: italic;
 }
 .modal-footer .checkbox{
-			float:left;	
+	float:left;	
 }
+
 .head{
   clear:left;
   margin-left:0px;
@@ -1104,7 +1109,7 @@ div#iconUser{
 .collectionName p{
   position:absolute;
 	margin-left:145px;
-	top:55px;
+	top:57px;
   color:#66869E;
   font-style: italic;
 }
@@ -1117,7 +1122,7 @@ div#iconUser{
 }
 #returnToGame{
   position:fixed;
-  top:65px;
+  top:77px;
   margin-left: 145px;
 	border:2px solid #B9DE00;
 }
