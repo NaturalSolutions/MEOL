@@ -122,10 +122,13 @@ directory.Router = Backbone.Router.extend({
   },
 
   playGameboardDisplay : function(id) {
+   
     var self = this;   
     var gallery = directory.data.galleriesList.findWhere( {'collectionid': id});
-    
     gallery.set('id', id);
+    
+    this.currentProfil = new directory.models.Profil({Tprofil_PK_Id:1});
+    this.currentProfil.fetch();
     
     if(gallery.get('active') == "false"){
        alert(gallery.get('active'));

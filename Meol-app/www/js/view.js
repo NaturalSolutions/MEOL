@@ -962,6 +962,8 @@ directory.views.TableProfilDetailView =  directory.views.BaseView.extend({
  },
  destroyTScore: function(event){
     this.collection.destroy();
+    this.scoreTotal = 0;
+    this.lastActiveGalleryName = directory.data.galleriesList.findWhere({'ordre' : 1}).get('name');;
  },
  showModalReset: function(event){
   $("#resetModal").modal('show');

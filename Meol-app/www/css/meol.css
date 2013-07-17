@@ -212,7 +212,7 @@ line.link {
   overflow-y:scroll;
   overflow-y:auto;
   overflow-x:hidden;
-  max-height:200px;
+  max-height:180px;
   min-height:1px;
 }
 #panel_taxon-detail .ui-collapsible-inset, #panel_taxon-detail .ui-collapsible-inset h3 {
@@ -225,11 +225,16 @@ line.link {
 #collapsibleCollectionPanel .ui-corner-top{
   border-radius-top:0;
 }
-h2,h3,#panel_taxon-detail h2, #panel_taxon-detail h3{
+h2,h3,#panel_taxon-detail h2{
 -webkit-margin-before: 0.3em;
 -webkit-margin-after: 0.3em;
 font-size: 24px;
 line-height:30px;
+}
+#panel_taxon-detail h3{
+-webkit-margin-before: 0.1em;
+font-size: 18px;
+line-height:20px;
 }
 #panel_taxon-detail h3, #nameContent h2{
 font-style:italic;
@@ -1185,7 +1190,7 @@ span.panel-title {
 }
 
 .collapse.in {
-  padding: 10px 15px;
+  padding: 5px;
 }
 
 .accordion-group {
