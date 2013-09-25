@@ -8,9 +8,8 @@ For each collection :
  - Extract Inaturalist Data
  - Create a directory with all data : 
    - Data/
-        - images/
-        - images_formated/
-        - collectionImages/
+        - images_taxon/
+        - images_collection/
         - hierarchies/
          - 1 file per collection 
         - detail_Taxon.json
